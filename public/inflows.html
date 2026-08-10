@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entradas de Estoque - ClothStock</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="css/theme.min.css">
+</head>
+<body>
+
+    <nav class="nxl-navigation">
+        <div class="navbar-wrapper">
+            <div class="m-header">
+                <a href="/" class="b-brand">
+                    <img src="images/logo-full.png" alt="Logo" class="logo logo-lg">
+                    <img src="images/logo-abbr.png" alt="Logo" class="logo logo-sm">
+                </a>
+            </div>
+            <div class="navbar-content">
+                <ul class="nxl-navbar">
+                    <li class="nxl-item nxl-caption"><label>Navegação Principal</label></li>
+                    <li class="nxl-item"><a href="/" class="nxl-link"><span class="nxl-micon"><i class="feather-layout"></i></span><span class="nxl-mtext">Dashboard</span></a></li>
+                    <li class="nxl-item nxl-caption"><label>Cadastros Base</label></li>
+                    <li class="nxl-item"><a href="/brands.html" class="nxl-link"><span class="nxl-micon"><i class="feather-tag"></i></span><span class="nxl-mtext">Marcas</span></a></li>
+                    <li class="nxl-item"><a href="/categories.html" class="nxl-link"><span class="nxl-micon"><i class="feather-grid"></i></span><span class="nxl-mtext">Categorias</span></a></li>
+                    <li class="nxl-item"><a href="/products.html" class="nxl-link"><span class="nxl-micon"><i class="feather-box"></i></span><span class="nxl-mtext">Produtos</span></a></li>
+                    <li class="nxl-item nxl-caption"><label>Movimentações</label></li>
+                    <li class="nxl-item active"><a href="/inflows.html" class="nxl-link"><span class="nxl-micon"><i class="feather-arrow-down-left"></i></span><span class="nxl-mtext">Entradas (Inflow)</span></a></li>
+                    <li class="nxl-item"><a href="/outflows.html" class="nxl-link"><span class="nxl-micon"><i class="feather-arrow-up-right"></i></span><span class="nxl-mtext">Saídas (Outflow)</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="nxl-container">
+        <div class="nxl-content">
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center justify-content-between w-100 me-3">
+                    <div>
+                        <h5 class="m-b-10">Entradas de Estoque</h5>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">Entradas</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddInflow" onclick="loadProductsSelect()">
+                        <i class="feather-plus me-1"></i> Nova Entrada
+                    </button>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div id="alert-container"></div>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title m-0">Histórico de Entradas</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produto</th>
+                                        <th>Quantidade Entrada</th>
+                                        <th>Observações</th>
+                                        <th>Data / Hora</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inflows-table-body">
+                                    <tr><td colspan="5" class="text-center py-4 text-muted">Carregando histórico...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Registrar Entrada -->
+    <div class="modal fade" id="modalAddInflow" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Entrada de Estoque</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="form-add-inflow">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="inflow-product" class="form-label">Produto <span class="text-danger">*</span></label>
+                            <select class="form-select" id="inflow-product" required>
+                                <option value="">Selecione o produto...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inflow-quantity" class="form-label">Quantidade <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="inflow-quantity" min="1" required placeholder="Ex: 50">
+                        </div>
+                        <div class="mb-3">
+                            <label for="inflow-notes" class="form-label">Observações / Nota Fiscal</label>
+                            <textarea class="form-control" id="inflow-notes" rows="2" placeholder="Ex: Compra de lote #1042"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" id="btn-save-inflow">Confirmar Entrada</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/vendors.min.js"></script>
+    <script src="js/common-init.min.js"></script>
+    <script>
+        async function fetchAndRenderInflows() {
+            const tbody = document.getElementById('inflows-table-body');
+            try {
+                const response = await fetch('/api/movements?type=INFLOW');
+                const result = await response.json();
+
+                if (!result.success || !result.data || result.data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">Nenhuma entrada registrada.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = result.data.map(m => `
+                    <tr>
+                        <td><strong>#${m.id}</strong></td>
+                        <td class="fw-semibold text-dark">${m.product_name}</td>
+                        <td><span class="badge bg-soft-success text-success fs-12">+${m.quantity} un.</span></td>
+                        <td>${m.notes || '<span class="text-muted">-</span>'}</td>
+                        <td>${new Date(m.created_at).toLocaleString('pt-BR')}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-danger">Erro ao carregar histórico.</td></tr>`;
+            }
+        }
+
+        async function loadProductsSelect() {
+            const select = document.getElementById('inflow-product');
+            try {
+                const response = await fetch('/api/products');
+                const result = await response.json();
+                select.innerHTML = '<option value="">Selecione o produto...</option>';
+                if (result.success && result.data) {
+                    result.data.forEach(p => {
+                        select.innerHTML += `<option value="${p.id}">${p.name} (Atual: ${p.quantity} un.)</option>`;
+                    });
+                }
+            } catch (err) {
+                console.error('Erro ao carregar produtos:', err);
+            }
+        }
+
+        document.getElementById('form-add-inflow').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-inflow');
+            btn.disabled = true;
+
+            const payload = {
+                product_id: document.getElementById('inflow-product').value,
+                quantity: document.getElementById('inflow-quantity').value,
+                notes: document.getElementById('inflow-notes').value.trim(),
+                type: 'INFLOW'
+            };
+
+            try {
+                const res = await fetch('/api/movements', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    document.getElementById('form-add-inflow').reset();
+                    bootstrap.Modal.getInstance(document.getElementById('modalAddInflow')).hide();
+                    showAlert('Entrada registrada com sucesso!', 'success');
+                    fetchAndRenderInflows();
+                } else {
+                    showAlert(data.error || 'Erro ao registrar entrada.', 'danger');
+                }
+            } catch (err) {
+                showAlert('Erro na requisição com o servidor.', 'danger');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        function showAlert(msg, type) {
+            const c = document.getElementById('alert-container');
+            c.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show mb-4">${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
+            setTimeout(() => c.innerHTML = '', 4000);
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchAndRenderInflows);
+    </script>
+</body>
+</html>

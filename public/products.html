@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Produtos - ClothStock</title>
+
+    <!-- CSS Duralux -->
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="css/theme.min.css">
+</head>
+<body>
+
+    <!-- Navigation (Sidebar) -->
+    <nav class="nxl-navigation">
+        <div class="navbar-wrapper">
+            <div class="m-header">
+                <a href="/" class="b-brand">
+                    <img src="images/logo-full.png" alt="Logo" class="logo logo-lg">
+                    <img src="images/logo-abbr.png" alt="Logo" class="logo logo-sm">
+                </a>
+            </div>
+            <div class="navbar-content">
+                <ul class="nxl-navbar">
+                    <li class="nxl-item nxl-caption">
+                        <label>Navegação Principal</label>
+                    </li>
+                    <li class="nxl-item">
+                        <a href="/" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-layout"></i></span>
+                            <span class="nxl-mtext">Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nxl-item nxl-caption">
+                        <label>Cadastros Base</label>
+                    </li>
+                    <li class="nxl-item">
+                        <a href="/brands.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-tag"></i></span>
+                            <span class="nxl-mtext">Marcas</span>
+                        </a>
+                    </li>
+                    <li class="nxl-item">
+                        <a href="/categories.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-grid"></i></span>
+                            <span class="nxl-mtext">Categorias</span>
+                        </a>
+                    </li>
+                    <li class="nxl-item active">
+                        <a href="/products.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-box"></i></span>
+                            <span class="nxl-mtext">Produtos</span>
+                        </a>
+                    </li>
+
+                    <li class="nxl-item nxl-caption">
+                        <label>Movimentações</label>
+                    </li>
+                    <li class="nxl-item">
+                        <a href="/inflows.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-arrow-down-left"></i></span>
+                            <span class="nxl-mtext">Entradas (Inflow)</span>
+                        </a>
+                    </li>
+                    <li class="nxl-item">
+                        <a href="/outflows.html" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-arrow-up-right"></i></span>
+                            <span class="nxl-mtext">Saídas (Outflow)</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Top Header -->
+    <header class="nxl-header">
+        <div class="header-wrapper">
+            <div class="header-left d-flex align-items-center gap-4">
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+                    <div class="hamburger hamburger--arrowturn">
+                        <div class="hamburger-box"><div class="hamburger-inner"></div></div>
+                    </div>
+                </a>
+                <div class="nxl-navigation-toggle">
+                    <a href="javascript:void(0);" id="menu-mini-button"><i class="feather-align-left"></i></a>
+                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none"><i class="feather-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="nxl-container">
+        <div class="nxl-content">
+            
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center justify-content-between w-100 me-3">
+                    <div>
+                        <h5 class="m-b-10">Gerenciamento de Produtos</h5>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">Produtos</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddProduct" onclick="loadBrandsAndCategories()">
+                        <i class="feather-plus me-1"></i> Novo Produto
+                    </button>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div id="alert-container"></div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title m-0">Produtos Cadastrados</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome do Produto</th>
+                                        <th>Marca</th>
+                                        <th>Categoria</th>
+                                        <th>Preço</th>
+                                        <th>Qtd. Estoque</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="products-table-body">
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted">Carregando produtos...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal: Cadastrar Novo Produto -->
+    <div class="modal fade" id="modalAddProduct" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastrar Novo Produto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="form-add-product">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="product-name" class="form-label">Nome do Produto <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="product-name" required placeholder="Ex: Camiseta Oversized Algodão">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="product-brand" class="form-label">Marca</label>
+                                <select class="form-select" id="product-brand">
+                                    <option value="">Selecione uma marca...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="product-category" class="form-label">Categoria</label>
+                                <select class="form-select" id="product-category">
+                                    <option value="">Selecione uma categoria...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="product-price" class="form-label">Preço (R$) <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" class="form-control" id="product-price" required placeholder="0.00">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="product-quantity" class="form-label">Estoque Inicial</label>
+                                <input type="number" class="form-control" id="product-quantity" value="0" placeholder="0">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="product-description" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="product-description" rows="3" placeholder="Detalhes opcionais sobre o produto"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-save-product">Salvar Produto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/vendors.min.js"></script>
+    <script src="js/common-init.min.js"></script>
+    
+    <script>
+        // 1. Carregar lista de produtos
+        async function fetchAndRenderProducts() {
+            const tbody = document.getElementById('products-table-body');
+
+            try {
+                const response = await fetch('/api/products');
+                const result = await response.json();
+
+                if (!result.success || !result.data || result.data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">Nenhum produto cadastrado.</td>
+                        </tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = result.data.map(p => `
+                    <tr>
+                        <td><strong>#${p.id}</strong></td>
+                        <td class="fw-semibold text-primary">${p.name}</td>
+                        <td>${p.brand_name || '<span class="text-muted">-</span>'}</td>
+                        <td>${p.category_name || '<span class="text-muted">-</span>'}</td>
+                        <td>R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</td>
+                        <td><span class="badge ${p.quantity > 0 ? 'bg-soft-success text-success' : 'bg-soft-danger text-danger'} fs-12">${p.quantity} un.</span></td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error('Erro ao carregar produtos:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-danger">Erro ao carregar dados.</td>
+                    </tr>`;
+            }
+        }
+
+        // 2. Carregar marcas e categorias para popular os selects do Modal
+        async function loadBrandsAndCategories() {
+            const selectBrand = document.getElementById('product-brand');
+            const selectCategory = document.getElementById('product-category');
+
+            try {
+                const [resBrands, resCategories] = await Promise.all([
+                    fetch('/api/brands'),
+                    fetch('/api/categories')
+                ]);
+
+                const brands = await resBrands.json();
+                const categories = await resCategories.json();
+
+                selectBrand.innerHTML = '<option value="">Selecione uma marca...</option>';
+                if (brands.success && brands.data) {
+                    brands.data.forEach(b => {
+                        selectBrand.innerHTML += `<option value="${b.id}">${b.name}</option>`;
+                    });
+                }
+
+                selectCategory.innerHTML = '<option value="">Selecione uma categoria...</option>';
+                if (categories.success && categories.data) {
+                    categories.data.forEach(c => {
+                        selectCategory.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao popular select options:', error);
+            }
+        }
+
+        // 3. Cadastrar produto
+        document.getElementById('form-add-product').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const payload = {
+                name: document.getElementById('product-name').value.trim(),
+                brand_id: document.getElementById('product-brand').value || null,
+                category_id: document.getElementById('product-category').value || null,
+                price: document.getElementById('product-price').value,
+                quantity: document.getElementById('product-quantity').value,
+                description: document.getElementById('product-description').value.trim()
+            };
+
+            const btnSave = document.getElementById('btn-save-product');
+            btnSave.disabled = true;
+            btnSave.textContent = 'Salvando...';
+
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    document.getElementById('form-add-product').reset();
+
+                    const modalElement = document.getElementById('modalAddProduct');
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+                    modalInstance.hide();
+
+                    showAlert('Produto cadastrado com sucesso!', 'success');
+                    fetchAndRenderProducts();
+                } else {
+                    showAlert(result.error || 'Erro ao cadastrar produto.', 'danger');
+                }
+            } catch (error) {
+                showAlert('Erro de conexão com o servidor.', 'danger');
+            } finally {
+                btnSave.disabled = false;
+                btnSave.textContent = 'Salvar Produto';
+            }
+        });
+
+        function showAlert(message, type) {
+            const container = document.getElementById('alert-container');
+            container.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show mb-4" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+            setTimeout(() => { container.innerHTML = ''; }, 4000);
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchAndRenderProducts);
+    </script>
+</body>
+</html>

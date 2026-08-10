@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Marcas - ClothStock</title>
+    <title>Categorias - ClothStock</title>
 
     <!-- CSS Duralux -->
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
@@ -40,13 +40,13 @@
                     <li class="nxl-item nxl-caption">
                         <label>Cadastros Base</label>
                     </li>
-                    <li class="nxl-item active">
+                    <li class="nxl-item">
                         <a href="/brands.html" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-tag"></i></span>
                             <span class="nxl-mtext">Marcas</span>
                         </a>
                     </li>
-                    <li class="nxl-item">
+                    <li class="nxl-item active">
                         <a href="/categories.html" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-grid"></i></span>
                             <span class="nxl-mtext">Categorias</span>
@@ -114,15 +114,15 @@
             <div class="page-header">
                 <div class="page-header-left d-flex align-items-center justify-content-between w-100 me-3">
                     <div>
-                        <h5 class="m-b-10">Gerenciamento de Marcas</h5>
+                        <h5 class="m-b-10">Gerenciamento de Categorias</h5>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active">Marcas</li>
+                            <li class="breadcrumb-item active">Categorias</li>
                         </ul>
                     </div>
                     <!-- Botão do Modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddBrand">
-                        <i class="feather-plus me-1"></i> Nova Marca
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCategory">
+                        <i class="feather-plus me-1"></i> Nova Categoria
                     </button>
                 </div>
             </div>
@@ -133,7 +133,7 @@
 
                 <div class="card shadow-sm">
                     <div class="card-header bg-white py-3">
-                        <h5 class="card-title m-0">Marcas Cadastradas</h5>
+                        <h5 class="card-title m-0">Categorias Cadastradas</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -141,14 +141,14 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nome da Marca</th>
+                                        <th>Nome da Categoria</th>
                                         <th>Descrição</th>
                                         <th>Data de Cadastro</th>
                                     </tr>
                                 </thead>
-                                <tbody id="brands-table-body">
+                                <tbody id="categories-table-body">
                                     <tr>
-                                        <td colspan="4" class="text-center py-4 text-muted">Carregando marcas...</td>
+                                        <td colspan="4" class="text-center py-4 text-muted">Carregando categorias...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -161,29 +161,29 @@
     </main>
 
     <!-- ============================================================ -->
-    <!-- Modal: Cadastrar Nova Marca -->
+    <!-- Modal: Cadastrar Nova Categoria -->
     <!-- ============================================================ -->
-    <div class="modal fade" id="modalAddBrand" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalAddCategory" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Cadastrar Nova Marca</h5>
+                    <h5 class="modal-title">Cadastrar Nova Categoria</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
-                <form id="form-add-brand">
+                <form id="form-add-category">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="brand-name" class="form-label">Nome da Marca <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="brand-name" required placeholder="Ex: Nike, Zara, Adidas">
+                            <label for="category-name" class="form-label">Nome da Categoria <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="category-name" required placeholder="Ex: Camisetas, Calças, Acessórios">
                         </div>
                         <div class="mb-3">
-                            <label for="brand-description" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="brand-description" rows="3" placeholder="Descrição opcional da marca"></textarea>
+                            <label for="category-description" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="category-description" rows="3" placeholder="Descrição opcional da categoria"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="btn-save-brand">Salvar Marca</button>
+                        <button type="submit" class="btn btn-primary" id="btn-save-category">Salvar Categoria</button>
                     </div>
                 </form>
             </div>
@@ -195,32 +195,33 @@
     <script src="js/common-init.min.js"></script>
     
     <script>
-        async function fetchAndRenderBrands() {
-            const tbody = document.getElementById('brands-table-body');
+        // 1. Carregar Categorias da API
+        async function fetchAndRenderCategories() {
+            const tbody = document.getElementById('categories-table-body');
 
             try {
-                const response = await fetch('/api/brands');
+                const response = await fetch('/api/categories');
                 const result = await response.json();
 
                 if (!result.success || !result.data || result.data.length === 0) {
                     tbody.innerHTML = `
                         <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">Nenhuma marca cadastrada no banco.</td>
+                            <td colspan="4" class="text-center py-4 text-muted">Nenhuma categoria cadastrada no banco.</td>
                         </tr>`;
                     return;
                 }
 
-                tbody.innerHTML = result.data.map(brand => `
+                tbody.innerHTML = result.data.map(category => `
                     <tr>
-                        <td><strong>#${brand.id}</strong></td>
-                        <td class="fw-semibold text-primary">${brand.name}</td>
-                        <td>${brand.description || '<span class="text-muted">Sem descrição</span>'}</td>
-                        <td>${brand.created_at ? new Date(brand.created_at).toLocaleDateString('pt-BR') : '-'}</td>
+                        <td><strong>#${category.id}</strong></td>
+                        <td class="fw-semibold text-primary">${category.name}</td>
+                        <td>${category.description || '<span class="text-muted">Sem descrição</span>'}</td>
+                        <td>${category.created_at ? new Date(category.created_at).toLocaleDateString('pt-BR') : '-'}</td>
                     </tr>
                 `).join('');
 
             } catch (error) {
-                console.error('Erro ao carregar marcas:', error);
+                console.error('Erro ao carregar categorias:', error);
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="4" class="text-center py-4 text-danger">Erro ao conectar com a API.</td>
@@ -228,18 +229,19 @@
             }
         }
 
-        document.getElementById('form-add-brand').addEventListener('submit', async (e) => {
+        // 2. Cadastrar Categoria via POST
+        document.getElementById('form-add-category').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const name = document.getElementById('brand-name').value.trim();
-            const description = document.getElementById('brand-description').value.trim();
-            const btnSave = document.getElementById('btn-save-brand');
+            const name = document.getElementById('category-name').value.trim();
+            const description = document.getElementById('category-description').value.trim();
+            const btnSave = document.getElementById('btn-save-category');
 
             btnSave.disabled = true;
             btnSave.textContent = 'Salvando...';
 
             try {
-                const response = await fetch('/api/brands', {
+                const response = await fetch('/api/categories', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, description })
@@ -248,22 +250,22 @@
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    document.getElementById('form-add-brand').reset();
+                    document.getElementById('form-add-category').reset();
 
-                    const modalElement = document.getElementById('modalAddBrand');
+                    const modalElement = document.getElementById('modalAddCategory');
                     const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
                     modalInstance.hide();
 
-                    showAlert('Marca cadastrada com sucesso!', 'success');
-                    fetchAndRenderBrands();
+                    showAlert('Categoria cadastrada com sucesso!', 'success');
+                    fetchAndRenderCategories();
                 } else {
-                    showAlert(result.error || 'Erro ao cadastrar marca.', 'danger');
+                    showAlert(result.error || 'Erro ao cadastrar categoria.', 'danger');
                 }
             } catch (error) {
                 showAlert('Erro de conexão com o servidor.', 'danger');
             } finally {
                 btnSave.disabled = false;
-                btnSave.textContent = 'Salvar Marca';
+                btnSave.textContent = 'Salvar Categoria';
             }
         });
 
@@ -277,7 +279,7 @@
             setTimeout(() => { container.innerHTML = ''; }, 4000);
         }
 
-        document.addEventListener('DOMContentLoaded', fetchAndRenderBrands);
+        document.addEventListener('DOMContentLoaded', fetchAndRenderCategories);
     </script>
 </body>
 </html>
