@@ -1,7 +1,7 @@
 // src/routes/productRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getAllProducts, createProduct } = require('../controllers/productController');
+const { getAllProducts, createProduct, updateProduct, deleteProduct } = require('../controllers/productController');
 
 // GET /api/products
 router.get('/', getAllProducts);

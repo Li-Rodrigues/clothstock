@@ -2,402 +2,374 @@
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Categorias - ClothStock</title>
+    <title>ClothStock - Gestão de Categorias</title>
 
-    <!-- CSS Duralux -->
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="css/theme.min.css">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Estilos de Layout (Claro / Escuro) -->
+    <style>
+        :root {
+            --bg-body: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-color: #212529;
+            --border-color: #e2e8f0;
+            --sidebar-bg: #1e293b;
+        }
+
+        body.dark-mode {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-color: #f8fafc;
+            --border-color: #334155;
+            --sidebar-bg: #0b0f19;
+        }
+
+        body { 
+            display: flex; 
+            min-height: 100vh; 
+            background-color: var(--bg-body); 
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nxl-navigation { 
+            width: 260px; 
+            background: var(--sidebar-bg); 
+            color: #fff; 
+            flex-shrink: 0; 
+            min-height: 100vh; 
+            padding: 20px; 
+            transition: background-color 0.3s;
+        }
+
+        .nxl-navigation a { 
+            color: #94a3b8; 
+            text-decoration: none; 
+            padding: 10px 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            border-radius: 6px; 
+        }
+
+        .nxl-navigation a:hover, .nxl-navigation a.active { 
+            color: #fff; 
+            background: rgba(255,255,255,0.08); 
+        }
+
+        .nxl-container { flex-grow: 1; padding: 25px; }
+
+        .nxl-header, .card { 
+            background: var(--bg-card) !important; 
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important; 
+            transition: background-color 0.3s;
+        }
+
+        .table {
+            color: var(--text-color) !important;
+        }
+
+        body.dark-mode .table-light {
+            background-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+
+        body.dark-mode .modal-content {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border-color: #334155;
+        }
+
+        body.dark-mode .form-control {
+            background-color: #0f172a;
+            color: #f8fafc;
+            border-color: #334155;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- ============================================================ -->
-    <!-- Navigation (Sidebar) -->
-    <!-- ============================================================ -->
+    <!-- Sidebar / Menu de Navegação -->
     <nav class="nxl-navigation">
-        <div class="navbar-wrapper">
-            <div class="m-header">
-                <a href="/" class="b-brand">
-                    <img src="images/logo-full.png" alt="Logo" class="logo logo-lg">
-                    <img src="images/logo-abbr.png" alt="Logo" class="logo logo-sm">
-                </a>
-            </div>
-            <div class="navbar-content">
-                <ul class="nxl-navbar">
-                    <li class="nxl-item nxl-caption">
-                        <label>Navegação Principal</label>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-layout"></i></span>
-                            <span class="nxl-mtext">Dashboard</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nxl-item nxl-caption">
-                        <label>Cadastros Base</label>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/brands.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-tag"></i></span>
-                            <span class="nxl-mtext">Marcas</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item active">
-                        <a href="/categories.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-grid"></i></span>
-                            <span class="nxl-mtext">Categorias</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/products.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-box"></i></span>
-                            <span class="nxl-mtext">Produtos</span>
-                        </a>
-                    </li>
-
-                    <li class="nxl-item nxl-caption">
-                        <label>Movimentações</label>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/inflows.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-arrow-down-left"></i></span>
-                            <span class="nxl-mtext">Entradas (Inflow)</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/outflows.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-arrow-up-right"></i></span>
-                            <span class="nxl-mtext">Saídas (Outflow)</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        <div class="m-header mb-4">
+            <h4 class="text-white fw-bold mb-0">SGE</h4>
         </div>
+        <ul class="nav flex-column gap-1">
+            <li class="nav-item">
+                <a href="/index.html"><i data-feather="layout"></i> <span>Dashboard</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="/categories.html" class="active"><i data-feather="folder"></i> <span>Categorias</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="/products.html"><i data-feather="box"></i> <span>Estoque & Produtos</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="#"><i data-feather="database"></i> <span>Cálculos & Fichas</span></a>
+            </li>
+        </ul>
     </nav>
 
-    <!-- ============================================================ -->
-    <!-- Top Header -->
-    <!-- ============================================================ -->
-    <header class="nxl-header">
-        <div class="header-wrapper">
-            <div class="header-left d-flex align-items-center gap-4">
-                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
-                    <div class="hamburger hamburger--arrowturn">
-                        <div class="hamburger-box">
-                            <div class="hamburger-inner"></div>
-                        </div>
-                    </div>
-                </a>
-                <div class="nxl-navigation-toggle">
-                    <a href="javascript:void(0);" id="menu-mini-button">
-                        <i class="feather-align-left"></i>
-                    </a>
-                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none">
-                        <i class="feather-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- ============================================================ -->
-    <!-- Main Content -->
-    <!-- ============================================================ -->
+    <!-- Conteúdo Principal -->
     <main class="nxl-container">
-        <div class="nxl-content">
-            
-            <!-- Page Header -->
-            <div class="page-header">
-                <div class="page-header-left d-flex align-items-center justify-content-between w-100 me-3">
-                    <div>
-                        <h5 class="m-b-10">Gerenciamento de Categorias</h5>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active">Categorias</li>
-                        </ul>
-                    </div>
-                    <!-- Botão do Modal de Cadastro -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCategory">
-                        <i class="feather-plus me-1"></i> Nova Categoria
+        <!-- Cabeçalho do Topo com Alternador Dark Mode -->
+        <header class="nxl-header d-flex justify-content-between align-items-center shadow-sm p-3 mb-4 rounded">
+            <div>
+                <h5 class="mb-0 fw-bold">Gestão de Categorias</h5>
+                <small class="text-muted">Cadastro e controle de categorias do estoque</small>
+            </div>
+            <button id="theme-toggle" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2" onclick="toggleDarkMode()">
+                <i data-feather="moon" id="theme-icon"></i> <span id="theme-text">Modo Escuro</span>
+            </button>
+        </header>
+
+        <!-- Corpo da Página -->
+        <div class="main-content">
+            <div id="alert-container"></div>
+
+            <div class="card shadow-sm border">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3">
+                    <h5 class="card-title mb-0 fw-bold">Categorias Cadastradas</h5>
+                    <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalCreateCategory">
+                        <i data-feather="plus"></i> Nova Categoria
                     </button>
                 </div>
-            </div>
-
-            <!-- Content Body -->
-            <div class="main-content">
-                <div id="alert-container"></div>
-
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="card-title m-0">Categorias Cadastradas</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nome da Categoria</th>
-                                        <th>Descrição</th>
-                                        <th>Data de Cadastro</th>
-                                        <th class="text-end">Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="categories-table-body">
-                                    <tr>
-                                        <td colspan="5" class="text-center py-4 text-muted">Carregando categorias...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Descrição</th>
+                                    <th class="text-end">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categories-table-body">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">Carregando categorias...</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- ============================================================ -->
-    <!-- Modal: Cadastrar Nova Categoria -->
-    <!-- ============================================================ -->
-    <div class="modal fade" id="modalAddCategory" tabindex="-1" aria-hidden="true">
+    <!-- Modal Criar Categoria -->
+    <div class="modal fade" id="modalCreateCategory" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Cadastrar Nova Categoria</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <h5 class="modal-title fw-bold">Nova Categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="form-add-category">
+                <form id="form-create-category">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="category-name" class="form-label">Nome da Categoria <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="category-name" required placeholder="Ex: Camisetas, Calças, Acessórios">
+                            <label class="form-label">Nome da Categoria</label>
+                            <input type="text" class="form-control" id="create-category-name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="category-description" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="category-description" rows="3" placeholder="Descrição opcional da categoria"></textarea>
+                            <label class="form-label">Descrição</label>
+                            <textarea class="form-control" id="create-category-description" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="btn-save-category">Salvar Categoria</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Categoria</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- Modal: Editar Categoria -->
-    <!-- ============================================================ -->
-    <div class="modal fade" id="modalEditCategory" tabindex="-1" aria-hidden="true">
+    <!-- Modal Editar Categoria -->
+    <div class="modal fade" id="modalEditCategory" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Editar Categoria</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <h5 class="modal-title fw-bold">Editar Categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="form-edit-category">
                     <input type="hidden" id="edit-category-id">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="edit-category-name" class="form-label">Nome da Categoria <span class="text-danger">*</span></label>
+                            <label class="form-label">Nome da Categoria</label>
                             <input type="text" class="form-control" id="edit-category-name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="edit-category-description" class="form-label">Descrição</label>
+                            <label class="form-label">Descrição</label>
                             <textarea class="form-control" id="edit-category-description" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="btn-update-category">Salvar Alterações</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Atualizar Categoria</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Scripts do Duralux e Lógica de Integração -->
-    <script src="js/vendors.min.js"></script>
-    <script src="js/common-init.min.js"></script>
-    
+    <!-- Scripts Bootstrap e Feather Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 1. Carregar e Listar Categorias (READ)
-        async function fetchAndRenderCategories() {
-            const tbody = document.getElementById('categories-table-body');
+        // 1. Inicialização de Ícones
+        feather.replace();
 
+        // 2. Lógica do Modo Escuro (Dark Mode)
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            document.getElementById('theme-text').innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
+            
+            // Atualizar ícone
+            const themeIcon = document.getElementById('theme-icon');
+            themeIcon.setAttribute('data-feather', isDark ? 'sun' : 'moon');
+            feather.replace();
+        }
+
+        // 3. API do SGE - Categorias
+        const API_URL = '/api/categories';
+
+        function showAlert(message, type = 'success') {
+            const container = document.getElementById('alert-container');
+            container.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        }
+
+        async function fetchCategories() {
             try {
-                const response = await fetch('/api/categories');
-                const result = await response.json();
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                const tbody = document.getElementById('categories-table-body');
+                tbody.innerHTML = '';
 
-                if (!result.success || !result.data || result.data.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">Nenhuma categoria cadastrada no banco.</td>
-                        </tr>`;
+                // Tratar se a resposta da API for uma lista direta ou um objeto com data/categories
+                const categoriesList = Array.isArray(data) ? data : (data.data || data.categories || []);
+
+                if (!categoriesList || categoriesList.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">Nenhuma categoria encontrada no banco de dados.</td></tr>';
                     return;
                 }
 
-                tbody.innerHTML = result.data.map(category => `
-                    <tr>
-                        <td><strong>#${category.id}</strong></td>
-                        <td class="fw-semibold text-primary">${category.name}</td>
-                        <td>${category.description || '<span class="text-muted">Sem descrição</span>'}</td>
-                        <td>${category.created_at ? new Date(category.created_at).toLocaleDateString('pt-BR') : '-'}</td>
-                        <td class="text-end">
-                            <button class="btn btn-sm btn-soft-primary me-1" onclick="openEditCategoryModal(${category.id}, \`${escapeQuotes(category.name)}\`, \`${escapeQuotes(category.description || '')}\`)">
-                                <i class="feather-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-soft-danger" onclick="deleteCategory(${category.id})">
-                                <i class="feather-trash-2"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
+                categoriesList.forEach(cat => {
+                    const name = cat.name || cat.nome || 'Sem nome';
+                    const description = cat.description || cat.descricao || '-';
+                    const id = cat.id;
 
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${id}</td>
+                            <td class="fw-bold">${name}</td>
+                            <td>${description}</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="openEditModal(${id}, '${name}', '${description}')">Editar</button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${id})">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
             } catch (error) {
-                console.error('Erro ao carregar categorias:', error);
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center py-4 text-danger">Erro ao conectar com a API.</td>
-                    </tr>`;
+                console.error("Erro ao buscar categorias:", error);
+                document.getElementById('categories-table-body').innerHTML = '<tr><td colspan="4" class="text-center text-danger py-4">Erro ao conectar com a API de categorias.</td></tr>';
             }
         }
 
-        // Função auxiliar para evitar erros de sintaxe ao passar textos com aspas para o botão de edição
-        function escapeQuotes(str) {
-            return str ? str.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
-        }
-
-        // 2. Cadastrar Categoria (CREATE - POST)
-        document.getElementById('form-add-category').addEventListener('submit', async (e) => {
+        // Criar Categoria
+        document.getElementById('form-create-category').addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            const name = document.getElementById('category-name').value.trim();
-            const description = document.getElementById('category-description').value.trim();
-            const btnSave = document.getElementById('btn-save-category');
-
-            btnSave.disabled = true;
-            btnSave.textContent = 'Salvando...';
+            const name = document.getElementById('create-category-name').value;
+            const description = document.getElementById('create-category-description').value;
 
             try {
-                const response = await fetch('/api/categories', {
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, description })
                 });
 
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    document.getElementById('form-add-category').reset();
-
-                    const modalElement = document.getElementById('modalAddCategory');
-                    const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-                    modalInstance.hide();
-
-                    showAlert('Categoria cadastrada com sucesso!', 'success');
-                    fetchAndRenderCategories();
+                if (response.ok) {
+                    showAlert('Categoria criada com sucesso!');
+                    bootstrap.Modal.getInstance(document.getElementById('modalCreateCategory')).hide();
+                    document.getElementById('form-create-category').reset();
+                    fetchCategories();
                 } else {
-                    showAlert(result.error || 'Erro ao cadastrar categoria.', 'danger');
+                    showAlert('Erro ao criar categoria.', 'danger');
                 }
-            } catch (error) {
-                showAlert('Erro de conexão com o servidor.', 'danger');
-            } finally {
-                btnSave.disabled = false;
-                btnSave.textContent = 'Salvar Categoria';
+            } catch (err) {
+                showAlert('Erro ao conectar ao servidor.', 'danger');
             }
         });
 
-        // 3. Abrir Modal para Editar Categoria
-        function openEditCategoryModal(id, name, description) {
+        // Abrir Modal de Edição
+        window.openEditModal = function(id, name, description) {
             document.getElementById('edit-category-id').value = id;
             document.getElementById('edit-category-name').value = name;
             document.getElementById('edit-category-description').value = description;
+            new bootstrap.Modal(document.getElementById('modalEditCategory')).show();
+        };
 
-            const modalElement = document.getElementById('modalEditCategory');
-            const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-            modalInstance.show();
-        }
-
-        // 4. Salvar Alterações da Categoria (UPDATE - PUT)
+        // Editar Categoria
         document.getElementById('form-edit-category').addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const id = document.getElementById('edit-category-id').value;
-            const name = document.getElementById('edit-category-name').value.trim();
-            const description = document.getElementById('edit-category-description').value.trim();
-            const btnUpdate = document.getElementById('btn-update-category');
-
-            btnUpdate.disabled = true;
-            btnUpdate.textContent = 'Atualizando...';
+            const name = document.getElementById('edit-category-name').value;
+            const description = document.getElementById('edit-category-description').value;
 
             try {
-                const response = await fetch(`/api/categories/${id}`, {
+                const response = await fetch(`${API_URL}/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, description })
                 });
 
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    const modalElement = document.getElementById('modalEditCategory');
-                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                    if (modalInstance) modalInstance.hide();
-
-                    showAlert('Categoria atualizada com sucesso!', 'success');
-                    fetchAndRenderCategories();
+                if (response.ok) {
+                    showAlert('Categoria atualizada com sucesso!');
+                    bootstrap.Modal.getInstance(document.getElementById('modalEditCategory')).hide();
+                    fetchCategories();
                 } else {
-                    showAlert(result.error || 'Erro ao atualizar categoria.', 'danger');
+                    showAlert('Erro ao atualizar categoria.', 'danger');
                 }
-            } catch (error) {
-                showAlert('Erro de conexão com o servidor.', 'danger');
-            } finally {
-                btnUpdate.disabled = false;
-                btnUpdate.textContent = 'Salvar Alterações';
+            } catch (err) {
+                showAlert('Erro ao conectar ao servidor.', 'danger');
             }
         });
 
-        // 5. Excluir Categoria (DELETE)
-        async function deleteCategory(id) {
+        // Excluir Categoria
+        window.deleteCategory = async function(id) {
             if (!confirm('Deseja realmente excluir esta categoria?')) return;
 
             try {
-                const response = await fetch(`/api/categories/${id}`, {
-                    method: 'DELETE'
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    showAlert('Categoria excluída com sucesso!', 'success');
-                    fetchAndRenderCategories();
+                const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    showAlert('Categoria excluída!');
+                    fetchCategories();
                 } else {
-                    showAlert(result.error || 'Erro ao excluir categoria.', 'danger');
+                    showAlert('Erro ao excluir categoria.', 'danger');
                 }
-            } catch (error) {
-                showAlert('Erro ao conectar com o servidor.', 'danger');
+            } catch (err) {
+                showAlert('Erro de conexão.', 'danger');
             }
-        }
+        };
 
-        // Exibir Alertas na Tela
-        function showAlert(message, type) {
-            const container = document.getElementById('alert-container');
-            container.innerHTML = `
-                <div class="alert alert-${type} alert-dismissible fade show mb-4" role="alert">
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`;
-            setTimeout(() => { container.innerHTML = ''; }, 4000);
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchAndRenderCategories);
+        // Carregar categorias ao abrir a página
+        document.addEventListener('DOMContentLoaded', fetchCategories);
     </script>
 </body>
 </html>
