@@ -68,7 +68,63 @@ const createProduct = async (req, res, next) => {
     }
 };
 
+
+// Atualizar Produto
+const updateProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { name, description, price, brand_id, category_id } = req.body;
+
+        if (!name || price === undefined) {
+            return res.status(400).json({ success: false, error: 'Nome e Preço são obrigatórios.' });
+        }
+
+        const query = `
+            UPDATE products 
+            SET name = $1, description = $2, price = $3, brand_id = $4, category_id = $5 
+            WHERE id = $6 
+            RETURNING *;
+        `;
+        const values = [
+            name,
+            description || null,
+            parseFloat(price),
+            brand_id ? parseInt(brand_id) : null,
+            category_id ? parseInt(category_id) : null,
+            id
+        ];
+
+        const { rows } = await pool.query(query, values);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, error: 'Produto não encontrado.' });
+        }
+
+        res.status(200).json({ success: true, data: rows[0] });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Deletar Produto
+const deleteProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { rowCount } = await pool.query('DELETE FROM products WHERE id = $1', [id]);
+
+        if (rowCount === 0) {
+            return res.status(404).json({ success: false, error: 'Produto não encontrado.' });
+        }
+
+        res.status(200).json({ success: true, message: 'Produto removido com sucesso.' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllProducts,
-    createProduct
+    createProduct,
+    updateProduct,
+    deleteProduct
 };

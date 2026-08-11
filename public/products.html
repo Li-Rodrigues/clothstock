@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Produtos - ClothStock</title>
+    <title>Marcas - ClothStock</title>
 
     <!-- CSS Duralux -->
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
@@ -14,7 +14,9 @@
 </head>
 <body>
 
+    <!-- ============================================================ -->
     <!-- Navigation (Sidebar) -->
+    <!-- ============================================================ -->
     <nav class="nxl-navigation">
         <div class="navbar-wrapper">
             <div class="m-header">
@@ -38,7 +40,7 @@
                     <li class="nxl-item nxl-caption">
                         <label>Cadastros Base</label>
                     </li>
-                    <li class="nxl-item">
+                    <li class="nxl-item active">
                         <a href="/brands.html" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-tag"></i></span>
                             <span class="nxl-mtext">Marcas</span>
@@ -50,7 +52,7 @@
                             <span class="nxl-mtext">Categorias</span>
                         </a>
                     </li>
-                    <li class="nxl-item active">
+                    <li class="nxl-item">
                         <a href="/products.html" class="nxl-link">
                             <span class="nxl-micon"><i class="feather-box"></i></span>
                             <span class="nxl-mtext">Produtos</span>
@@ -77,48 +79,61 @@
         </div>
     </nav>
 
+    <!-- ============================================================ -->
     <!-- Top Header -->
+    <!-- ============================================================ -->
     <header class="nxl-header">
         <div class="header-wrapper">
             <div class="header-left d-flex align-items-center gap-4">
                 <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
                     <div class="hamburger hamburger--arrowturn">
-                        <div class="hamburger-box"><div class="hamburger-inner"></div></div>
+                        <div class="hamburger-box">
+                            <div class="hamburger-inner"></div>
+                        </div>
                     </div>
                 </a>
                 <div class="nxl-navigation-toggle">
-                    <a href="javascript:void(0);" id="menu-mini-button"><i class="feather-align-left"></i></a>
-                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none"><i class="feather-arrow-right"></i></a>
+                    <a href="javascript:void(0);" id="menu-mini-button">
+                        <i class="feather-align-left"></i>
+                    </a>
+                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none">
+                        <i class="feather-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- ============================================================ -->
     <!-- Main Content -->
+    <!-- ============================================================ -->
     <main class="nxl-container">
         <div class="nxl-content">
             
+            <!-- Page Header -->
             <div class="page-header">
                 <div class="page-header-left d-flex align-items-center justify-content-between w-100 me-3">
                     <div>
-                        <h5 class="m-b-10">Gerenciamento de Produtos</h5>
+                        <h5 class="m-b-10">Gerenciamento de Marcas</h5>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active">Produtos</li>
+                            <li class="breadcrumb-item active">Marcas</li>
                         </ul>
                     </div>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddProduct" onclick="loadBrandsAndCategories()">
-                        <i class="feather-plus me-1"></i> Novo Produto
+                    <!-- Botão do Modal de Cadastro -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddBrand">
+                        <i class="feather-plus me-1"></i> Nova Marca
                     </button>
                 </div>
             </div>
 
+            <!-- Content Body -->
             <div class="main-content">
                 <div id="alert-container"></div>
 
                 <div class="card shadow-sm">
                     <div class="card-header bg-white py-3">
-                        <h5 class="card-title m-0">Produtos Cadastrados</h5>
+                        <h5 class="card-title m-0">Marcas Cadastradas</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -126,16 +141,15 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nome do Produto</th>
-                                        <th>Marca</th>
-                                        <th>Categoria</th>
-                                        <th>Preço</th>
-                                        <th>Qtd. Estoque</th>
+                                        <th>Nome da Marca</th>
+                                        <th>Descrição</th>
+                                        <th>Data de Cadastro</th>
+                                        <th class="text-end">Ações</th>
                                     </tr>
                                 </thead>
-                                <tbody id="products-table-body">
+                                <tbody id="brands-table-body">
                                     <tr>
-                                        <td colspan="6" class="text-center py-4 text-muted">Carregando produtos...</td>
+                                        <td colspan="5" class="text-center py-4 text-muted">Carregando marcas...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -147,175 +161,232 @@
         </div>
     </main>
 
-    <!-- Modal: Cadastrar Novo Produto -->
-    <div class="modal fade" id="modalAddProduct" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <!-- ============================================================ -->
+    <!-- Modal: Cadastrar Nova Marca -->
+    <!-- ============================================================ -->
+    <div class="modal fade" id="modalAddBrand" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Cadastrar Novo Produto</h5>
+                    <h5 class="modal-title">Cadastrar Nova Marca</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
-                <form id="form-add-product">
+                <form id="form-add-brand">
                     <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-md-12">
-                                <label for="product-name" class="form-label">Nome do Produto <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="product-name" required placeholder="Ex: Camiseta Oversized Algodão">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="product-brand" class="form-label">Marca</label>
-                                <select class="form-select" id="product-brand">
-                                    <option value="">Selecione uma marca...</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="product-category" class="form-label">Categoria</label>
-                                <select class="form-select" id="product-category">
-                                    <option value="">Selecione uma categoria...</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="product-price" class="form-label">Preço (R$) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" class="form-control" id="product-price" required placeholder="0.00">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="product-quantity" class="form-label">Estoque Inicial</label>
-                                <input type="number" class="form-control" id="product-quantity" value="0" placeholder="0">
-                            </div>
-                            <div class="col-md-12">
-                                <label for="product-description" class="form-label">Descrição</label>
-                                <textarea class="form-control" id="product-description" rows="3" placeholder="Detalhes opcionais sobre o produto"></textarea>
-                            </div>
+                        <div class="mb-3">
+                            <label for="brand-name" class="form-label">Nome da Marca <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="brand-name" required placeholder="Ex: Nike, Adidas, Zara">
+                        </div>
+                        <div class="mb-3">
+                            <label for="brand-description" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="brand-description" rows="3" placeholder="Descrição opcional da marca"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="btn-save-product">Salvar Produto</button>
+                        <button type="submit" class="btn btn-primary" id="btn-save-brand">Salvar Marca</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- ============================================================ -->
+    <!-- Modal: Editar Marca -->
+    <!-- ============================================================ -->
+    <div class="modal fade" id="modalEditBrand" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Marca</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="form-edit-brand">
+                    <input type="hidden" id="edit-brand-id">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="edit-brand-name" class="form-label">Nome da Marca <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="edit-brand-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-brand-description" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="edit-brand-description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-update-brand">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts do Duralux e Lógica de Integração -->
     <script src="js/vendors.min.js"></script>
     <script src="js/common-init.min.js"></script>
     
     <script>
-        // 1. Carregar lista de produtos
-        async function fetchAndRenderProducts() {
-            const tbody = document.getElementById('products-table-body');
+        // 1. Carregar e Listar Marcas (READ)
+        async function fetchAndRenderBrands() {
+            const tbody = document.getElementById('brands-table-body');
 
             try {
-                const response = await fetch('/api/products');
+                const response = await fetch('/api/brands');
                 const result = await response.json();
 
                 if (!result.success || !result.data || result.data.length === 0) {
                     tbody.innerHTML = `
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Nenhum produto cadastrado.</td>
+                            <td colspan="5" class="text-center py-4 text-muted">Nenhuma marca cadastrada no banco.</td>
                         </tr>`;
                     return;
                 }
 
-                tbody.innerHTML = result.data.map(p => `
+                tbody.innerHTML = result.data.map(brand => `
                     <tr>
-                        <td><strong>#${p.id}</strong></td>
-                        <td class="fw-semibold text-primary">${p.name}</td>
-                        <td>${p.brand_name || '<span class="text-muted">-</span>'}</td>
-                        <td>${p.category_name || '<span class="text-muted">-</span>'}</td>
-                        <td>R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</td>
-                        <td><span class="badge ${p.quantity > 0 ? 'bg-soft-success text-success' : 'bg-soft-danger text-danger'} fs-12">${p.quantity} un.</span></td>
+                        <td><strong>#${brand.id}</strong></td>
+                        <td class="fw-semibold text-primary">${brand.name}</td>
+                        <td>${brand.description || '<span class="text-muted">Sem descrição</span>'}</td>
+                        <td>${brand.created_at ? new Date(brand.created_at).toLocaleDateString('pt-BR') : '-'}</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-soft-primary me-1" onclick="openEditBrandModal(${brand.id}, \`${escapeQuotes(brand.name)}\`, \`${escapeQuotes(brand.description || '')}\`)">
+                                <i class="feather-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-soft-danger" onclick="deleteBrand(${brand.id})">
+                                <i class="feather-trash-2"></i>
+                            </button>
+                        </td>
                     </tr>
                 `).join('');
 
             } catch (error) {
-                console.error('Erro ao carregar produtos:', error);
+                console.error('Erro ao carregar marcas:', error);
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-danger">Erro ao carregar dados.</td>
+                        <td colspan="5" class="text-center py-4 text-danger">Erro ao conectar com a API.</td>
                     </tr>`;
             }
         }
 
-        // 2. Carregar marcas e categorias para popular os selects do Modal
-        async function loadBrandsAndCategories() {
-            const selectBrand = document.getElementById('product-brand');
-            const selectCategory = document.getElementById('product-category');
-
-            try {
-                const [resBrands, resCategories] = await Promise.all([
-                    fetch('/api/brands'),
-                    fetch('/api/categories')
-                ]);
-
-                const brands = await resBrands.json();
-                const categories = await resCategories.json();
-
-                selectBrand.innerHTML = '<option value="">Selecione uma marca...</option>';
-                if (brands.success && brands.data) {
-                    brands.data.forEach(b => {
-                        selectBrand.innerHTML += `<option value="${b.id}">${b.name}</option>`;
-                    });
-                }
-
-                selectCategory.innerHTML = '<option value="">Selecione uma categoria...</option>';
-                if (categories.success && categories.data) {
-                    categories.data.forEach(c => {
-                        selectCategory.innerHTML += `<option value="${c.id}">${c.name}</option>`;
-                    });
-                }
-            } catch (error) {
-                console.error('Erro ao popular select options:', error);
-            }
+        // Função auxiliar para evitar erros de sintaxe ao passar textos com aspas para o botão de edição
+        function escapeQuotes(str) {
+            return str ? str.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
         }
 
-        // 3. Cadastrar produto
-        document.getElementById('form-add-product').addEventListener('submit', async (e) => {
+        // 2. Cadastrar Marca (CREATE - POST)
+        document.getElementById('form-add-brand').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const payload = {
-                name: document.getElementById('product-name').value.trim(),
-                brand_id: document.getElementById('product-brand').value || null,
-                category_id: document.getElementById('product-category').value || null,
-                price: document.getElementById('product-price').value,
-                quantity: document.getElementById('product-quantity').value,
-                description: document.getElementById('product-description').value.trim()
-            };
+            const name = document.getElementById('brand-name').value.trim();
+            const description = document.getElementById('brand-description').value.trim();
+            const btnSave = document.getElementById('btn-save-brand');
 
-            const btnSave = document.getElementById('btn-save-product');
             btnSave.disabled = true;
             btnSave.textContent = 'Salvando...';
 
             try {
-                const response = await fetch('/api/products', {
+                const response = await fetch('/api/brands', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({ name, description })
                 });
 
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    document.getElementById('form-add-product').reset();
+                    document.getElementById('form-add-brand').reset();
 
-                    const modalElement = document.getElementById('modalAddProduct');
+                    const modalElement = document.getElementById('modalAddBrand');
                     const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
                     modalInstance.hide();
 
-                    showAlert('Produto cadastrado com sucesso!', 'success');
-                    fetchAndRenderProducts();
+                    showAlert('Marca cadastrada com sucesso!', 'success');
+                    fetchAndRenderBrands();
                 } else {
-                    showAlert(result.error || 'Erro ao cadastrar produto.', 'danger');
+                    showAlert(result.error || 'Erro ao cadastrar marca.', 'danger');
                 }
             } catch (error) {
                 showAlert('Erro de conexão com o servidor.', 'danger');
             } finally {
                 btnSave.disabled = false;
-                btnSave.textContent = 'Salvar Produto';
+                btnSave.textContent = 'Salvar Marca';
             }
         });
 
+        // 3. Abrir Modal para Editar Marca
+        function openEditBrandModal(id, name, description) {
+            document.getElementById('edit-brand-id').value = id;
+            document.getElementById('edit-brand-name').value = name;
+            document.getElementById('edit-brand-description').value = description;
+
+            const modalElement = document.getElementById('modalEditBrand');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            modalInstance.show();
+        }
+
+        // 4. Salvar Alterações da Marca (UPDATE - PUT)
+        document.getElementById('form-edit-brand').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('edit-brand-id').value;
+            const name = document.getElementById('edit-brand-name').value.trim();
+            const description = document.getElementById('edit-brand-description').value.trim();
+            const btnUpdate = document.getElementById('btn-update-brand');
+
+            btnUpdate.disabled = true;
+            btnUpdate.textContent = 'Atualizando...';
+
+            try {
+                const response = await fetch(`/api/brands/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, description })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    const modalElement = document.getElementById('modalEditBrand');
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) modalInstance.hide();
+
+                    showAlert('Marca atualizada com sucesso!', 'success');
+                    fetchAndRenderBrands();
+                } else {
+                    showAlert(result.error || 'Erro ao atualizar marca.', 'danger');
+                }
+            } catch (error) {
+                showAlert('Erro de conexão com o servidor.', 'danger');
+            } finally {
+                btnUpdate.disabled = false;
+                btnUpdate.textContent = 'Salvar Alterações';
+            }
+        });
+
+        // 5. Excluir Marca (DELETE)
+        async function deleteBrand(id) {
+            if (!confirm('Deseja realmente excluir esta marca?')) return;
+
+            try {
+                const response = await fetch(`/api/brands/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    showAlert('Marca excluída com sucesso!', 'success');
+                    fetchAndRenderBrands();
+                } else {
+                    showAlert(result.error || 'Erro ao excluir marca.', 'danger');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor.', 'danger');
+            }
+        }
+
+        // Exibir Alertas na Tela
         function showAlert(message, type) {
             const container = document.getElementById('alert-container');
             container.innerHTML = `
@@ -326,7 +397,7 @@
             setTimeout(() => { container.innerHTML = ''; }, 4000);
         }
 
-        document.addEventListener('DOMContentLoaded', fetchAndRenderProducts);
+        document.addEventListener('DOMContentLoaded', fetchAndRenderBrands);
     </script>
 </body>
 </html>

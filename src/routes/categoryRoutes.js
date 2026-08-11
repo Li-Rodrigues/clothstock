@@ -9,4 +9,7 @@ router.get('/', getAllCategories);
 // POST /api/categories
 router.post('/', createCategory);
 
+router.put('/:id', updateCategory);
+router.delete('/:id', deleteCategory);
+
 module.exports = router;

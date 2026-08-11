@@ -42,7 +42,54 @@ const createBrand = async (req, res, next) => {
     }
 };
 
+
+// Atualizar Marca
+const updateBrand = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { name, description } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ success: false, error: 'O nome é obrigatório.' });
+        }
+
+        const query = `
+            UPDATE brands 
+            SET name = $1, description = $2 
+            WHERE id = $3 
+            RETURNING *;
+        `;
+        const { rows } = await pool.query(query, [name, description || null, id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, error: 'Marca não encontrada.' });
+        }
+
+        res.status(200).json({ success: true, data: rows[0] });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Deletar Marca
+const deleteBrand = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { rowCount } = await pool.query('DELETE FROM brands WHERE id = $1', [id]);
+
+        if (rowCount === 0) {
+            return res.status(404).json({ success: false, error: 'Marca não encontrada.' });
+        }
+
+        res.status(200).json({ success: true, message: 'Marca removida com sucesso.' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllBrands,
-    createBrand
+    createBrand,
+    updateBrand,
+    deleteBrand
 };
