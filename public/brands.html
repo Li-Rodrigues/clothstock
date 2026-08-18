@@ -17,66 +17,29 @@
     <!-- ============================================================ -->
     <!-- Navigation (Sidebar) -->
     <!-- ============================================================ -->
+    <!-- Sidebar / Menu de Navegação -->
     <nav class="nxl-navigation">
-        <div class="navbar-wrapper">
-            <div class="m-header">
-                <a href="/" class="b-brand">
-                    <img src="images/logo-full.png" alt="Logo" class="logo logo-lg">
-                    <img src="images/logo-abbr.png" alt="Logo" class="logo logo-sm">
-                </a>
-            </div>
-            <div class="navbar-content">
-                <ul class="nxl-navbar">
-                    <li class="nxl-item nxl-caption">
-                        <label>Navegação Principal</label>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-layout"></i></span>
-                            <span class="nxl-mtext">Dashboard</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nxl-item nxl-caption">
-                        <label>Cadastros Base</label>
-                    </li>
-                    <li class="nxl-item active">
-                        <a href="/brands.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-tag"></i></span>
-                            <span class="nxl-mtext">Marcas</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/categories.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-grid"></i></span>
-                            <span class="nxl-mtext">Categorias</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/products.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-box"></i></span>
-                            <span class="nxl-mtext">Produtos</span>
-                        </a>
-                    </li>
-
-                    <li class="nxl-item nxl-caption">
-                        <label>Movimentações</label>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/inflows.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-arrow-down-left"></i></span>
-                            <span class="nxl-mtext">Entradas (Inflow)</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/outflows.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-arrow-up-right"></i></span>
-                            <span class="nxl-mtext">Saídas (Outflow)</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        <div class="m-header mb-4">
+            <h4 class="text-white fw-bold mb-0">SGE</h4>
         </div>
+        <ul class="nav flex-column gap-1">
+            <li class="nav-item">
+                <a href="/index.html"><i data-feather="layout"></i> <span>Dashboard</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="/categories.html"><i data-feather="folder"></i> <span>Categorias</span></a>
+            </li>
+            <!-- Item adicionado para Marcas -->
+            <li class="nav-item">
+                <a href="/brands.html"><i data-feather="tag"></i> <span>Marcas</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="/products.html" class="active"><i data-feather="box"></i> <span>Estoque & Produtos</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="#"><i data-feather="database"></i> <span>Cálculos & Fichas</span></a>
+            </li>
+        </ul>
     </nav>
 
     <!-- ============================================================ -->

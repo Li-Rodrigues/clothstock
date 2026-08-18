@@ -7,10 +7,11 @@ const getAllProducts = async (req, res, next) => {
         const query = `
             SELECT 
                 p.id,
-                p.name,
+                p.title AS name,
                 p.description,
                 p.price,
-                p.quantity,
+                p.quantity AS stock_quantity,
+                p.quantity_produced,
                 p.created_at,
                 b.name AS brand_name,
                 c.name AS category_name
