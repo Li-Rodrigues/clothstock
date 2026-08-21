@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>ClothStock - Gestão de Categorias</title>
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Feather Icons -->
+    <!-- ============================================================
+         BOOTSTRAP
+    ============================================================ -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- ============================================================
+         FEATHER ICONS
+    ============================================================ -->
     <script src="https://unpkg.com/feather-icons"></script>
 
-    <!-- Estilos de Layout (Claro / Escuro) -->
+    <!-- ============================================================
+         ESTILOS
+    ============================================================ -->
     <style>
+
         :root {
             --bg-body: #f8f9fa;
             --bg-card: #ffffff;
@@ -30,50 +42,80 @@
             --sidebar-bg: #0b0f19;
         }
 
-        body { 
-            display: flex; 
-            min-height: 100vh; 
-            background-color: var(--bg-body); 
+        body {
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-body);
             color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
+            transition:
+                background-color 0.3s,
+                color 0.3s;
         }
 
-        .nxl-navigation { 
-            width: 260px; 
-            background: var(--sidebar-bg); 
-            color: #fff; 
-            flex-shrink: 0; 
-            min-height: 100vh; 
-            padding: 20px; 
-            transition: background-color 0.3s;
+        /* ============================================================
+           SIDEBAR
+        ============================================================ */
+
+        .nxl-navigation {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            flex-shrink: 0;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        .nxl-navigation a { 
-            color: #94a3b8; 
-            text-decoration: none; 
-            padding: 10px 12px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            border-radius: 6px; 
+        .nxl-navigation a {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 6px;
         }
 
-        .nxl-navigation a:hover, .nxl-navigation a.active { 
-            color: #fff; 
-            background: rgba(255,255,255,0.08); 
+        .nxl-navigation a:hover,
+        .nxl-navigation a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        .nxl-container { flex-grow: 1; padding: 25px; }
+        .nxl-navigation svg {
+            width: 18px;
+            height: 18px;
+        }
 
-        .nxl-header, .card { 
-            background: var(--bg-card) !important; 
+        /* ============================================================
+           CONTEÚDO
+        ============================================================ */
+
+        .nxl-container {
+            flex-grow: 1;
+            padding: 25px;
+            overflow-x: hidden;
+        }
+
+        .nxl-header,
+        .card {
+            background: var(--bg-card) !important;
             color: var(--text-color) !important;
-            border-color: var(--border-color) !important; 
-            transition: background-color 0.3s;
+            border-color: var(--border-color) !important;
         }
+
+        /* ============================================================
+           TABELA
+        ============================================================ */
 
         .table {
             color: var(--text-color) !important;
+        }
+
+        .table > :not(caption) > * > * {
+            background-color: transparent;
+            color: var(--text-color);
+            border-color: var(--border-color);
         }
 
         body.dark-mode .table-light {
@@ -81,298 +123,1735 @@
             color: #f8fafc !important;
         }
 
+        body.dark-mode .table-light th {
+            background-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        /* ============================================================
+           BOTÕES DE AÇÃO
+        ============================================================ */
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .action-buttons .btn {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        .action-buttons svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ============================================================
+           DETALHES
+        ============================================================ */
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        body.dark-mode .detail-label {
+            color: #94a3b8;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+           MODAL DARK MODE
+        ============================================================ */
+
         body.dark-mode .modal-content {
             background-color: #1e293b;
             color: #f8fafc;
             border-color: #334155;
         }
 
-        body.dark-mode .form-control {
+        body.dark-mode .modal-header,
+        body.dark-mode .modal-footer {
+            border-color: #334155;
+        }
+
+        body.dark-mode .form-control,
+        body.dark-mode .form-select {
             background-color: #0f172a;
             color: #f8fafc;
             border-color: #334155;
         }
+
+        body.dark-mode .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+        body.dark-mode .btn-close {
+            filter: invert(1);
+        }
+
+        /* ============================================================
+           RESPONSIVO
+        ============================================================ */
+
+        @media (max-width: 768px) {
+
+            .nxl-navigation {
+                width: 210px;
+            }
+
+            .nxl-container {
+                padding: 15px;
+            }
+        }
+
     </style>
+
 </head>
+
 <body>
 
-    <!-- Sidebar / Menu de Navegação -->
-    <nav class="nxl-navigation">
-    <div class="m-header mb-4">
-        <h4 class="text-white fw-bold mb-0">ClothStock</h4>
-    </div>
-    <ul class="nav flex-column gap-1">
-        <li class="nav-item">
-            <a href="/index.html"><i data-feather="layout"></i> <span>Dashboard</span></a>
-        </li>
-        <li class="nav-item">
-            <a href="/categories.html"><i data-feather="folder"></i> <span>Categorias</span></a>
-        </li>
-        <li class="nav-item">
-            <a href="/brands.html" class="active"><i data-feather="tag"></i> <span>Marcas</span></a>
-        </li>
-        <li class="nav-item">
-            <a href="/products.html"><i data-feather="box"></i> <span>Produtos</span></a>
-        </li>
-        <li class="nav-item">
-            <a href="#"><i data-feather="database"></i> <span>Cálculos & Fichas</span></a>
-        </li>
-    </ul>
-</nav>
+    <!-- ============================================================
+         SIDEBAR
+    ============================================================ -->
 
-    <!-- Conteúdo Principal -->
+    <nav class="nxl-navigation">
+
+        <div class="m-header mb-4">
+
+            <h4 class="text-white fw-bold mb-0">
+                ClothStock
+            </h4>
+
+        </div>
+
+        <ul class="nav flex-column gap-1">
+
+            <li class="nav-item">
+
+                <a href="/index.html">
+
+                    <i data-feather="layout"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="nav-item">
+
+                <a
+                    href="/categories.html"
+                    class="active"
+                >
+
+                    <i data-feather="folder"></i>
+
+                    <span>
+                        Categorias
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="nav-item">
+
+                <a href="/brands.html">
+
+                    <i data-feather="tag"></i>
+
+                    <span>
+                        Marcas
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="nav-item">
+
+                <a href="/products.html">
+
+                    <i data-feather="box"></i>
+
+                    <span>
+                        Produtos
+                    </span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- ============================================================
+         CONTEÚDO PRINCIPAL
+    ============================================================ -->
+
     <main class="nxl-container">
-        <!-- Cabeçalho do Topo com Alternador Dark Mode -->
-        <header class="nxl-header d-flex justify-content-between align-items-center shadow-sm p-3 mb-4 rounded">
+
+        <!-- ========================================================
+             HEADER
+        ======================================================== -->
+
+        <header
+            class="nxl-header d-flex justify-content-between align-items-center shadow-sm p-3 mb-4 rounded"
+        >
+
             <div>
-                <h5 class="mb-0 fw-bold">Gestão de Categorias</h5>
-                <small class="text-muted">Cadastro e controle de categorias do estoque</small>
+
+                <h5 class="mb-0 fw-bold">
+                    Gestão de Categorias
+                </h5>
+
+                <small class="text-muted">
+                    Cadastro e controle de categorias de produtos
+                </small>
+
             </div>
-            <button id="theme-toggle" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2" onclick="toggleDarkMode()">
-                <i data-feather="moon" id="theme-icon"></i> <span id="theme-text">Modo Escuro</span>
+
+            <button
+                id="theme-toggle"
+                class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+                onclick="toggleDarkMode()"
+            >
+
+                <i
+                    data-feather="moon"
+                    id="theme-icon"
+                ></i>
+
+                <span id="theme-text">
+                    Modo Escuro
+                </span>
+
             </button>
+
         </header>
 
-        <!-- Corpo da Página -->
-        <div class="main-content">
-            <div id="alert-container"></div>
 
-            <div class="card shadow-sm border">
-                <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3">
-                    <h5 class="card-title mb-0 fw-bold">Categorias Cadastradas</h5>
-                    <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalCreateCategory">
-                        <i data-feather="plus"></i> Nova Categoria
-                    </button>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>Descrição</th>
-                                    <th class="text-end">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="categories-table-body">
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted py-4">Carregando categorias...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <!-- ========================================================
+             ALERTAS
+        ======================================================== -->
+
+        <div id="alert-container"></div>
+
+
+        <!-- ========================================================
+             CARD CATEGORIAS
+        ======================================================== -->
+
+        <div class="card shadow-sm border mb-4">
+
+            <div
+                class="card-header bg-transparent d-flex justify-content-between align-items-center py-3"
+            >
+
+                <h5 class="card-title mb-0 fw-bold">
+                    Categorias Cadastradas
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn btn-primary btn-sm d-flex align-items-center gap-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCreateCategory"
+                >
+
+                    <i data-feather="plus"></i>
+
+                    Nova Categoria
+
+                </button>
+
             </div>
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th style="width: 80px;">
+                                    ID
+                                </th>
+
+                                <th>
+                                    Nome da Categoria
+                                </th>
+
+                                <th>
+                                    Descrição
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                    style="width: 190px;"
+                                >
+                                    Ações
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="categories-table-body">
+
+                            <tr>
+
+                                <td
+                                    colspan="4"
+                                    class="text-center text-muted py-4"
+                                >
+                                    Carregando categorias...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
         </div>
+
     </main>
 
-    <!-- Modal Criar Categoria -->
-    <div class="modal fade" id="modalCreateCategory" tabindex="-1">
+
+    <!-- ============================================================
+         MODAL CRIAR CATEGORIA
+    ============================================================ -->
+
+    <div
+        class="modal fade"
+        id="modalCreateCategory"
+        tabindex="-1"
+    >
+
         <div class="modal-dialog">
+
             <div class="modal-content">
+
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Nova Categoria</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                    <h5 class="modal-title fw-bold">
+                        Nova Categoria
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
                 </div>
+
                 <form id="form-create-category">
+
                     <div class="modal-body">
+
                         <div class="mb-3">
-                            <label class="form-label">Nome da Categoria</label>
-                            <input type="text" class="form-control" id="create-category-name" required>
+
+                            <label
+                                class="form-label fw-semibold"
+                            >
+                                Nome da Categoria *
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="create-category-name"
+                                placeholder="Ex: Camisetas, Calças, Vestidos"
+                                required
+                            >
+
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Descrição</label>
-                            <textarea class="form-control" id="create-category-description" rows="3"></textarea>
+
+                            <label
+                                class="form-label fw-semibold"
+                            >
+                                Descrição
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                id="create-category-description"
+                                rows="3"
+                                placeholder="Descrição da categoria..."
+                            ></textarea>
+
                         </div>
+
                     </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Salvar Categoria</button>
+
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary d-flex align-items-center gap-2"
+                        >
+
+                            <i data-feather="save"></i>
+
+                            Salvar Categoria
+
+                        </button>
+
                     </div>
+
                 </form>
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- Modal Editar Categoria -->
-    <div class="modal fade" id="modalEditCategory" tabindex="-1">
+
+    <!-- ============================================================
+         MODAL EDITAR CATEGORIA
+    ============================================================ -->
+
+    <div
+        class="modal fade"
+        id="modalEditCategory"
+        tabindex="-1"
+    >
+
         <div class="modal-dialog">
+
             <div class="modal-content">
+
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Editar Categoria</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                    <h5 class="modal-title fw-bold">
+                        Editar Categoria
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
                 </div>
+
                 <form id="form-edit-category">
-                    <input type="hidden" id="edit-category-id">
+
+                    <input
+                        type="hidden"
+                        id="edit-category-id"
+                    >
+
                     <div class="modal-body">
+
                         <div class="mb-3">
-                            <label class="form-label">Nome da Categoria</label>
-                            <input type="text" class="form-control" id="edit-category-name" required>
+
+                            <label
+                                class="form-label fw-semibold"
+                            >
+                                Nome da Categoria *
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="edit-category-name"
+                                required
+                            >
+
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Descrição</label>
-                            <textarea class="form-control" id="edit-category-description" rows="3"></textarea>
+
+                            <label
+                                class="form-label fw-semibold"
+                            >
+                                Descrição
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                id="edit-category-description"
+                                rows="3"
+                            ></textarea>
+
                         </div>
+
                     </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Atualizar Categoria</button>
+
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary d-flex align-items-center gap-2"
+                        >
+
+                            <i data-feather="save"></i>
+
+                            Atualizar Categoria
+
+                        </button>
+
                     </div>
+
                 </form>
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- Scripts Bootstrap e Feather Icons -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // 1. Inicialização de Ícones
-        feather.replace();
 
-        // 2. Lógica do Modo Escuro (Dark Mode)
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            
-            document.getElementById('theme-text').innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
-            
-            // Atualizar ícone
-            const themeIcon = document.getElementById('theme-icon');
-            themeIcon.setAttribute('data-feather', isDark ? 'sun' : 'moon');
-            feather.replace();
+    <!-- ============================================================
+         MODAL DETALHES DA CATEGORIA
+    ============================================================ -->
+
+    <div
+        class="modal fade"
+        id="modalDetailCategory"
+        tabindex="-1"
+    >
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title fw-bold">
+                        Detalhes da Categoria
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- LOADING -->
+
+                    <div
+                        id="category-detail-loading"
+                        class="text-center py-4"
+                    >
+
+                        <div
+                            class="spinner-border text-primary"
+                            role="status"
+                        ></div>
+
+                        <div class="mt-2 text-muted">
+                            Carregando detalhes...
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONTEÚDO -->
+
+                    <div
+                        id="category-detail-content"
+                        style="display: none;"
+                    >
+
+                        <div class="row g-4">
+
+                            <div class="col-md-8">
+
+                                <div class="detail-label">
+                                    Categoria
+                                </div>
+
+                                <div
+                                    class="detail-value fs-4"
+                                    id="detail-category-name"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <div class="detail-label">
+                                    ID
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-category-id"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-12">
+
+                                <div class="detail-label">
+                                    Descrição
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-category-description"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="detail-label">
+                                    Criada em
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-category-created"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="detail-label">
+                                    Atualizada em
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-category-updated"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ERRO -->
+
+                    <div
+                        id="category-detail-error"
+                        class="alert alert-danger"
+                        style="display: none;"
+                    ></div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Fechar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         BOOTSTRAP JS
+    ============================================================ -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+
+    <!-- ============================================================
+         JAVASCRIPT
+    ============================================================ -->
+
+    <script>
+
+        // ============================================================
+        // CONFIGURAÇÃO
+        // ============================================================
+
+        const CATEGORIES_API_URL = '/api/categories';
+
+        let allCategoriesCache = [];
+
+
+        // ============================================================
+        // FEATHER ICONS
+        // ============================================================
+
+        function refreshIcons() {
+
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+
         }
 
-        // 3. API do ClothStock - Categorias
-        const API_URL = '/api/categories';
 
-        function showAlert(message, type = 'success') {
-            const container = document.getElementById('alert-container');
+        // ============================================================
+        // DARK MODE
+        // ============================================================
+
+        function toggleDarkMode() {
+
+            document.body.classList.toggle('dark-mode');
+
+            const isDark =
+                document.body.classList.contains('dark-mode');
+
+            document.getElementById(
+                'theme-text'
+            ).innerText =
+                isDark
+                    ? 'Modo Claro'
+                    : 'Modo Escuro';
+
+            const themeIcon =
+                document.getElementById('theme-icon');
+
+            themeIcon.setAttribute(
+                'data-feather',
+                isDark
+                    ? 'sun'
+                    : 'moon'
+            );
+
+            refreshIcons();
+
+        }
+
+
+        // ============================================================
+        // ALERTAS
+        // ============================================================
+
+        function showAlert(
+            message,
+            type = 'success'
+        ) {
+
+            const container =
+                document.getElementById(
+                    'alert-container'
+                );
+
             container.innerHTML = `
-                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div
+                    class="alert alert-${type} alert-dismissible fade show"
+                    role="alert"
+                >
+
+                    ${escapeHtml(message)}
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                    ></button>
+
                 </div>
             `;
+
         }
+
+
+        // ============================================================
+        // ESCAPAR HTML
+        // ============================================================
+
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                return '';
+            }
+
+            return String(value)
+                .replace(
+                    /&/g,
+                    '&amp;'
+                )
+                .replace(
+                    /</g,
+                    '&lt;'
+                )
+                .replace(
+                    />/g,
+                    '&gt;'
+                )
+                .replace(
+                    /"/g,
+                    '&quot;'
+                )
+                .replace(
+                    /'/g,
+                    '&#039;'
+                );
+
+        }
+
+
+        // ============================================================
+        // FORMATAR DATA
+        // ============================================================
+
+        function formatDate(value) {
+
+            if (!value) {
+                return '-';
+            }
+
+            const date =
+                new Date(value);
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+                return value;
+            }
+
+            return date.toLocaleString(
+                'pt-BR'
+            );
+
+        }
+
+
+        // ============================================================
+        // BUSCAR TODAS AS CATEGORIAS
+        // ============================================================
 
         async function fetchCategories() {
+
+            const tbody =
+                document.getElementById(
+                    'categories-table-body'
+                );
+
             try {
-                const response = await fetch(API_URL);
-                const data = await response.json();
-                const tbody = document.getElementById('categories-table-body');
-                tbody.innerHTML = '';
 
-                // Tratar se a resposta da API for uma lista direta ou um objeto com data/categories
-                const categoriesList = Array.isArray(data) ? data : (data.data || data.categories || []);
+                tbody.innerHTML = `
+                    <tr>
 
-                if (!categoriesList || categoriesList.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">Nenhuma categoria encontrada no banco de dados.</td></tr>';
-                    return;
+                        <td
+                            colspan="4"
+                            class="text-center text-muted py-4"
+                        >
+
+                            <div
+                                class="spinner-border spinner-border-sm text-primary"
+                                role="status"
+                            ></div>
+
+                            <span class="ms-2">
+                                Carregando categorias...
+                            </span>
+
+                        </td>
+
+                    </tr>
+                `;
+
+                const response =
+                    await fetch(
+                        CATEGORIES_API_URL
+                    );
+
+                const result =
+                    await response.json();
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.error ||
+                        'Erro ao buscar categorias.'
+                    );
+
                 }
 
-                categoriesList.forEach(cat => {
-                    const name = cat.name || cat.nome || 'Sem nome';
-                    const description = cat.description || cat.descricao || '-';
-                    const id = cat.id;
+                allCategoriesCache =
+                    Array.isArray(result)
+                        ? result
+                        : (
+                            result.data ||
+                            result.categories ||
+                            []
+                        );
 
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${id}</td>
-                            <td class="fw-bold">${name}</td>
-                            <td>${description}</td>
-                            <td class="text-end">
-                                <button class="btn btn-sm btn-outline-primary me-1" onclick="openEditModal(${id}, '${name}', '${description}')">Editar</button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${id})">Excluir</button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                renderCategoriesTable(
+                    allCategoriesCache
+                );
+
             } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
-                document.getElementById('categories-table-body').innerHTML = '<tr><td colspan="4" class="text-center text-danger py-4">Erro ao conectar com a API de categorias.</td></tr>';
+
+                console.error(
+                    'Erro ao buscar categorias:',
+                    error
+                );
+
+                tbody.innerHTML = `
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="text-center text-danger py-4"
+                        >
+                            Erro ao carregar categorias:
+                            ${escapeHtml(error.message)}
+                        </td>
+
+                    </tr>
+                `;
+
             }
+
         }
 
-        // Criar Categoria
-        document.getElementById('form-create-category').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('create-category-name').value;
-            const description = document.getElementById('create-category-description').value;
+
+        // ============================================================
+        // RENDERIZAR TABELA
+        // ============================================================
+
+        function renderCategoriesTable(
+            categoriesList
+        ) {
+
+            const tbody =
+                document.getElementById(
+                    'categories-table-body'
+                );
+
+            if (
+                !Array.isArray(categoriesList) ||
+                categoriesList.length === 0
+            ) {
+
+                tbody.innerHTML = `
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="text-center text-muted py-5"
+                        >
+
+                            <i
+                                data-feather="folder"
+                            ></i>
+
+                            <div class="mt-2">
+                                Nenhuma categoria cadastrada.
+                            </div>
+
+                        </td>
+
+                    </tr>
+                `;
+
+                refreshIcons();
+
+                return;
+            }
+
+
+            let rowsHtml = '';
+
+
+            categoriesList.forEach(
+                category => {
+
+                    if (!category) {
+                        return;
+                    }
+
+                    const id =
+                        category.id ?? '-';
+
+                    const name =
+                        category.name ||
+                        category.nome ||
+                        'Sem nome';
+
+                    const description =
+                        category.description ||
+                        category.descricao ||
+                        '';
+
+
+                    rowsHtml += `
+                        <tr>
+
+                            <td class="fw-bold">
+                                ${escapeHtml(id)}
+                            </td>
+
+                            <td>
+
+                                <div class="fw-bold">
+                                    ${escapeHtml(name)}
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                <small class="text-muted">
+
+                                    ${
+                                        description
+                                            ? escapeHtml(description)
+                                            : 'Sem descrição.'
+                                    }
+
+                                </small>
+
+                            </td>
+
+                            <td>
+
+                                <div class="action-buttons">
+
+                                    <!-- DETALHES -->
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-info"
+                                        title="Ver detalhes"
+                                        onclick="viewCategory(${Number(id)})"
+                                    >
+
+                                        <i
+                                            data-feather="eye"
+                                        ></i>
+
+                                    </button>
+
+
+                                    <!-- EDITAR -->
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-primary"
+                                        title="Editar categoria"
+                                        onclick="editCategory(${Number(id)})"
+                                    >
+
+                                        <i
+                                            data-feather="edit-2"
+                                        ></i>
+
+                                    </button>
+
+
+                                    <!-- EXCLUIR -->
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-danger"
+                                        title="Excluir categoria"
+                                        onclick="deleteCategory(${Number(id)})"
+                                    >
+
+                                        <i
+                                            data-feather="trash-2"
+                                        ></i>
+
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    `;
+
+                }
+            );
+
+
+            tbody.innerHTML =
+                rowsHtml;
+
+            refreshIcons();
+
+        }
+
+
+        // ============================================================
+        // CRIAR CATEGORIA
+        // ============================================================
+
+        document
+            .getElementById(
+                'form-create-category'
+            )
+            .addEventListener(
+                'submit',
+                async function(event) {
+
+                    event.preventDefault();
+
+
+                    const payload = {
+
+                        name:
+                            document
+                                .getElementById(
+                                    'create-category-name'
+                                )
+                                .value
+                                .trim(),
+
+                        description:
+                            document
+                                .getElementById(
+                                    'create-category-description'
+                                )
+                                .value
+                                .trim()
+
+                    };
+
+
+                    if (!payload.name) {
+
+                        showAlert(
+                            'O nome da categoria é obrigatório.',
+                            'warning'
+                        );
+
+                        return;
+                    }
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                CATEGORIES_API_URL,
+                                {
+                                    method: 'POST',
+
+                                    headers: {
+                                        'Content-Type':
+                                            'application/json'
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            payload
+                                        )
+                                }
+                            );
+
+
+                        const result =
+                            await response.json();
+
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                result.error ||
+                                'Erro ao cadastrar categoria.'
+                            );
+
+                        }
+
+
+                        showAlert(
+                            'Categoria cadastrada com sucesso!'
+                        );
+
+
+                        const modalElement =
+                            document.getElementById(
+                                'modalCreateCategory'
+                            );
+
+
+                        const modal =
+                            bootstrap.Modal.getInstance(
+                                modalElement
+                            );
+
+
+                        if (modal) {
+                            modal.hide();
+                        }
+
+
+                        document
+                            .getElementById(
+                                'form-create-category'
+                            )
+                            .reset();
+
+
+                        await fetchCategories();
+
+
+                    } catch (error) {
+
+                        console.error(error);
+
+                        showAlert(
+                            error.message ||
+                            'Erro ao cadastrar categoria.',
+                            'danger'
+                        );
+
+                    }
+
+                }
+            );
+
+
+        // ============================================================
+        // EDITAR CATEGORIA
+        // ============================================================
+
+        async function editCategory(id) {
 
             try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, description })
-                });
 
-                if (response.ok) {
-                    showAlert('Categoria criada com sucesso!');
-                    bootstrap.Modal.getInstance(document.getElementById('modalCreateCategory')).hide();
-                    document.getElementById('form-create-category').reset();
-                    fetchCategories();
-                } else {
-                    showAlert('Erro ao criar categoria.', 'danger');
+                const response =
+                    await fetch(
+                        `${CATEGORIES_API_URL}/${id}`
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.error ||
+                        'Não foi possível carregar a categoria.'
+                    );
+
                 }
-            } catch (err) {
-                showAlert('Erro ao conectar ao servidor.', 'danger');
+
+
+                const category =
+                    result.data;
+
+
+                if (!category) {
+
+                    throw new Error(
+                        'Categoria não encontrada.'
+                    );
+
+                }
+
+
+                document.getElementById(
+                    'edit-category-id'
+                ).value =
+                    category.id;
+
+
+                document.getElementById(
+                    'edit-category-name'
+                ).value =
+                    category.name ||
+                    category.nome ||
+                    '';
+
+
+                document.getElementById(
+                    'edit-category-description'
+                ).value =
+                    category.description ||
+                    category.descricao ||
+                    '';
+
+
+                const modal =
+                    new bootstrap.Modal(
+                        document.getElementById(
+                            'modalEditCategory'
+                        )
+                    );
+
+
+                modal.show();
+
+                refreshIcons();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showAlert(
+                    error.message ||
+                    'Erro ao carregar categoria.',
+                    'danger'
+                );
+
             }
-        });
 
-        // Abrir Modal de Edição
-        window.openEditModal = function(id, name, description) {
-            document.getElementById('edit-category-id').value = id;
-            document.getElementById('edit-category-name').value = name;
-            document.getElementById('edit-category-description').value = description;
-            new bootstrap.Modal(document.getElementById('modalEditCategory')).show();
-        };
+        }
 
-        // Editar Categoria
-        document.getElementById('form-edit-category').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('edit-category-id').value;
-            const name = document.getElementById('edit-category-name').value;
-            const description = document.getElementById('edit-category-description').value;
+
+        // ============================================================
+        // ATUALIZAR CATEGORIA
+        // ============================================================
+
+        document
+            .getElementById(
+                'form-edit-category'
+            )
+            .addEventListener(
+                'submit',
+                async function(event) {
+
+                    event.preventDefault();
+
+
+                    const id =
+                        document.getElementById(
+                            'edit-category-id'
+                        ).value;
+
+
+                    const payload = {
+
+                        name:
+                            document
+                                .getElementById(
+                                    'edit-category-name'
+                                )
+                                .value
+                                .trim(),
+
+                        description:
+                            document
+                                .getElementById(
+                                    'edit-category-description'
+                                )
+                                .value
+                                .trim()
+
+                    };
+
+
+                    if (!payload.name) {
+
+                        showAlert(
+                            'O nome da categoria é obrigatório.',
+                            'warning'
+                        );
+
+                        return;
+                    }
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                `${CATEGORIES_API_URL}/${id}`,
+                                {
+                                    method: 'PUT',
+
+                                    headers: {
+                                        'Content-Type':
+                                            'application/json'
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            payload
+                                        )
+                                }
+                            );
+
+
+                        const result =
+                            await response.json();
+
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                result.error ||
+                                'Erro ao atualizar categoria.'
+                            );
+
+                        }
+
+
+                        showAlert(
+                            'Categoria atualizada com sucesso!'
+                        );
+
+
+                        const modalElement =
+                            document.getElementById(
+                                'modalEditCategory'
+                            );
+
+
+                        const modal =
+                            bootstrap.Modal.getInstance(
+                                modalElement
+                            );
+
+
+                        if (modal) {
+                            modal.hide();
+                        }
+
+
+                        await fetchCategories();
+
+
+                    } catch (error) {
+
+                        console.error(error);
+
+                        showAlert(
+                            error.message ||
+                            'Erro ao atualizar categoria.',
+                            'danger'
+                        );
+
+                    }
+
+                }
+            );
+
+
+        // ============================================================
+        // VISUALIZAR DETALHES
+        // ============================================================
+
+        async function viewCategory(id) {
+
+            const modalElement =
+                document.getElementById(
+                    'modalDetailCategory'
+                );
+
+
+            const modal =
+                new bootstrap.Modal(
+                    modalElement
+                );
+
+
+            document.getElementById(
+                'category-detail-loading'
+            ).style.display =
+                'block';
+
+
+            document.getElementById(
+                'category-detail-content'
+            ).style.display =
+                'none';
+
+
+            document.getElementById(
+                'category-detail-error'
+            ).style.display =
+                'none';
+
+
+            modal.show();
+
 
             try {
-                const response = await fetch(`${API_URL}/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, description })
-                });
 
-                if (response.ok) {
-                    showAlert('Categoria atualizada com sucesso!');
-                    bootstrap.Modal.getInstance(document.getElementById('modalEditCategory')).hide();
-                    fetchCategories();
-                } else {
-                    showAlert('Erro ao atualizar categoria.', 'danger');
+                const response =
+                    await fetch(
+                        `${CATEGORIES_API_URL}/${id}`
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.error ||
+                        'Não foi possível carregar os detalhes da categoria.'
+                    );
+
                 }
-            } catch (err) {
-                showAlert('Erro ao conectar ao servidor.', 'danger');
-            }
-        });
 
-        // Excluir Categoria
-        window.deleteCategory = async function(id) {
-            if (!confirm('Deseja realmente excluir esta categoria?')) return;
+
+                const category =
+                    result.data;
+
+
+                if (!category) {
+
+                    throw new Error(
+                        'Categoria não encontrada.'
+                    );
+
+                }
+
+
+                document.getElementById(
+                    'detail-category-id'
+                ).textContent =
+                    category.id ?? '-';
+
+
+                document.getElementById(
+                    'detail-category-name'
+                ).textContent =
+                    category.name ||
+                    category.nome ||
+                    '-';
+
+
+                document.getElementById(
+                    'detail-category-description'
+                ).textContent =
+                    category.description ||
+                    category.descricao ||
+                    'Sem descrição.';
+
+
+                document.getElementById(
+                    'detail-category-created'
+                ).textContent =
+                    formatDate(
+                        category.created_at
+                    );
+
+
+                document.getElementById(
+                    'detail-category-updated'
+                ).textContent =
+                    formatDate(
+                        category.updated_at
+                    );
+
+
+                document.getElementById(
+                    'category-detail-loading'
+                ).style.display =
+                    'none';
+
+
+                document.getElementById(
+                    'category-detail-content'
+                ).style.display =
+                    'block';
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                document.getElementById(
+                    'category-detail-loading'
+                ).style.display =
+                    'none';
+
+
+                const errorElement =
+                    document.getElementById(
+                        'category-detail-error'
+                    );
+
+
+                errorElement.textContent =
+                    error.message ||
+                    'Erro ao carregar detalhes.';
+
+
+                errorElement.style.display =
+                    'block';
+
+            }
+
+        }
+
+
+        // ============================================================
+        // EXCLUIR CATEGORIA
+        // ============================================================
+
+        async function deleteCategory(id) {
+
+            const category =
+                allCategoriesCache.find(
+                    item =>
+                        item &&
+                        item.id == id
+                );
+
+
+            const categoryName =
+                category
+                    ? (
+                        category.name ||
+                        category.nome ||
+                        `#${id}`
+                    )
+                    : `#${id}`;
+
+
+            const confirmed =
+                confirm(
+                    `Deseja realmente excluir a categoria "${categoryName}"?`
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
 
             try {
-                const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-                if (response.ok) {
-                    showAlert('Categoria excluída!');
-                    fetchCategories();
-                } else {
-                    showAlert('Erro ao excluir categoria.', 'danger');
-                }
-            } catch (err) {
-                showAlert('Erro de conexão.', 'danger');
-            }
-        };
 
-        // Carregar categorias ao abrir a página
-        document.addEventListener('DOMContentLoaded', fetchCategories);
+                const response =
+                    await fetch(
+                        `${CATEGORIES_API_URL}/${id}`,
+                        {
+                            method: 'DELETE'
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.error ||
+                        'Erro ao excluir categoria.'
+                    );
+
+                }
+
+
+                showAlert(
+                    'Categoria excluída com sucesso!'
+                );
+
+
+                await fetchCategories();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showAlert(
+                    error.message ||
+                    'Erro ao excluir categoria.',
+                    'danger'
+                );
+
+            }
+
+        }
+
+
+        // ============================================================
+        // INICIALIZAÇÃO
+        // ============================================================
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            async function() {
+
+                refreshIcons();
+
+                await fetchCategories();
+
+                refreshIcons();
+
+            }
+        );
+
     </script>
+
 </body>
+
 </html>
