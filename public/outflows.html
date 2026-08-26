@@ -1,428 +1,108 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Saídas (Outflow) - ClothStock</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Saídas | ClothStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <style>
+    .nxl-container {
+      padding: 25px
+    }
 
-    <!-- CSS Duralux -->
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="css/theme.min.css">
+    .card {
+      border: 0;
+      box-shadow: 0 1px 3px #00000014
+    }
+
+    .form-label {
+      font-weight: 600
+    }
+  </style>
 </head>
-<body>
 
-    <!-- ============================================================ -->
-    <!-- Navigation (Sidebar) -->
-    <!-- ============================================================ -->
-    <nav class="nxl-navigation">
-        <div class="navbar-wrapper">
-            <div class="m-header">
-                <a href="/" class="b-brand">
-                    <img src="images/logo-full.png" alt="Logo" class="logo logo-lg">
-                    <img src="images/logo-abbr.png" alt="Logo" class="logo logo-sm">
-                </a>
-            </div>
-            <div class="navbar-content">
-                <ul class="nxl-navbar">
-                    <li class="nxl-item nxl-caption">
-                        <label>Navegação Principal</label>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-layout"></i></span>
-                            <span class="nxl-mtext">Dashboard</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nxl-item nxl-caption">
-                        <label>Cadastros Base</label>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/brands.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-tag"></i></span>
-                            <span class="nxl-mtext">Marcas</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/categories.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-grid"></i></span>
-                            <span class="nxl-mtext">Categorias</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/products.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-box"></i></span>
-                            <span class="nxl-mtext">Produtos</span>
-                        </a>
-                    </li>
-
-                    <li class="nxl-item nxl-caption">
-                        <label>Movimentações</label>
-                    </li>
-                    <li class="nxl-item">
-                        <a href="/inflows.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-arrow-down-left"></i></span>
-                            <span class="nxl-mtext">Entradas (Inflow)</span>
-                        </a>
-                    </li>
-                    <li class="nxl-item active">
-                        <a href="/outflows.html" class="nxl-link">
-                            <span class="nxl-micon"><i class="feather-arrow-up-right"></i></span>
-                            <span class="nxl-mtext">Saídas (Outflow)</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- ============================================================ -->
-    <!-- Top Header -->
-    <!-- ============================================================ -->
-    <header class="nxl-header">
-        <div class="header-wrapper">
-            <div class="header-left d-flex align-items-center gap-4">
-                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
-                    <div class="hamburger hamburger--arrowturn">
-                        <div class="hamburger-box">
-                            <div class="hamburger-inner"></div>
-                        </div>
-                    </div>
-                </a>
-                <div class="nxl-navigation-toggle">
-                    <a href="javascript:void(0);" id="menu-mini-button">
-                        <i class="feather-align-left"></i>
-                    </a>
-                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none">
-                        <i class="feather-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+<body class="movement-page" data-movement-type="OUTFLOW">
+  <main class="nxl-container">
+    <header class="nxl-header d-flex justify-content-between align-items-center shadow-sm p-3 mb-4 rounded">
+      <div>
+        <h5 class="mb-0 fw-bold">Saídas de estoque</h5><small class="text-muted">Registro e controle das saídas de
+          produtos.</small>
+      </div><button id="theme-toggle" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+        type="button"><i id="theme-icon" data-feather="moon"></i><span id="theme-text">Modo Escuro</span></button>
     </header>
-
-    <!-- ============================================================ -->
-    <!-- Main Content -->
-    <!-- ============================================================ -->
-    <main class="nxl-container">
-        <div class="nxl-content">
-            
-            <!-- Page Header -->
-            <div class="page-header">
-                <div class="page-header-left d-flex align-items-center justify-content-between w-100 me-3">
-                    <div>
-                        <h5 class="m-b-10">Saídas de Estoque</h5>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active">Saídas</li>
-                        </ul>
-                    </div>
-                    <!-- Botão do Modal de Registro -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddOutflow" onclick="loadProductOptions()">
-                        <i class="feather-plus me-1"></i> Registrar Saída
-                    </button>
-                </div>
-            </div>
-
-            <!-- Content Body -->
-            <div class="main-content">
-                <div id="alert-container"></div>
-
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="card-title m-0">Histórico de Saídas</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Data/Hora</th>
-                                        <th>Produto</th>
-                                        <th>Quantidade</th>
-                                        <th>Preço de Venda</th>
-                                        <th class="text-end">Ação</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="outflows-table-body">
-                                    <tr>
-                                        <td colspan="6" class="text-center py-4 text-muted">Carregando histórico de saídas...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+    <div id="alert-container"></div>
+    <section class="card shadow-sm border mb-4">
+      <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3">
+        <h5 class="card-title mb-0 fw-bold">Saídas cadastradas</h5><button
+          class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-bs-toggle="modal"
+          data-bs-target="#movement-modal"><i data-feather="plus"></i>Nova Saída</button>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Data/Hora</th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Preço unitário</th>
+                <th>Observação</th>
+                <th class="text-center" style="width:190px">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="movements-body">
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">Carregando saídas...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-    </main>
-
-    <!-- ============================================================ -->
-    <!-- Modal: Registrar Nova Saída -->
-    <!-- ============================================================ -->
-    <div class="modal fade" id="modalAddOutflow" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Registrar Saída de Estoque</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <form id="form-add-outflow">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="outflow-product" class="form-label">Produto <span class="text-danger">*</span></label>
-                            <select class="form-select" id="outflow-product" required onchange="updateProductDefaultPrice()">
-                                <option value="">Selecione um produto...</option>
-                            </select>
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="outflow-quantity" class="form-label">Quantidade <span class="text-danger">*</span></label>
-                                <input type="number" min="1" class="form-control" id="outflow-quantity" required placeholder="Ex: 2">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="outflow-price" class="form-label">Preço Unitário de Venda (R$) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" class="form-control" id="outflow-price" required placeholder="0.00">
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <label for="outflow-description" class="form-label">Observação / Motivo da Saída</label>
-                            <textarea class="form-control" id="outflow-description" rows="2" placeholder="Ex: Venda Pedido #8492, Ajuste de Inventário, Avaria, etc."></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="btn-save-outflow">Confirmar Saída</button>
-                    </div>
-                </form>
-            </div>
+      </div>
+    </section>
+  </main>
+  <div class="modal fade" id="movement-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Nova Saída</h5><button class="btn-close" data-bs-dismiss="modal"></button>
         </div>
+        <form id="movement-form">
+          <div class="modal-body">
+            <div class="mb-3"><label class="form-label" for="product_id">Produto *</label><select class="form-select"
+                id="product_id" required></select></div>
+            <div class="mb-3"><label class="form-label" for="quantity">Quantidade *</label><input class="form-control"
+                type="number" id="quantity" min="1" required></div>
+            <div class="mb-3"><label class="form-label" for="unit_price">Preço unitário (R$) *</label><input
+                class="form-control" type="number" id="unit_price" min="0" step="0.01" required></div>
+            <div class="mb-3"><label class="form-label" for="notes">Observação</label><textarea class="form-control"
+                id="notes" rows="3" placeholder="Ex.: venda, avaria, ajuste..."></textarea></div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-light"
+              data-bs-dismiss="modal">Cancelar</button><button class="btn btn-primary d-flex align-items-center gap-2"
+              type="submit"><i data-feather="save"></i>Salvar Saída</button></div>
+        </form>
+      </div>
     </div>
-
-    <!-- ============================================================ -->
-    <!-- Modal: Detalhes da Saída (Read-Only) -->
-    <!-- ============================================================ -->
-    <div class="modal fade" id="modalDetailOutflow" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Detalhes da Saída #<span id="detail-outflow-id"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            <span class="text-muted">Data do Registro:</span>
-                            <span class="fw-semibold" id="detail-outflow-date">-</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            <span class="text-muted">Produto:</span>
-                            <span class="fw-bold text-primary" id="detail-outflow-product">-</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            <span class="text-muted">Quantidade Baixada:</span>
-                            <span class="badge bg-soft-danger text-danger fs-6" id="detail-outflow-quantity">-</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            <span class="text-muted">Preço Unitário de Venda:</span>
-                            <span class="fw-semibold" id="detail-outflow-price">-</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            <span class="text-muted">Valor Total da Saída:</span>
-                            <span class="fw-bold text-dark fs-6" id="detail-outflow-total">-</span>
-                        </li>
-                        <li class="list-group-item px-0 pt-3">
-                            <span class="text-muted d-block mb-1">Observação / Motivo:</span>
-                            <p class="form-control-plaintext bg-light p-2 rounded mb-0 text-break" id="detail-outflow-description">-</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                </div>
-            </div>
+  </div>
+  <div class="modal fade" id="movement-detail-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="movement-detail-title">Detalhes</h5><button class="btn-close"
+            data-bs-dismiss="modal"></button>
         </div>
+        <div class="modal-body" id="movement-detail-content"></div>
+        <div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal">Fechar</button></div>
+      </div>
     </div>
-
-    <!-- Scripts do Duralux -->
-    <script src="js/vendors.min.js"></script>
-    <script src="js/common-init.min.js"></script>
-    
-    <script>
-        let availableProducts = [];
-
-        // 1. Carregar lista de produtos para o <select>
-        async function loadProductOptions() {
-            try {
-                const response = await fetch('/api/products');
-                const result = await response.json();
-                
-                const select = document.getElementById('outflow-product');
-                
-                if (result.success && result.data) {
-                    availableProducts = result.data;
-                    select.innerHTML = '<option value="">Selecione um produto...</option>' +
-                        result.data.map(p => `<option value="${p.id}" data-price="${p.price}">
-                            ${p.name} (Disponível: ${p.quantity || 0} un.)
-                        </option>`).join('');
-                }
-            } catch (error) {
-                console.error('Erro ao carregar produtos:', error);
-            }
-        }
-
-        // Preenche o preço de venda automaticamente com o preço cadastrado no produto
-        function updateProductDefaultPrice() {
-            const select = document.getElementById('outflow-product');
-            const selectedOption = select.options[select.selectedIndex];
-            const priceInput = document.getElementById('outflow-price');
-
-            if (selectedOption && selectedOption.dataset.price) {
-                priceInput.value = selectedOption.dataset.price;
-            } else {
-                priceInput.value = '';
-            }
-        }
-
-        // 2. Listar Saídas (READ ALL)
-        async function fetchAndRenderOutflows() {
-            const tbody = document.getElementById('outflows-table-body');
-
-            try {
-                const response = await fetch('/api/outflows');
-                const result = await response.json();
-
-                if (!result.success || !result.data || result.data.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Nenhuma saída registrada até o momento.</td>
-                        </tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = result.data.map(outflow => {
-                    const priceFormatted = parseFloat(outflow.price || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                    const dateFormatted = outflow.created_at ? new Date(outflow.created_at).toLocaleString('pt-BR') : '-';
-
-                    return `
-                        <tr>
-                            <td><strong>#${outflow.id}</strong></td>
-                            <td class="text-muted fs-12">${dateFormatted}</td>
-                            <td class="fw-semibold text-primary">${outflow.product_name || `Produto #${outflow.product_id}`}</td>
-                            <td><span class="badge bg-soft-danger text-danger">-${outflow.quantity} un.</span></td>
-                            <td class="fw-semibold">${priceFormatted}</td>
-                            <td class="text-end">
-                                <button class="btn btn-sm btn-soft-info" title="Ver Detalhes" onclick="viewOutflowDetail(${outflow.id})">
-                                    <i class="feather-eye"></i> Detalhes
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-
-            } catch (error) {
-                console.error('Erro ao carregar saídas:', error);
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center py-4 text-danger">Erro ao conectar com a API.</td>
-                    </tr>`;
-            }
-        }
-
-        // 3. Cadastrar Saída (CREATE - POST)
-        document.getElementById('form-add-outflow').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const product_id = document.getElementById('outflow-product').value;
-            const quantity = parseInt(document.getElementById('outflow-quantity').value, 10);
-            const price = parseFloat(document.getElementById('outflow-price').value);
-            const description = document.getElementById('outflow-description').value.trim();
-            const btnSave = document.getElementById('btn-save-outflow');
-
-            btnSave.disabled = true;
-            btnSave.textContent = 'Registrando...';
-
-            try {
-                const response = await fetch('/api/outflows', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ product_id, quantity, price, description })
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    document.getElementById('form-add-outflow').reset();
-
-                    const modalElement = document.getElementById('modalAddOutflow');
-                    const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-                    modalInstance.hide();
-
-                    showAlert('Saída registrada e estoque atualizado com sucesso!', 'success');
-                    fetchAndRenderOutflows();
-                } else {
-                    showAlert(result.error || 'Erro ao registrar saída.', 'danger');
-                }
-            } catch (error) {
-                showAlert('Erro de conexão com o servidor.', 'danger');
-            } finally {
-                btnSave.disabled = false;
-                btnSave.textContent = 'Confirmar Saída';
-            }
-        });
-
-        // 4. Exibir Detalhes da Saída (READ ONE - GET by ID)
-        async function viewOutflowDetail(id) {
-            try {
-                const response = await fetch(`/api/outflows/${id}`);
-                const result = await response.json();
-
-                if (!response.ok || !result.success) {
-                    showAlert(result.error || 'Erro ao buscar detalhes da saída.', 'danger');
-                    return;
-                }
-
-                const data = result.data;
-                const priceFormatted = parseFloat(data.price || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                const totalFormatted = (parseFloat(data.price || 0) * parseInt(data.quantity || 0, 10)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                const dateFormatted = data.created_at ? new Date(data.created_at).toLocaleString('pt-BR') : '-';
-
-                document.getElementById('detail-outflow-id').textContent = data.id;
-                document.getElementById('detail-outflow-date').textContent = dateFormatted;
-                document.getElementById('detail-outflow-product').textContent = data.product_name || `Produto #${data.product_id}`;
-                document.getElementById('detail-outflow-quantity').textContent = `-${data.quantity} un.`;
-                document.getElementById('detail-outflow-price').textContent = priceFormatted;
-                document.getElementById('detail-outflow-total').textContent = totalFormatted;
-                document.getElementById('detail-outflow-description').textContent = data.description || 'Nenhuma observação informada.';
-
-                const modalElement = document.getElementById('modalDetailOutflow');
-                const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-                modalInstance.show();
-
-            } catch (error) {
-                showAlert('Erro ao conectar com o servidor.', 'danger');
-            }
-        }
-
-        // Função para Alertas
-        function showAlert(message, type) {
-            const container = document.getElementById('alert-container');
-            container.innerHTML = `
-                <div class="alert alert-${type} alert-dismissible fade show mb-4" role="alert">
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`;
-            setTimeout(() => { container.innerHTML = ''; }, 4000);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchAndRenderOutflows();
-        });
-    </script>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/movement-page.js"></script>
 </body>
+
 </html>

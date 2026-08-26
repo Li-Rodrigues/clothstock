@@ -1,16 +1,19 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>ClothStock - Gestão de Categorias</title>
+    <title>ClothStock - Gestão de Fornecedores</title>
 
     <!-- ============================================================
          BOOTSTRAP
     ============================================================ -->
+
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -19,11 +22,13 @@
     <!-- ============================================================
          FEATHER ICONS
     ============================================================ -->
+
     <script src="https://unpkg.com/feather-icons"></script>
 
     <!-- ============================================================
          ESTILOS
     ============================================================ -->
+
     <style>
 
         :root {
@@ -225,7 +230,11 @@
 
     </style>
 
+<link rel="stylesheet" href="/css/sidebar.css">
+<script src="/js/sidebar.js" defer></script>
+
 </head>
+
 
 <body>
 
@@ -259,12 +268,10 @@
 
             </li>
 
+
             <li class="nav-item">
 
-                <a
-                    href="/categories.html"
-                    class="active"
-                >
+                <a href="/categories.html">
 
                     <i data-feather="folder"></i>
 
@@ -275,6 +282,7 @@
                 </a>
 
             </li>
+
 
             <li class="nav-item">
 
@@ -290,6 +298,7 @@
 
             </li>
 
+
             <li class="nav-item">
 
                 <a href="/products.html">
@@ -298,6 +307,24 @@
 
                     <span>
                         Produtos
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <li class="nav-item">
+
+                <a
+                    href="/suppliers.html"
+                    class="active"
+                >
+
+                    <i data-feather="truck"></i>
+
+                    <span>
+                        Fornecedores
                     </span>
 
                 </a>
@@ -315,6 +342,7 @@
 
     <main class="nxl-container">
 
+
         <!-- ========================================================
              HEADER
         ======================================================== -->
@@ -326,14 +354,15 @@
             <div>
 
                 <h5 class="mb-0 fw-bold">
-                    Gestão de Categorias
+                    Gestão de Fornecedores
                 </h5>
 
                 <small class="text-muted">
-                    Cadastro e controle de categorias de produtos
+                    Cadastro e controle de fornecedores
                 </small>
 
             </div>
+
 
             <button
                 id="theme-toggle"
@@ -363,33 +392,36 @@
 
 
         <!-- ========================================================
-             CARD CATEGORIAS
+             CARD FORNECEDORES
         ======================================================== -->
 
         <div class="card shadow-sm border mb-4">
+
 
             <div
                 class="card-header bg-transparent d-flex justify-content-between align-items-center py-3"
             >
 
                 <h5 class="card-title mb-0 fw-bold">
-                    Categorias Cadastradas
+                    Fornecedores Cadastrados
                 </h5>
+
 
                 <button
                     type="button"
                     class="btn btn-primary btn-sm d-flex align-items-center gap-2"
                     data-bs-toggle="modal"
-                    data-bs-target="#modalCreateCategory"
+                    data-bs-target="#modalCreateSupplier"
                 >
 
                     <i data-feather="plus"></i>
 
-                    Nova Categoria
+                    Novo Fornecedor
 
                 </button>
 
             </div>
+
 
             <div class="card-body p-0">
 
@@ -401,21 +433,29 @@
 
                             <tr>
 
-                                <th style="width: 80px;">
+                                <th style="width: 70px;">
                                     ID
                                 </th>
 
                                 <th>
-                                    Nome da Categoria
+                                    Fornecedor
                                 </th>
 
                                 <th>
-                                    Descrição
+                                    CNPJ/CPF
+                                </th>
+
+                                <th>
+                                    Contato
+                                </th>
+
+                                <th>
+                                    Cidade/UF
                                 </th>
 
                                 <th
                                     class="text-center"
-                                    style="width: 190px;"
+                                    style="width: 150px;"
                                 >
                                     Ações
                                 </th>
@@ -424,15 +464,16 @@
 
                         </thead>
 
-                        <tbody id="categories-table-body">
+
+                        <tbody id="suppliers-table-body">
 
                             <tr>
 
                                 <td
-                                    colspan="4"
+                                    colspan="6"
                                     class="text-center text-muted py-4"
                                 >
-                                    Carregando categorias...
+                                    Carregando fornecedores...
                                 </td>
 
                             </tr>
@@ -451,217 +492,12 @@
 
 
     <!-- ============================================================
-         MODAL CRIAR CATEGORIA
+         MODAL CRIAR FORNECEDOR
     ============================================================ -->
 
     <div
         class="modal fade"
-        id="modalCreateCategory"
-        tabindex="-1"
-    >
-
-        <div class="modal-dialog">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <h5 class="modal-title fw-bold">
-                        Nova Categoria
-                    </h5>
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                    ></button>
-
-                </div>
-
-                <form id="form-create-category">
-
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-
-                            <label
-                                class="form-label fw-semibold"
-                            >
-                                Nome da Categoria *
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="create-category-name"
-                                placeholder="Ex: Camisetas, Calças, Vestidos"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="mb-3">
-
-                            <label
-                                class="form-label fw-semibold"
-                            >
-                                Descrição
-                            </label>
-
-                            <textarea
-                                class="form-control"
-                                id="create-category-description"
-                                rows="3"
-                                placeholder="Descrição da categoria..."
-                            ></textarea>
-
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-
-                        <button
-                            type="button"
-                            class="btn btn-light"
-                            data-bs-dismiss="modal"
-                        >
-                            Cancelar
-                        </button>
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary d-flex align-items-center gap-2"
-                        >
-
-                            <i data-feather="save"></i>
-
-                            Salvar Categoria
-
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ============================================================
-         MODAL EDITAR CATEGORIA
-    ============================================================ -->
-
-    <div
-        class="modal fade"
-        id="modalEditCategory"
-        tabindex="-1"
-    >
-
-        <div class="modal-dialog">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <h5 class="modal-title fw-bold">
-                        Editar Categoria
-                    </h5>
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                    ></button>
-
-                </div>
-
-                <form id="form-edit-category">
-
-                    <input
-                        type="hidden"
-                        id="edit-category-id"
-                    >
-
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-
-                            <label
-                                class="form-label fw-semibold"
-                            >
-                                Nome da Categoria *
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="edit-category-name"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="mb-3">
-
-                            <label
-                                class="form-label fw-semibold"
-                            >
-                                Descrição
-                            </label>
-
-                            <textarea
-                                class="form-control"
-                                id="edit-category-description"
-                                rows="3"
-                            ></textarea>
-
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-
-                        <button
-                            type="button"
-                            class="btn btn-light"
-                            data-bs-dismiss="modal"
-                        >
-                            Cancelar
-                        </button>
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary d-flex align-items-center gap-2"
-                        >
-
-                            <i data-feather="save"></i>
-
-                            Atualizar Categoria
-
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ============================================================
-         MODAL DETALHES DA CATEGORIA
-    ============================================================ -->
-
-    <div
-        class="modal fade"
-        id="modalDetailCategory"
+        id="modalCreateSupplier"
         tabindex="-1"
     >
 
@@ -669,10 +505,11 @@
 
             <div class="modal-content">
 
+
                 <div class="modal-header">
 
                     <h5 class="modal-title fw-bold">
-                        Detalhes da Categoria
+                        Novo Fornecedor
                     </h5>
 
                     <button
@@ -683,12 +520,552 @@
 
                 </div>
 
+
+                <form id="form-create-supplier">
+
+                    <div class="modal-body">
+
+                        <div class="row g-3">
+
+
+                            <div class="col-md-7">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Razão Social *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="create-supplier-name"
+                                    placeholder="Ex: Empresa Comercial Ltda."
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-5">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    CNPJ/CPF *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="create-supplier-cnpj-cpf"
+                                    placeholder="Ex: 00.000.000/0001-00"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-7">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Nome Fantasia
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="create-supplier-trade-name"
+                                    placeholder="Nome comercial"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-5">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Telefone
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="create-supplier-phone"
+                                    placeholder="(11) 99999-9999"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-7">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    E-mail
+                                </label>
+
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="create-supplier-email"
+                                    placeholder="contato@empresa.com"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-5">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Estado
+                                </label>
+
+                                <select
+                                    class="form-select"
+                                    id="create-supplier-state"
+                                >
+
+                                    <option value="">
+                                        Selecione
+                                    </option>
+
+                                    <option value="AC">AC</option>
+                                    <option value="AL">AL</option>
+                                    <option value="AP">AP</option>
+                                    <option value="AM">AM</option>
+                                    <option value="BA">BA</option>
+                                    <option value="CE">CE</option>
+                                    <option value="DF">DF</option>
+                                    <option value="ES">ES</option>
+                                    <option value="GO">GO</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MT">MT</option>
+                                    <option value="MS">MS</option>
+                                    <option value="MG">MG</option>
+                                    <option value="PA">PA</option>
+                                    <option value="PB">PB</option>
+                                    <option value="PR">PR</option>
+                                    <option value="PE">PE</option>
+                                    <option value="PI">PI</option>
+                                    <option value="RJ">RJ</option>
+                                    <option value="RN">RN</option>
+                                    <option value="RS">RS</option>
+                                    <option value="RO">RO</option>
+                                    <option value="RR">RR</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SP">SP</option>
+                                    <option value="SE">SE</option>
+                                    <option value="TO">TO</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-8">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Endereço
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="create-supplier-address"
+                                    placeholder="Rua, número, complemento..."
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Cidade
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="create-supplier-city"
+                                    placeholder="São Paulo"
+                                >
+
+                            </div>
+
+
+                            <div class="col-12">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Observações
+                                </label>
+
+                                <textarea
+                                    class="form-control"
+                                    id="create-supplier-notes"
+                                    rows="3"
+                                    placeholder="Observações sobre o fornecedor..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-footer">
+
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary d-flex align-items-center gap-2"
+                        >
+
+                            <i data-feather="save"></i>
+
+                            Salvar Fornecedor
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         MODAL EDITAR FORNECEDOR
+    ============================================================ -->
+
+    <div
+        class="modal fade"
+        id="modalEditSupplier"
+        tabindex="-1"
+    >
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title fw-bold">
+                        Editar Fornecedor
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+
+                <form id="form-edit-supplier">
+
+                    <input
+                        type="hidden"
+                        id="edit-supplier-id"
+                    >
+
+
+                    <div class="modal-body">
+
+                        <div class="row g-3">
+
+
+                            <div class="col-md-7">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Razão Social *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="edit-supplier-name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-5">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    CNPJ/CPF *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="edit-supplier-cnpj-cpf"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-7">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Nome Fantasia
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="edit-supplier-trade-name"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-5">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Telefone
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="edit-supplier-phone"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-7">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    E-mail
+                                </label>
+
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="edit-supplier-email"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-5">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Estado
+                                </label>
+
+                                <select
+                                    class="form-select"
+                                    id="edit-supplier-state"
+                                >
+
+                                    <option value="">
+                                        Selecione
+                                    </option>
+
+                                    <option value="AC">AC</option>
+                                    <option value="AL">AL</option>
+                                    <option value="AP">AP</option>
+                                    <option value="AM">AM</option>
+                                    <option value="BA">BA</option>
+                                    <option value="CE">CE</option>
+                                    <option value="DF">DF</option>
+                                    <option value="ES">ES</option>
+                                    <option value="GO">GO</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MT">MT</option>
+                                    <option value="MS">MS</option>
+                                    <option value="MG">MG</option>
+                                    <option value="PA">PA</option>
+                                    <option value="PB">PB</option>
+                                    <option value="PR">PR</option>
+                                    <option value="PE">PE</option>
+                                    <option value="PI">PI</option>
+                                    <option value="RJ">RJ</option>
+                                    <option value="RN">RN</option>
+                                    <option value="RS">RS</option>
+                                    <option value="RO">RO</option>
+                                    <option value="RR">RR</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SP">SP</option>
+                                    <option value="SE">SE</option>
+                                    <option value="TO">TO</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-8">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Endereço
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="edit-supplier-address"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Cidade
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="edit-supplier-city"
+                                >
+
+                            </div>
+
+
+                            <div class="col-12">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Observações
+                                </label>
+
+                                <textarea
+                                    class="form-control"
+                                    id="edit-supplier-notes"
+                                    rows="3"
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-footer">
+
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary d-flex align-items-center gap-2"
+                        >
+
+                            <i data-feather="save"></i>
+
+                            Atualizar Fornecedor
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         MODAL DETALHES DO FORNECEDOR
+    ============================================================ -->
+
+    <div
+        class="modal fade"
+        id="modalDetailSupplier"
+        tabindex="-1"
+    >
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title fw-bold">
+                        Detalhes do Fornecedor
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+
                 <div class="modal-body">
+
 
                     <!-- LOADING -->
 
                     <div
-                        id="category-detail-loading"
+                        id="supplier-detail-loading"
                         class="text-center py-4"
                     >
 
@@ -707,21 +1084,22 @@
                     <!-- CONTEÚDO -->
 
                     <div
-                        id="category-detail-content"
+                        id="supplier-detail-content"
                         style="display: none;"
                     >
 
                         <div class="row g-4">
 
+
                             <div class="col-md-8">
 
                                 <div class="detail-label">
-                                    Categoria
+                                    Razão Social
                                 </div>
 
                                 <div
                                     class="detail-value fs-4"
-                                    id="detail-category-name"
+                                    id="detail-supplier-name"
                                 ></div>
 
                             </div>
@@ -735,7 +1113,91 @@
 
                                 <div
                                     class="detail-value"
-                                    id="detail-category-id"
+                                    id="detail-supplier-id"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="detail-label">
+                                    Nome Fantasia
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-supplier-trade-name"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="detail-label">
+                                    CNPJ/CPF
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-supplier-cnpj-cpf"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="detail-label">
+                                    E-mail
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-supplier-email"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="detail-label">
+                                    Telefone
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-supplier-phone"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-8">
+
+                                <div class="detail-label">
+                                    Endereço
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-supplier-address"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <div class="detail-label">
+                                    Cidade / UF
+                                </div>
+
+                                <div
+                                    class="detail-value"
+                                    id="detail-supplier-location"
                                 ></div>
 
                             </div>
@@ -744,12 +1206,12 @@
                             <div class="col-md-12">
 
                                 <div class="detail-label">
-                                    Descrição
+                                    Observações
                                 </div>
 
                                 <div
                                     class="detail-value"
-                                    id="detail-category-description"
+                                    id="detail-supplier-notes"
                                 ></div>
 
                             </div>
@@ -758,12 +1220,12 @@
                             <div class="col-md-6">
 
                                 <div class="detail-label">
-                                    Criada em
+                                    Criado em
                                 </div>
 
                                 <div
                                     class="detail-value"
-                                    id="detail-category-created"
+                                    id="detail-supplier-created"
                                 ></div>
 
                             </div>
@@ -772,12 +1234,12 @@
                             <div class="col-md-6">
 
                                 <div class="detail-label">
-                                    Atualizada em
+                                    Atualizado em
                                 </div>
 
                                 <div
                                     class="detail-value"
-                                    id="detail-category-updated"
+                                    id="detail-supplier-updated"
                                 ></div>
 
                             </div>
@@ -790,7 +1252,7 @@
                     <!-- ERRO -->
 
                     <div
-                        id="category-detail-error"
+                        id="supplier-detail-error"
                         class="alert alert-danger"
                         style="display: none;"
                     ></div>
@@ -836,9 +1298,9 @@
         // CONFIGURAÇÃO
         // ============================================================
 
-        const CATEGORIES_API_URL = '/api/categories';
+        const SUPPLIERS_API_URL = '/api/suppliers';
 
-        let allCategoriesCache = [];
+        let allSuppliersCache = [];
 
 
         // ============================================================
@@ -935,26 +1397,11 @@
             }
 
             return String(value)
-                .replace(
-                    /&/g,
-                    '&amp;'
-                )
-                .replace(
-                    /</g,
-                    '&lt;'
-                )
-                .replace(
-                    />/g,
-                    '&gt;'
-                )
-                .replace(
-                    /"/g,
-                    '&quot;'
-                )
-                .replace(
-                    /'/g,
-                    '&#039;'
-                );
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
 
         }
 
@@ -969,8 +1416,7 @@
                 return '-';
             }
 
-            const date =
-                new Date(value);
+            const date = new Date(value);
 
             if (
                 Number.isNaN(
@@ -988,14 +1434,14 @@
 
 
         // ============================================================
-        // BUSCAR TODAS AS CATEGORIAS
+        // BUSCAR TODOS OS FORNECEDORES
         // ============================================================
 
-        async function fetchCategories() {
+        async function fetchSuppliers() {
 
             const tbody =
                 document.getElementById(
-                    'categories-table-body'
+                    'suppliers-table-body'
                 );
 
             try {
@@ -1004,7 +1450,7 @@
                     <tr>
 
                         <td
-                            colspan="4"
+                            colspan="6"
                             class="text-center text-muted py-4"
                         >
 
@@ -1014,7 +1460,7 @@
                             ></div>
 
                             <span class="ms-2">
-                                Carregando categorias...
+                                Carregando fornecedores...
                             </span>
 
                         </td>
@@ -1022,52 +1468,61 @@
                     </tr>
                 `;
 
+
                 const response =
                     await fetch(
-                        CATEGORIES_API_URL
+                        SUPPLIERS_API_URL
                     );
+
 
                 const result =
                     await response.json();
+
 
                 if (!response.ok) {
 
                     throw new Error(
                         result.error ||
-                        'Erro ao buscar categorias.'
+                        'Erro ao buscar fornecedores.'
                     );
 
                 }
 
-                allCategoriesCache =
+
+                allSuppliersCache =
                     Array.isArray(result)
                         ? result
                         : (
                             result.data ||
-                            result.categories ||
+                            result.suppliers ||
                             []
                         );
 
-                renderCategoriesTable(
-                    allCategoriesCache
+
+                renderSuppliersTable(
+                    allSuppliersCache
                 );
+
 
             } catch (error) {
 
                 console.error(
-                    'Erro ao buscar categorias:',
+                    'Erro ao buscar fornecedores:',
                     error
                 );
+
 
                 tbody.innerHTML = `
                     <tr>
 
                         <td
-                            colspan="4"
+                            colspan="6"
                             class="text-center text-danger py-4"
                         >
-                            Erro ao carregar categorias:
+
+                            Erro ao carregar fornecedores:
                             ${escapeHtml(error.message)}
+
                         </td>
 
                     </tr>
@@ -1082,34 +1537,33 @@
         // RENDERIZAR TABELA
         // ============================================================
 
-        function renderCategoriesTable(
-            categoriesList
+        function renderSuppliersTable(
+            suppliersList
         ) {
 
             const tbody =
                 document.getElementById(
-                    'categories-table-body'
+                    'suppliers-table-body'
                 );
 
+
             if (
-                !Array.isArray(categoriesList) ||
-                categoriesList.length === 0
+                !Array.isArray(suppliersList) ||
+                suppliersList.length === 0
             ) {
 
                 tbody.innerHTML = `
                     <tr>
 
                         <td
-                            colspan="4"
+                            colspan="6"
                             class="text-center text-muted py-5"
                         >
 
-                            <i
-                                data-feather="folder"
-                            ></i>
+                            <i data-feather="truck"></i>
 
                             <div class="mt-2">
-                                Nenhuma categoria cadastrada.
+                                Nenhum fornecedor cadastrado.
                             </div>
 
                         </td>
@@ -1126,33 +1580,67 @@
             let rowsHtml = '';
 
 
-            categoriesList.forEach(
-                category => {
+            suppliersList.forEach(
+                supplier => {
 
-                    if (!category) {
+                    if (!supplier) {
                         return;
                     }
 
+
                     const id =
-                        category.id ?? '-';
+                        supplier.id ?? '-';
+
 
                     const name =
-                        category.name ||
-                        category.nome ||
+                        supplier.name ||
                         'Sem nome';
 
-                    const description =
-                        category.description ||
-                        category.descricao ||
+
+                    const tradeName =
+                        supplier.trade_name ||
                         '';
 
 
+                    const cnpjCpf =
+                        supplier.cnpj_cpf ||
+                        '-';
+
+
+                    const email =
+                        supplier.email ||
+                        '';
+
+
+                    const phone =
+                        supplier.phone ||
+                        '';
+
+
+                    const city =
+                        supplier.city ||
+                        '';
+
+
+                    const state =
+                        supplier.state ||
+                        '';
+
+
+                    const location =
+                        city && state
+                            ? `${city}/${state}`
+                            : city || state || '-';
+
+
                     rowsHtml += `
+
                         <tr>
 
                             <td class="fw-bold">
                                 ${escapeHtml(id)}
                             </td>
+
 
                             <td>
 
@@ -1160,25 +1648,72 @@
                                     ${escapeHtml(name)}
                                 </div>
 
+                                ${
+                                    tradeName
+                                        ? `
+                                            <small class="text-muted">
+                                                ${escapeHtml(tradeName)}
+                                            </small>
+                                        `
+                                        : ''
+                                }
+
                             </td>
+
+
+                            <td>
+                                ${escapeHtml(cnpjCpf)}
+                            </td>
+
 
                             <td>
 
-                                <small class="text-muted">
+                                ${
+                                    email
+                                        ? `
+                                            <div>
+                                                <small>
+                                                    ${escapeHtml(email)}
+                                                </small>
+                                            </div>
+                                        `
+                                        : ''
+                                }
 
-                                    ${
-                                        description
-                                            ? escapeHtml(description)
-                                            : 'Sem descrição.'
-                                    }
+                                ${
+                                    phone
+                                        ? `
+                                            <div>
+                                                <small class="text-muted">
+                                                    ${escapeHtml(phone)}
+                                                </small>
+                                            </div>
+                                        `
+                                        : ''
+                                }
 
-                                </small>
+                                ${
+                                    !email && !phone
+                                        ? `
+                                            <small class="text-muted">
+                                                Sem contato
+                                            </small>
+                                        `
+                                        : ''
+                                }
 
                             </td>
+
+
+                            <td>
+                                ${escapeHtml(location)}
+                            </td>
+
 
                             <td>
 
                                 <div class="action-buttons">
+
 
                                     <!-- DETALHES -->
 
@@ -1186,7 +1721,7 @@
                                         type="button"
                                         class="btn btn-sm btn-outline-info"
                                         title="Ver detalhes"
-                                        onclick="viewCategory(${Number(id)})"
+                                        onclick="viewSupplier(${Number(id)})"
                                     >
 
                                         <i
@@ -1201,8 +1736,8 @@
                                     <button
                                         type="button"
                                         class="btn btn-sm btn-primary"
-                                        title="Editar categoria"
-                                        onclick="editCategory(${Number(id)})"
+                                        title="Editar fornecedor"
+                                        onclick="editSupplier(${Number(id)})"
                                     >
 
                                         <i
@@ -1217,8 +1752,8 @@
                                     <button
                                         type="button"
                                         class="btn btn-sm btn-danger"
-                                        title="Excluir categoria"
-                                        onclick="deleteCategory(${Number(id)})"
+                                        title="Excluir fornecedor"
+                                        onclick="deleteSupplier(${Number(id)})"
                                     >
 
                                         <i
@@ -1227,19 +1762,20 @@
 
                                     </button>
 
+
                                 </div>
 
                             </td>
 
                         </tr>
+
                     `;
 
                 }
             );
 
 
-            tbody.innerHTML =
-                rowsHtml;
+            tbody.innerHTML = rowsHtml;
 
             refreshIcons();
 
@@ -1247,12 +1783,162 @@
 
 
         // ============================================================
-        // CRIAR CATEGORIA
+        // MONTAR PAYLOAD DO FORNECEDOR
+        // ============================================================
+
+        function getSupplierFormData(prefix) {
+
+            return {
+
+                name:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-name`
+                        )
+                        .value
+                        .trim(),
+
+                trade_name:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-trade-name`
+                        )
+                        .value
+                        .trim(),
+
+                cnpj_cpf:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-cnpj-cpf`
+                        )
+                        .value
+                        .trim(),
+
+                email:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-email`
+                        )
+                        .value
+                        .trim(),
+
+                phone:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-phone`
+                        )
+                        .value
+                        .trim(),
+
+                address:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-address`
+                        )
+                        .value
+                        .trim(),
+
+                city:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-city`
+                        )
+                        .value
+                        .trim(),
+
+                state:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-state`
+                        )
+                        .value
+                        .trim(),
+
+                notes:
+                    document
+                        .getElementById(
+                            `${prefix}-supplier-notes`
+                        )
+                        .value
+                        .trim()
+
+            };
+
+        }
+
+
+        // ============================================================
+        // PREENCHER FORMULÁRIO
+        // ============================================================
+
+        function fillSupplierForm(
+            prefix,
+            supplier
+        ) {
+
+            document.getElementById(
+                `${prefix}-supplier-name`
+            ).value =
+                supplier.name || '';
+
+
+            document.getElementById(
+                `${prefix}-supplier-trade-name`
+            ).value =
+                supplier.trade_name || '';
+
+
+            document.getElementById(
+                `${prefix}-supplier-cnpj-cpf`
+            ).value =
+                supplier.cnpj_cpf || '';
+
+
+            document.getElementById(
+                `${prefix}-supplier-email`
+            ).value =
+                supplier.email || '';
+
+
+            document.getElementById(
+                `${prefix}-supplier-phone`
+            ).value =
+                supplier.phone || '';
+
+
+            document.getElementById(
+                `${prefix}-supplier-address`
+            ).value =
+                supplier.address || '';
+
+
+            document.getElementById(
+                `${prefix}-supplier-city`
+            ).value =
+                supplier.city || '';
+
+
+            document.getElementById(
+                `${prefix}-supplier-state`
+            ).value =
+                supplier.state || '';
+
+
+            document.getElementById(
+                `${prefix}-supplier-notes`
+            ).value =
+                supplier.notes || '';
+
+        }
+
+
+        // ============================================================
+        // CRIAR FORNECEDOR
         // ============================================================
 
         document
             .getElementById(
-                'form-create-category'
+                'form-create-supplier'
             )
             .addEventListener(
                 'submit',
@@ -1261,31 +1947,27 @@
                     event.preventDefault();
 
 
-                    const payload = {
-
-                        name:
-                            document
-                                .getElementById(
-                                    'create-category-name'
-                                )
-                                .value
-                                .trim(),
-
-                        description:
-                            document
-                                .getElementById(
-                                    'create-category-description'
-                                )
-                                .value
-                                .trim()
-
-                    };
+                    const payload =
+                        getSupplierFormData(
+                            'create'
+                        );
 
 
                     if (!payload.name) {
 
                         showAlert(
-                            'O nome da categoria é obrigatório.',
+                            'A razão social do fornecedor é obrigatória.',
+                            'warning'
+                        );
+
+                        return;
+                    }
+
+
+                    if (!payload.cnpj_cpf) {
+
+                        showAlert(
+                            'O CNPJ/CPF do fornecedor é obrigatório.',
                             'warning'
                         );
 
@@ -1297,7 +1979,7 @@
 
                         const response =
                             await fetch(
-                                CATEGORIES_API_URL,
+                                SUPPLIERS_API_URL,
                                 {
                                     method: 'POST',
 
@@ -1322,20 +2004,20 @@
 
                             throw new Error(
                                 result.error ||
-                                'Erro ao cadastrar categoria.'
+                                'Erro ao cadastrar fornecedor.'
                             );
 
                         }
 
 
                         showAlert(
-                            'Categoria cadastrada com sucesso!'
+                            'Fornecedor cadastrado com sucesso!'
                         );
 
 
                         const modalElement =
                             document.getElementById(
-                                'modalCreateCategory'
+                                'modalCreateSupplier'
                             );
 
 
@@ -1352,21 +2034,22 @@
 
                         document
                             .getElementById(
-                                'form-create-category'
+                                'form-create-supplier'
                             )
                             .reset();
 
 
-                        await fetchCategories();
+                        await fetchSuppliers();
 
 
                     } catch (error) {
 
                         console.error(error);
 
+
                         showAlert(
                             error.message ||
-                            'Erro ao cadastrar categoria.',
+                            'Erro ao cadastrar fornecedor.',
                             'danger'
                         );
 
@@ -1377,16 +2060,16 @@
 
 
         // ============================================================
-        // EDITAR CATEGORIA
+        // EDITAR FORNECEDOR
         // ============================================================
 
-        async function editCategory(id) {
+        async function editSupplier(id) {
 
             try {
 
                 const response =
                     await fetch(
-                        `${CATEGORIES_API_URL}/${id}`
+                        `${SUPPLIERS_API_URL}/${id}`
                     );
 
 
@@ -1398,56 +2081,47 @@
 
                     throw new Error(
                         result.error ||
-                        'Não foi possível carregar a categoria.'
+                        'Não foi possível carregar o fornecedor.'
                     );
 
                 }
 
 
-                const category =
+                const supplier =
                     result.data;
 
 
-                if (!category) {
+                if (!supplier) {
 
                     throw new Error(
-                        'Categoria não encontrada.'
+                        'Fornecedor não encontrado.'
                     );
 
                 }
 
 
                 document.getElementById(
-                    'edit-category-id'
+                    'edit-supplier-id'
                 ).value =
-                    category.id;
+                    supplier.id;
 
 
-                document.getElementById(
-                    'edit-category-name'
-                ).value =
-                    category.name ||
-                    category.nome ||
-                    '';
-
-
-                document.getElementById(
-                    'edit-category-description'
-                ).value =
-                    category.description ||
-                    category.descricao ||
-                    '';
+                fillSupplierForm(
+                    'edit',
+                    supplier
+                );
 
 
                 const modal =
                     new bootstrap.Modal(
                         document.getElementById(
-                            'modalEditCategory'
+                            'modalEditSupplier'
                         )
                     );
 
 
                 modal.show();
+
 
                 refreshIcons();
 
@@ -1456,9 +2130,10 @@
 
                 console.error(error);
 
+
                 showAlert(
                     error.message ||
-                    'Erro ao carregar categoria.',
+                    'Erro ao carregar fornecedor.',
                     'danger'
                 );
 
@@ -1468,12 +2143,12 @@
 
 
         // ============================================================
-        // ATUALIZAR CATEGORIA
+        // ATUALIZAR FORNECEDOR
         // ============================================================
 
         document
             .getElementById(
-                'form-edit-category'
+                'form-edit-supplier'
             )
             .addEventListener(
                 'submit',
@@ -1484,35 +2159,31 @@
 
                     const id =
                         document.getElementById(
-                            'edit-category-id'
+                            'edit-supplier-id'
                         ).value;
 
 
-                    const payload = {
-
-                        name:
-                            document
-                                .getElementById(
-                                    'edit-category-name'
-                                )
-                                .value
-                                .trim(),
-
-                        description:
-                            document
-                                .getElementById(
-                                    'edit-category-description'
-                                )
-                                .value
-                                .trim()
-
-                    };
+                    const payload =
+                        getSupplierFormData(
+                            'edit'
+                        );
 
 
                     if (!payload.name) {
 
                         showAlert(
-                            'O nome da categoria é obrigatório.',
+                            'A razão social do fornecedor é obrigatória.',
+                            'warning'
+                        );
+
+                        return;
+                    }
+
+
+                    if (!payload.cnpj_cpf) {
+
+                        showAlert(
+                            'O CNPJ/CPF do fornecedor é obrigatório.',
                             'warning'
                         );
 
@@ -1524,7 +2195,7 @@
 
                         const response =
                             await fetch(
-                                `${CATEGORIES_API_URL}/${id}`,
+                                `${SUPPLIERS_API_URL}/${id}`,
                                 {
                                     method: 'PUT',
 
@@ -1549,20 +2220,20 @@
 
                             throw new Error(
                                 result.error ||
-                                'Erro ao atualizar categoria.'
+                                'Erro ao atualizar fornecedor.'
                             );
 
                         }
 
 
                         showAlert(
-                            'Categoria atualizada com sucesso!'
+                            'Fornecedor atualizado com sucesso!'
                         );
 
 
                         const modalElement =
                             document.getElementById(
-                                'modalEditCategory'
+                                'modalEditSupplier'
                             );
 
 
@@ -1577,16 +2248,17 @@
                         }
 
 
-                        await fetchCategories();
+                        await fetchSuppliers();
 
 
                     } catch (error) {
 
                         console.error(error);
 
+
                         showAlert(
                             error.message ||
-                            'Erro ao atualizar categoria.',
+                            'Erro ao atualizar fornecedor.',
                             'danger'
                         );
 
@@ -1600,11 +2272,11 @@
         // VISUALIZAR DETALHES
         // ============================================================
 
-        async function viewCategory(id) {
+        async function viewSupplier(id) {
 
             const modalElement =
                 document.getElementById(
-                    'modalDetailCategory'
+                    'modalDetailSupplier'
                 );
 
 
@@ -1615,19 +2287,19 @@
 
 
             document.getElementById(
-                'category-detail-loading'
+                'supplier-detail-loading'
             ).style.display =
                 'block';
 
 
             document.getElementById(
-                'category-detail-content'
+                'supplier-detail-content'
             ).style.display =
                 'none';
 
 
             document.getElementById(
-                'category-detail-error'
+                'supplier-detail-error'
             ).style.display =
                 'none';
 
@@ -1639,7 +2311,7 @@
 
                 const response =
                     await fetch(
-                        `${CATEGORIES_API_URL}/${id}`
+                        `${SUPPLIERS_API_URL}/${id}`
                     );
 
 
@@ -1651,71 +2323,121 @@
 
                     throw new Error(
                         result.error ||
-                        'Não foi possível carregar os detalhes da categoria.'
+                        'Não foi possível carregar os detalhes do fornecedor.'
                     );
 
                 }
 
 
-                const category =
+                const supplier =
                     result.data;
 
 
-                if (!category) {
+                if (!supplier) {
 
                     throw new Error(
-                        'Categoria não encontrada.'
+                        'Fornecedor não encontrado.'
                     );
 
                 }
 
 
                 document.getElementById(
-                    'detail-category-id'
+                    'detail-supplier-id'
                 ).textContent =
-                    category.id ?? '-';
+                    supplier.id ?? '-';
 
 
                 document.getElementById(
-                    'detail-category-name'
+                    'detail-supplier-name'
                 ).textContent =
-                    category.name ||
-                    category.nome ||
+                    supplier.name ||
                     '-';
 
 
                 document.getElementById(
-                    'detail-category-description'
+                    'detail-supplier-trade-name'
                 ).textContent =
-                    category.description ||
-                    category.descricao ||
-                    'Sem descrição.';
+                    supplier.trade_name ||
+                    '-';
 
 
                 document.getElementById(
-                    'detail-category-created'
+                    'detail-supplier-cnpj-cpf'
+                ).textContent =
+                    supplier.cnpj_cpf ||
+                    '-';
+
+
+                document.getElementById(
+                    'detail-supplier-email'
+                ).textContent =
+                    supplier.email ||
+                    '-';
+
+
+                document.getElementById(
+                    'detail-supplier-phone'
+                ).textContent =
+                    supplier.phone ||
+                    '-';
+
+
+                document.getElementById(
+                    'detail-supplier-address'
+                ).textContent =
+                    supplier.address ||
+                    '-';
+
+
+                const location =
+                    supplier.city &&
+                    supplier.state
+                        ? `${supplier.city}/${supplier.state}`
+                        : (
+                            supplier.city ||
+                            supplier.state ||
+                            '-'
+                        );
+
+
+                document.getElementById(
+                    'detail-supplier-location'
+                ).textContent =
+                    location;
+
+
+                document.getElementById(
+                    'detail-supplier-notes'
+                ).textContent =
+                    supplier.notes ||
+                    'Sem observações.';
+
+
+                document.getElementById(
+                    'detail-supplier-created'
                 ).textContent =
                     formatDate(
-                        category.created_at
+                        supplier.created_at
                     );
 
 
                 document.getElementById(
-                    'detail-category-updated'
+                    'detail-supplier-updated'
                 ).textContent =
                     formatDate(
-                        category.updated_at
+                        supplier.updated_at
                     );
 
 
                 document.getElementById(
-                    'category-detail-loading'
+                    'supplier-detail-loading'
                 ).style.display =
                     'none';
 
 
                 document.getElementById(
-                    'category-detail-content'
+                    'supplier-detail-content'
                 ).style.display =
                     'block';
 
@@ -1726,14 +2448,14 @@
 
 
                 document.getElementById(
-                    'category-detail-loading'
+                    'supplier-detail-loading'
                 ).style.display =
                     'none';
 
 
                 const errorElement =
                     document.getElementById(
-                        'category-detail-error'
+                        'supplier-detail-error'
                     );
 
 
@@ -1751,24 +2473,24 @@
 
 
         // ============================================================
-        // EXCLUIR CATEGORIA
+        // EXCLUIR FORNECEDOR
         // ============================================================
 
-        async function deleteCategory(id) {
+        async function deleteSupplier(id) {
 
-            const category =
-                allCategoriesCache.find(
+            const supplier =
+                allSuppliersCache.find(
                     item =>
                         item &&
                         item.id == id
                 );
 
 
-            const categoryName =
-                category
+            const supplierName =
+                supplier
                     ? (
-                        category.name ||
-                        category.nome ||
+                        supplier.name ||
+                        supplier.trade_name ||
                         `#${id}`
                     )
                     : `#${id}`;
@@ -1776,7 +2498,7 @@
 
             const confirmed =
                 confirm(
-                    `Deseja realmente excluir a categoria "${categoryName}"?`
+                    `Deseja realmente excluir o fornecedor "${supplierName}"?`
                 );
 
 
@@ -1789,7 +2511,7 @@
 
                 const response =
                     await fetch(
-                        `${CATEGORIES_API_URL}/${id}`,
+                        `${SUPPLIERS_API_URL}/${id}`,
                         {
                             method: 'DELETE'
                         }
@@ -1804,27 +2526,28 @@
 
                     throw new Error(
                         result.error ||
-                        'Erro ao excluir categoria.'
+                        'Erro ao excluir fornecedor.'
                     );
 
                 }
 
 
                 showAlert(
-                    'Categoria excluída com sucesso!'
+                    'Fornecedor excluído com sucesso!'
                 );
 
 
-                await fetchCategories();
+                await fetchSuppliers();
 
 
             } catch (error) {
 
                 console.error(error);
 
+
                 showAlert(
                     error.message ||
-                    'Erro ao excluir categoria.',
+                    'Erro ao excluir fornecedor.',
                     'danger'
                 );
 
@@ -1843,7 +2566,7 @@
 
                 refreshIcons();
 
-                await fetchCategories();
+                await fetchSuppliers();
 
                 refreshIcons();
 
@@ -1853,8 +2576,5 @@
     </script>
 
 </body>
-
-<link rel="stylesheet" href="/css/sidebar.css">
-<script src="/js/sidebar.js" defer></script>
 
 </html>

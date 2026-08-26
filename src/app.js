@@ -12,6 +12,8 @@ const authRoutes = require('./routes/authRoutes');
 const brandRoutes = require('./routes/brandRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
+const supplierRoutes = require('./routes/supplierRoutes');
+const movementRoutes = require('./routes/movementRoutes');
 
 // ============================================================
 // MIDDLEWARE DE ERRO
@@ -52,6 +54,10 @@ app.use('/api/brands', brandRoutes);
 app.use('/api/categories', categoryRoutes);
 
 app.use('/api/products', productRoutes);
+
+app.use('/api/suppliers', supplierRoutes);
+
+app.use('/api/movements', movementRoutes);
 
 // ============================================================
 // ROTA PRINCIPAL

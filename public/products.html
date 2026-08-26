@@ -215,6 +215,10 @@
             }
         }
     </style>
+
+<link rel="stylesheet" href="/css/sidebar.css">
+<script src="/js/sidebar.js" defer></script>
+
 </head>
 
 <body>
@@ -229,6 +233,7 @@
             <h4 class="text-white fw-bold mb-0">
                 ClothStock
             </h4>
+
             <small class="text-secondary">
                 Gestão de Estoque
             </small>
@@ -236,6 +241,7 @@
 
         <ul class="nav flex-column gap-1">
 
+            <!-- DASHBOARD -->
             <li class="nav-item">
                 <a href="/index.html">
                     <i data-feather="layout"></i>
@@ -243,6 +249,15 @@
                 </a>
             </li>
 
+            <!-- FORNECEDORES -->
+            <li class="nav-item">
+                <a href="/suppliers.html">
+                    <i data-feather="truck"></i>
+                    <span>Fornecedores</span>
+                </a>
+            </li>
+
+            <!-- CATEGORIAS -->
             <li class="nav-item">
                 <a href="/categories.html">
                     <i data-feather="folder"></i>
@@ -250,6 +265,7 @@
                 </a>
             </li>
 
+            <!-- MARCAS -->
             <li class="nav-item">
                 <a href="/brands.html">
                     <i data-feather="tag"></i>
@@ -257,6 +273,7 @@
                 </a>
             </li>
 
+            <!-- PRODUTOS -->
             <li class="nav-item">
                 <a href="/products.html" class="active">
                     <i data-feather="box"></i>
@@ -367,12 +384,10 @@
                                     Marca
                                 </th>
 
-                                <!-- CUSTO -->
                                 <th>
                                     Custo
                                 </th>
 
-                                <!-- VENDA -->
                                 <th>
                                     Venda
                                 </th>
@@ -728,7 +743,6 @@
                 <form id="form-edit-product">
 
                     <input type="hidden" id="edit-product-id">
-
 
                     <div class="modal-body">
 
@@ -1610,15 +1624,11 @@
                     product.brand_name || '-';
 
 
-                // ESTOQUE
-
                 const stock =
                     Number(
                         product.quantity_in_stock || 0
                     );
 
-
-                // PREÇO DE CUSTO
 
                 const costPrice =
                     Number(
@@ -1626,16 +1636,10 @@
                     );
 
 
-                // PREÇO DE VENDA
-
                 const sellingPrice =
                     Number(
                         product.selling_price || 0
                     );
-
-
-                const active =
-                    product.is_active !== false;
 
 
                 rowsHtml += `
@@ -1708,29 +1712,15 @@
                         </td>
 
 
-                        <!-- =========================
-                             CUSTO - VERMELHO
-                        ========================== -->
-
                         <td class="price-cost">
-
                             ${formatCurrency(costPrice)}
-
                         </td>
 
-
-                        <!-- =========================
-                             VENDA - VERDE
-                        ========================== -->
 
                         <td class="price-selling">
-
                             ${formatCurrency(sellingPrice)}
-
                         </td>
 
-
-                        <!-- ESTOQUE -->
 
                         <td>
 
@@ -1747,13 +1737,9 @@
                         </td>
 
 
-                        <!-- AÇÕES -->
-
                         <td>
 
                             <div class="action-buttons">
-
-                                <!-- DETALHES -->
 
                                 <button
                                     type="button"
@@ -1767,8 +1753,6 @@
                                 </button>
 
 
-                                <!-- EDITAR -->
-
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-primary"
@@ -1780,8 +1764,6 @@
 
                                 </button>
 
-
-                                <!-- EXCLUIR -->
 
                                 <button
                                     type="button"
