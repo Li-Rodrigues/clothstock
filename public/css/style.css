@@ -1,0 +1,38 @@
+/* Ajustes globais de tema */
+body.dark-mode {
+  background-color: #121212;
+  color: #f8f9fa;
+}
+
+/* Ajustes de modais e formulários no Modo Escuro */
+body.dark-mode .modal-content {
+  background-color: #1e1e1e !important;
+  color: #f8f9fa !important;
+  border-color: #2d2d2d !important;
+}
+
+body.dark-mode label,
+body.dark-mode .form-label,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode strong {
+  color: #f8f9fa !important;
+}
+
+/* Mantém os campos de entrada legíveis */
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: #2b2b2b !important;
+  color: #ffffff !important;
+  border-color: #444444 !important;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+}

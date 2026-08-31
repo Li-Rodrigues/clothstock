@@ -216,8 +216,8 @@
         }
     </style>
 
-<link rel="stylesheet" href="/css/sidebar.css">
-<script src="/js/sidebar.js" defer></script>
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <script src="/js/sidebar.js" defer></script>
 
 </head>
 
@@ -306,8 +306,7 @@
                 </small>
             </div>
 
-            <button id="theme-toggle"
-                class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+            <button id="theme-toggle" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
                 onclick="toggleDarkMode()">
 
                 <i data-feather="moon" id="theme-icon"></i>
@@ -336,10 +335,8 @@
                     Produtos Cadastrados
                 </h5>
 
-                <button type="button"
-                    class="btn btn-primary btn-sm d-flex align-items-center gap-2"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalCreateProduct">
+                <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2"
+                    data-bs-toggle="modal" data-bs-target="#modalCreateProduct">
 
                     <i data-feather="plus"></i>
 
@@ -444,9 +441,7 @@
                         Novo Produto
                     </h5>
 
-                    <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                     </button>
 
                 </div>
@@ -464,11 +459,8 @@
                                     Nome do Produto *
                                 </label>
 
-                                <input type="text"
-                                    class="form-control"
-                                    id="create-product-title"
-                                    placeholder="Ex: Camiseta Oversized Basic"
-                                    required>
+                                <input type="text" class="form-control" id="create-product-title"
+                                    placeholder="Ex: Camiseta Oversized Basic" required>
 
                             </div>
 
@@ -479,11 +471,8 @@
                                     SKU *
                                 </label>
 
-                                <input type="text"
-                                    class="form-control"
-                                    id="create-product-sku"
-                                    placeholder="Ex: CAM-001"
-                                    required>
+                                <input type="text" class="form-control" id="create-product-sku"
+                                    placeholder="Ex: CAM-001" required>
 
                             </div>
 
@@ -498,8 +487,7 @@
                                     Categoria
                                 </label>
 
-                                <select class="form-select"
-                                    id="create-product-category">
+                                <select class="form-select" id="create-product-category">
 
                                     <option value="">
                                         Selecione uma categoria...
@@ -516,8 +504,7 @@
                                     Marca
                                 </label>
 
-                                <select class="form-select"
-                                    id="create-product-brand">
+                                <select class="form-select" id="create-product-brand">
 
                                     <option value="">
                                         Selecione uma marca...
@@ -533,67 +520,57 @@
                         <div class="row">
 
                             <div class="col-md-6 mb-3">
-
-                                <label class="form-label fw-semibold">
+                                <label for="create-product-size" class="form-label fw-semibold">
                                     Tamanho
                                 </label>
-
-                                <select class="form-select"
-                                    id="create-product-size">
-
-                                    <option value="">
-                                        Selecione...
-                                    </option>
-
-                                    <option value="PP">PP</option>
-                                    <option value="P">P</option>
-                                    <option value="M">M</option>
-                                    <option value="G">G</option>
-                                    <option value="GG">GG</option>
-                                    <option value="XG">XG</option>
-
-                                    <option value="36">36</option>
-                                    <option value="38">38</option>
-                                    <option value="40">40</option>
-                                    <option value="42">42</option>
-                                    <option value="44">44</option>
-                                    <option value="46">46</option>
-
-                                    <option value="Único">
-                                        Único
-                                    </option>
-
+                                <select class="form-select" id="create-product-size" name="size" required>
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <optgroup label="Tamanhos Padrão">
+                                        <option value="PP">PP</option>
+                                        <option value="P">P</option>
+                                        <option value="M">M</option>
+                                        <option value="G">G</option>
+                                        <option value="GG">GG</option>
+                                        <option value="XG">XG</option>
+                                    </optgroup>
+                                    <optgroup label="Numeração">
+                                        <option value="36">36</option>
+                                        <option value="38">38</option>
+                                        <option value="40">40</option>
+                                        <option value="42">42</option>
+                                        <option value="44">44</option>
+                                        <option value="46">46</option>
+                                    </optgroup>
+                                    <optgroup label="Outros">
+                                        <option value="Único">Único</option>
+                                    </optgroup>
                                 </select>
-
                             </div>
 
-
                             <div class="col-md-6 mb-3">
-
-                                <label class="form-label fw-semibold">
-                                    Cor
+                                <label for="create-product-color" class="form-label fw-semibold">
+                                    Cor / Estampa
                                 </label>
-
-                                <select class="form-select"
-                                    id="create-product-color">
-
-                                    <option value="">
-                                        Selecione...
-                                    </option>
-
-                                    <option value="Preto">Preto</option>
-                                    <option value="Branco">Branco</option>
-                                    <option value="Cinza">Cinza</option>
-                                    <option value="Azul">Azul</option>
-                                    <option value="Vermelho">Vermelho</option>
-                                    <option value="Verde">Verde</option>
-                                    <option value="Amarelo">Amarelo</option>
-                                    <option value="Rosa">Rosa</option>
-                                    <option value="Bege">Bege</option>
-                                    <option value="Estampado">Estampado</option>
-
+                                <select class="form-select" id="create-product-color" name="color" required>
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <optgroup label="Cores">
+                                        <option value="Preto">Preto</option>
+                                        <option value="Branco">Branco</option>
+                                        <option value="Cinza">Cinza</option>
+                                        <option value="Azul">Azul</option>
+                                        <option value="Vermelho">Vermelho</option>
+                                        <option value="Verde">Verde</option>
+                                        <option value="Amarelo">Amarelo</option>
+                                        <option value="Rosa">Rosa</option>
+                                        <option value="Bege">Bege</option>
+                                    </optgroup>
+                                    <optgroup label="Estampas & Padronagens">
+                                        <option value="Estampado">Estampado</option>
+                                        <option value="Listrado">Listrado</option>
+                                        <option value="Florido">Florido</option>
+                                        <option value="Jeans">Jeans</option>
+                                    </optgroup>
                                 </select>
-
                             </div>
 
                         </div>
@@ -613,12 +590,8 @@
                                         R$
                                     </span>
 
-                                    <input type="number"
-                                        step="0.01"
-                                        min="0"
-                                        class="form-control"
-                                        id="create-product-cost-price"
-                                        placeholder="0.00">
+                                    <input type="number" step="0.01" min="0" class="form-control"
+                                        id="create-product-cost-price" placeholder="0.00">
 
                                 </div>
 
@@ -637,13 +610,8 @@
                                         R$
                                     </span>
 
-                                    <input type="number"
-                                        step="0.01"
-                                        min="0"
-                                        class="form-control"
-                                        id="create-product-selling-price"
-                                        placeholder="0.00"
-                                        required>
+                                    <input type="number" step="0.01" min="0" class="form-control"
+                                        id="create-product-selling-price" placeholder="0.00" required>
 
                                 </div>
 
@@ -656,14 +624,8 @@
                                     Estoque
                                 </label>
 
-                                <input type="number"
-                                    min="0"
-                                    step="1"
-                                    class="form-control"
-                                    id="create-product-stock"
-                                    placeholder="0"
-                                    value="0"
-                                    required>
+                                <input type="number" min="0" step="1" class="form-control" id="create-product-stock"
+                                    placeholder="0" value="0" required>
 
                             </div>
 
@@ -676,9 +638,7 @@
                                 Descrição
                             </label>
 
-                            <textarea class="form-control"
-                                id="create-product-description"
-                                rows="3"
+                            <textarea class="form-control" id="create-product-description" rows="3"
                                 placeholder="Detalhes adicionais da peça..."></textarea>
 
                         </div>
@@ -688,16 +648,13 @@
 
                     <div class="modal-footer">
 
-                        <button type="button"
-                            class="btn btn-light"
-                            data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
 
                             Cancelar
 
                         </button>
 
-                        <button type="submit"
-                            class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary">
 
                             <i data-feather="save"></i>
 
@@ -732,9 +689,7 @@
                         Editar Produto
                     </h5>
 
-                    <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                     </button>
 
                 </div>
@@ -754,10 +709,7 @@
                                     Nome do Produto *
                                 </label>
 
-                                <input type="text"
-                                    class="form-control"
-                                    id="edit-product-title"
-                                    required>
+                                <input type="text" class="form-control" id="edit-product-title" required>
 
                             </div>
 
@@ -768,10 +720,7 @@
                                     SKU *
                                 </label>
 
-                                <input type="text"
-                                    class="form-control"
-                                    id="edit-product-sku"
-                                    required>
+                                <input type="text" class="form-control" id="edit-product-sku" required>
 
                             </div>
 
@@ -786,8 +735,7 @@
                                     Categoria
                                 </label>
 
-                                <select class="form-select"
-                                    id="edit-product-category">
+                                <select class="form-select" id="edit-product-category">
 
                                     <option value="">
                                         Selecione uma categoria...
@@ -804,8 +752,7 @@
                                     Marca
                                 </label>
 
-                                <select class="form-select"
-                                    id="edit-product-brand">
+                                <select class="form-select" id="edit-product-brand">
 
                                     <option value="">
                                         Selecione uma marca...
@@ -826,8 +773,7 @@
                                     Tamanho
                                 </label>
 
-                                <select class="form-select"
-                                    id="edit-product-size">
+                                <select class="form-select" id="edit-product-size">
 
                                     <option value="">
                                         Selecione...
@@ -862,8 +808,7 @@
                                     Cor
                                 </label>
 
-                                <select class="form-select"
-                                    id="edit-product-color">
+                                <select class="form-select" id="edit-product-color">
 
                                     <option value="">
                                         Selecione...
@@ -879,6 +824,9 @@
                                     <option value="Rosa">Rosa</option>
                                     <option value="Bege">Bege</option>
                                     <option value="Estampado">Estampado</option>
+                                    <option value="Listrado">Listrado</option>
+                                    <option value="Florido">Florido</option>
+                                    <option value="Jeans">Jeans</option>
 
                                 </select>
 
@@ -901,10 +849,7 @@
                                         R$
                                     </span>
 
-                                    <input type="number"
-                                        step="0.01"
-                                        min="0"
-                                        class="form-control"
+                                    <input type="number" step="0.01" min="0" class="form-control"
                                         id="edit-product-cost-price">
 
                                 </div>
@@ -924,12 +869,8 @@
                                         R$
                                     </span>
 
-                                    <input type="number"
-                                        step="0.01"
-                                        min="0"
-                                        class="form-control"
-                                        id="edit-product-selling-price"
-                                        required>
+                                    <input type="number" step="0.01" min="0" class="form-control"
+                                        id="edit-product-selling-price" required>
 
                                 </div>
 
@@ -942,11 +883,7 @@
                                     Estoque
                                 </label>
 
-                                <input type="number"
-                                    min="0"
-                                    step="1"
-                                    class="form-control"
-                                    id="edit-product-stock"
+                                <input type="number" min="0" step="1" class="form-control" id="edit-product-stock"
                                     required>
 
                             </div>
@@ -960,21 +897,16 @@
                                 Descrição
                             </label>
 
-                            <textarea class="form-control"
-                                id="edit-product-description"
-                                rows="3"></textarea>
+                            <textarea class="form-control" id="edit-product-description" rows="3"></textarea>
 
                         </div>
 
 
                         <div class="form-check">
 
-                            <input class="form-check-input"
-                                type="checkbox"
-                                id="edit-product-active">
+                            <input class="form-check-input" type="checkbox" id="edit-product-active">
 
-                            <label class="form-check-label"
-                                for="edit-product-active">
+                            <label class="form-check-label" for="edit-product-active">
 
                                 Produto ativo
 
@@ -987,16 +919,13 @@
 
                     <div class="modal-footer">
 
-                        <button type="button"
-                            class="btn btn-light"
-                            data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
 
                             Cancelar
 
                         </button>
 
-                        <button type="submit"
-                            class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary">
 
                             <i data-feather="save"></i>
 
@@ -1031,9 +960,7 @@
                         Detalhes do Produto
                     </h5>
 
-                    <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                     </button>
 
                 </div>
@@ -1041,11 +968,9 @@
 
                 <div class="modal-body">
 
-                    <div id="product-detail-loading"
-                        class="text-center py-4">
+                    <div id="product-detail-loading" class="text-center py-4">
 
-                        <div class="spinner-border text-primary"
-                            role="status">
+                        <div class="spinner-border text-primary" role="status">
                         </div>
 
                         <div class="mt-2 text-muted">
@@ -1055,8 +980,7 @@
                     </div>
 
 
-                    <div id="product-detail-content"
-                        style="display: none;">
+                    <div id="product-detail-content" style="display: none;">
 
                         <div class="row g-4">
 
@@ -1066,8 +990,7 @@
                                     Produto
                                 </div>
 
-                                <div class="detail-value fs-4"
-                                    id="detail-title">
+                                <div class="detail-value fs-4" id="detail-title">
                                 </div>
 
                             </div>
@@ -1079,8 +1002,7 @@
                                     ID
                                 </div>
 
-                                <div class="detail-value"
-                                    id="detail-id">
+                                <div class="detail-value" id="detail-id">
                                 </div>
 
                             </div>
@@ -1092,8 +1014,7 @@
                                     SKU
                                 </div>
 
-                                <div class="detail-value sku"
-                                    id="detail-sku">
+                                <div class="detail-value sku" id="detail-sku">
                                 </div>
 
                             </div>
@@ -1105,8 +1026,7 @@
                                     Categoria
                                 </div>
 
-                                <div class="detail-value"
-                                    id="detail-category">
+                                <div class="detail-value" id="detail-category">
                                 </div>
 
                             </div>
@@ -1118,8 +1038,7 @@
                                     Marca
                                 </div>
 
-                                <div class="detail-value"
-                                    id="detail-brand">
+                                <div class="detail-value" id="detail-brand">
                                 </div>
 
                             </div>
@@ -1131,8 +1050,7 @@
                                     Tamanho
                                 </div>
 
-                                <div class="detail-value"
-                                    id="detail-size">
+                                <div class="detail-value" id="detail-size">
                                 </div>
 
                             </div>
@@ -1144,8 +1062,7 @@
                                     Cor
                                 </div>
 
-                                <div class="detail-value"
-                                    id="detail-color">
+                                <div class="detail-value" id="detail-color">
                                 </div>
 
                             </div>
@@ -1157,8 +1074,7 @@
                                     Estoque
                                 </div>
 
-                                <div class="detail-value"
-                                    id="detail-stock">
+                                <div class="detail-value" id="detail-stock">
                                 </div>
 
                             </div>
@@ -1170,8 +1086,7 @@
                                     Preço de Custo
                                 </div>
 
-                                <div class="detail-value price-cost"
-                                    id="detail-cost">
+                                <div class="detail-value price-cost" id="detail-cost">
                                 </div>
 
                             </div>
@@ -1183,8 +1098,7 @@
                                     Preço de Venda
                                 </div>
 
-                                <div class="detail-value price-selling"
-                                    id="detail-selling">
+                                <div class="detail-value price-selling" id="detail-selling">
                                 </div>
 
                             </div>
@@ -1196,8 +1110,7 @@
                                     Status
                                 </div>
 
-                                <div class="detail-value"
-                                    id="detail-status">
+                                <div class="detail-value" id="detail-status">
                                 </div>
 
                             </div>
@@ -1209,8 +1122,7 @@
                                     Descrição
                                 </div>
 
-                                <div class="detail-value"
-                                    id="detail-description">
+                                <div class="detail-value" id="detail-description">
                                 </div>
 
                             </div>
@@ -1220,9 +1132,7 @@
                     </div>
 
 
-                    <div id="product-detail-error"
-                        class="alert alert-danger"
-                        style="display: none;">
+                    <div id="product-detail-error" class="alert alert-danger" style="display: none;">
                     </div>
 
                 </div>
@@ -1230,9 +1140,7 @@
 
                 <div class="modal-footer">
 
-                    <button type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 
                         Fechar
 
@@ -1410,10 +1318,10 @@
                         options += `
                             <option value="${category.id}">
                                 ${escapeHtml(
-                                    category.name ||
-                                    category.nome ||
-                                    ''
-                                )}
+                            category.name ||
+                            category.nome ||
+                            ''
+                        )}
                             </option>
                         `;
 
@@ -1453,10 +1361,10 @@
                         options += `
                             <option value="${brand.id}">
                                 ${escapeHtml(
-                                    brand.name ||
-                                    brand.nome ||
-                                    ''
-                                )}
+                            brand.name ||
+                            brand.nome ||
+                            ''
+                        )}
                             </option>
                         `;
 
@@ -1657,17 +1565,16 @@
                                 ${escapeHtml(title)}
                             </div>
 
-                            ${
-                                product.description
-                                    ? `
+                            ${product.description
+                        ? `
                                         <small class="text-muted">
                                             ${escapeHtml(
-                                                product.description
-                                            )}
+                            product.description
+                        )}
                                         </small>
                                     `
-                                    : ''
-                            }
+                        : ''
+                    }
 
                         </td>
 
@@ -1725,11 +1632,10 @@
                         <td>
 
                             <span
-                                class="badge stock-badge ${
-                                    stock > 0
-                                        ? 'bg-success'
-                                        : 'bg-danger'
-                                }"
+                                class="badge stock-badge ${stock > 0
+                        ? 'bg-success'
+                        : 'bg-danger'
+                    }"
                             >
                                 ${stock} un.
                             </span>

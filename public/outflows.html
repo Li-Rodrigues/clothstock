@@ -8,38 +8,53 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="css/sidebar.css">
-  <style>
-    .nxl-container {
-      padding: 25px
-    }
-
-    .card {
-      border: 0;
-      box-shadow: 0 1px 3px #00000014
-    }
-
-    .form-label {
-      font-weight: 600
-    }
-  </style>
 </head>
 
 <body class="movement-page" data-movement-type="OUTFLOW">
   <main class="nxl-container">
     <header class="nxl-header d-flex justify-content-between align-items-center shadow-sm p-3 mb-4 rounded">
       <div>
-        <h5 class="mb-0 fw-bold">Saídas de estoque</h5><small class="text-muted">Registro e controle das saídas de
-          produtos.</small>
-      </div><button id="theme-toggle" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
-        type="button"><i id="theme-icon" data-feather="moon"></i><span id="theme-text">Modo Escuro</span></button>
-    </header>
-    <div id="alert-container"></div>
-    <section class="card shadow-sm border mb-4">
-      <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3">
-        <h5 class="card-title mb-0 fw-bold">Saídas cadastradas</h5><button
-          class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-bs-toggle="modal"
-          data-bs-target="#movement-modal"><i data-feather="plus"></i>Nova Saída</button>
+        <h5 class="mb-0 fw-bold">Saídas de estoque</h5>
+        <small class="text-muted">Registro e controle das saídas de produtos.</small>
       </div>
+      <button id="theme-toggle" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2" type="button">
+        <i id="theme-icon" data-feather="moon"></i>
+        <span id="theme-text">Modo Escuro</span>
+      </button>
+    </header>
+
+    <div id="alert-container"></div>
+
+<section class="card shadow-sm border mb-4">
+  <div class="card-header bg-transparent d-flex flex-wrap justify-content-between align-items-center gap-3 py-3">
+
+    <div class="d-flex align-items-center gap-3">
+      <div>
+        <h5 class="card-title mb-0 fw-bold">Saídas cadastradas</h5>
+        <small class="text-muted">
+          <span id="movements-count">0</span> movimentações ·
+          <span id="products-count">0</span> produtos no catálogo
+        </small>
+      </div>
+
+      <!-- ÚNICA caixa de busca -->
+      <div class="search-box" style="min-width: 220px;">
+        <input id="history-search" class="form-control form-control-sm" type="search"
+          placeholder="Filtrar lista..." style="min-width: 240px;">
+      </div>
+    </div>
+
+    <!-- Botão Nova Saída -->
+    <div>
+      <button class="btn btn-primary btn-sm d-flex align-items-center gap-2"
+        data-bs-toggle="modal" data-bs-target="#movement-modal">
+        <i data-feather="plus"></i>
+        Nova Saída
+      </button>
+    </div>
+
+  </div>
+
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table table-hover align-middle mb-0">
@@ -47,11 +62,11 @@
               <tr>
                 <th>ID</th>
                 <th>Data/Hora</th>
-                <th>Produto</th>
+                <th>Produtos</th>
                 <th>Quantidade</th>
-                <th>Preço unitário</th>
-                <th>Observação</th>
-                <th class="text-center" style="width:190px">Ações</th>
+                <th>Valor total</th>
+                <th>Motivo / Observação</th>
+                <th class="text-center" style="width:90px">Ações</th>
               </tr>
             </thead>
             <tbody id="movements-body">
@@ -64,42 +79,86 @@
       </div>
     </section>
   </main>
+
   <div class="modal fade" id="movement-modal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title fw-bold">Nova Saída</h5><button class="btn-close" data-bs-dismiss="modal"></button>
+          <h5 class="modal-title fw-bold">Nova Saída</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <form id="movement-form">
           <div class="modal-body">
-            <div class="mb-3"><label class="form-label" for="product_id">Produto *</label><select class="form-select"
-                id="product_id" required></select></div>
-            <div class="mb-3"><label class="form-label" for="quantity">Quantidade *</label><input class="form-control"
-                type="number" id="quantity" min="1" required></div>
-            <div class="mb-3"><label class="form-label" for="unit_price">Preço unitário (R$) *</label><input
-                class="form-control" type="number" id="unit_price" min="0" step="0.01" required></div>
-            <div class="mb-3"><label class="form-label" for="notes">Observação</label><textarea class="form-control"
-                id="notes" rows="3" placeholder="Ex.: venda, avaria, ajuste..."></textarea></div>
+            <div class="mb-3">
+              <label class="form-label" for="reason">Motivo *</label>
+              <select class="form-select" id="reason" required>
+                <option value="SALE">Venda</option>
+                <option value="DAMAGE">Avaria / Perda</option>
+                <option value="ADJUSTMENT">Ajuste de estoque</option>
+                <option value="RETURN">Devolução</option>
+                <option value="OTHER">Outro</option>
+              </select>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <strong>Produtos</strong>
+              <button type="button" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+                id="add-movement-item">
+                <i data-feather="plus"></i>Adicionar produto
+              </button>
+            </div>
+
+            <div id="empty-products" class="text-muted border rounded p-3 mb-3">
+              Nenhum produto adicionado. Clique em “Adicionar produto”.
+            </div>
+            <div id="movement-products-container"></div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <div class="small text-muted">Itens</div>
+                <div id="summary-items" class="fw-semibold">0</div>
+              </div>
+              <div class="col-md-4">
+                <div class="small text-muted">Quantidade</div>
+                <div id="summary-quantity" class="fw-semibold">0 un.</div>
+              </div>
+              <div class="col-md-4">
+                <div class="small text-muted">Total</div>
+                <div id="summary-total" class="fw-semibold">R$ 0,00</div>
+              </div>
+            </div>
+
+            <div class="mb-0">
+              <label class="form-label" for="notes">Observação</label>
+              <textarea class="form-control" id="notes" rows="3" placeholder="Ex.: cliente, motivo extra..."></textarea>
+            </div>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-light"
-              data-bs-dismiss="modal">Cancelar</button><button class="btn btn-primary d-flex align-items-center gap-2"
-              type="submit"><i data-feather="save"></i>Salvar Saída</button></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+            <button id="save-movement-btn" class="btn btn-primary d-flex align-items-center gap-2" type="submit">
+              <i data-feather="save"></i>Salvar Saída
+            </button>
+          </div>
         </form>
       </div>
     </div>
   </div>
+
   <div class="modal fade" id="movement-detail-modal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title fw-bold" id="movement-detail-title">Detalhes</h5><button class="btn-close"
-            data-bs-dismiss="modal"></button>
+          <h5 class="modal-title fw-bold" id="movement-detail-title">Detalhes</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body" id="movement-detail-content"></div>
-        <div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal">Fechar</button></div>
+        <div class="modal-footer">
+          <button class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+        </div>
       </div>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/sidebar.js"></script>
   <script src="js/movement-page.js"></script>
