@@ -1,6 +1,7 @@
 // src/controllers/productController.js
 
 const pool = require('../config/database');
+const { getPagination, paginationResponse } = require('../utils/pagination');
 
 // ============================================================
 // FUNÇÃO AUXILIAR
@@ -55,44 +56,54 @@ const getAllProducts = async (req, res, next) => {
 
     try {
 
-        const query = `
-            SELECT
-                p.id,
-                p.title,
-                p.sku,
-                p.description,
-                p.size,
-                p.color,
-                p.cost_price,
-                p.selling_price,
-                p.quantity_in_stock,
-                p.brand_id,
-                p.category_id,
-                p.is_active,
-                p.created_at,
-                p.updated_at,
+        const { page, limit, offset, hasPaging } = getPagination(req);
+        const search = String(req.query.search || '').trim();
+        const values = search ? [`%${search}%`] : [];
+        const where = search
+            ? `WHERE p.title ILIKE $1
+                OR p.sku ILIKE $1
+                OR COALESCE(p.size, '') ILIKE $1
+                OR COALESCE(p.color, '') ILIKE $1
+                OR COALESCE(b.name, '') ILIKE $1
+                OR COALESCE(c.name, '') ILIKE $1`
+            : '';
 
-                b.name AS brand_name,
-                c.name AS category_name
-
+        const baseQuery = `
             FROM products p
-
-            LEFT JOIN brands b
-                ON p.brand_id = b.id
-
-            LEFT JOIN categories c
-                ON p.category_id = c.id
-
-            ORDER BY p.id ASC;
+            LEFT JOIN brands b ON p.brand_id = b.id
+            LEFT JOIN categories c ON p.category_id = c.id
+            ${where}
         `;
 
-        const { rows } = await pool.query(query);
+        const countResult = await pool.query(
+            `SELECT COUNT(*)::int AS total ${baseQuery}`,
+            values
+        );
 
-        return res.status(200).json({
-            success: true,
-            count: rows.length,
-            data: rows
-        });
+        const pagingSql = hasPaging
+            ? ` LIMIT $${values.length + 1} OFFSET $${values.length + 2}`
+            : '';
+        const queryValues = hasPaging
+            ? [...values, limit, offset]
+            : values;
+
+        const { rows } = await pool.query(
+            `SELECT
+                p.id, p.title, p.sku, p.description, p.size, p.color,
+                p.cost_price, p.selling_price, p.quantity_in_stock,
+                p.brand_id, p.category_id, p.is_active, p.created_at, p.updated_at,
+                b.name AS brand_name, c.name AS category_name
+             ${baseQuery}
+             ORDER BY p.id ASC${pagingSql}`,
+            queryValues
+        );
+
+        return res.status(200).json(paginationResponse(
+            page,
+            limit,
+            countResult.rows[0].total,
+            rows
+        ));
 
     } catch (error) {
 
@@ -506,11 +517,10 @@ const updateProduct = async (req, res, next) => {
                 color = $5,
                 cost_price = $6,
                 selling_price = $7,
-                quantity_in_stock = $8,
-                brand_id = $9,
-                category_id = $10,
-                is_active = $11
-            WHERE id = $12
+                brand_id = $8,
+                category_id = $9,
+                is_active = $10
+            WHERE id = $11
             RETURNING
                 id,
                 title,
@@ -549,8 +559,6 @@ const updateProduct = async (req, res, next) => {
             costPrice,
 
             sellingPrice,
-
-            stock,
 
             parseNullableInt(brand_id),
 

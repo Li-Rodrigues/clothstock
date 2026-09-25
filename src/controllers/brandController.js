@@ -1,15 +1,27 @@
-const pool = require('../config/database'); // Ajuste o caminho de acordo com sua estrutura
+const pool = require('../config/database');
+const { getPagination, paginationResponse } = require('../utils/pagination');
 
 // Listar todas as marcas
 const getAllBrands = async (req, res, next) => {
     try {
-        const query = 'SELECT * FROM brands ORDER BY id DESC;';
-        const { rows } = await pool.query(query);
+        const { page, limit, offset, hasPaging } = getPagination(req);
+        const search = String(req.query.search || '').trim();
+        const values = search ? [`%${search}%`] : [];
+        const where = search ? 'WHERE name ILIKE $1 OR COALESCE(description, \'\') ILIKE $1' : '';
+        const countResult = await pool.query(
+            `SELECT COUNT(*)::int AS total FROM brands ${where}`,
+            values
+        );
+        const pagingSql = hasPaging
+            ? ` LIMIT $${values.length + 1} OFFSET $${values.length + 2}`
+            : '';
+        const queryValues = hasPaging ? [...values, limit, offset] : values;
+        const { rows } = await pool.query(
+            `SELECT * FROM brands ${where} ORDER BY id DESC${pagingSql}`,
+            queryValues
+        );
 
-        res.status(200).json({
-            success: true,
-            data: rows
-        });
+        res.status(200).json(paginationResponse(page, limit, countResult.rows[0].total, rows));
     } catch (error) {
         next(error);
     }

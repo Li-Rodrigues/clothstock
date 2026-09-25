@@ -1,6 +1,7 @@
 // src/routes/brandRoutes.js
 
 const express = require('express');
+const { requireRole } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.get('/:id', getBrandById);
 // POST /api/brands
 // ============================================================
 
-router.post('/', createBrand);
+router.post('/', requireRole('ADMIN'), createBrand);
 
 
 // ============================================================
@@ -42,7 +43,8 @@ router.post('/', createBrand);
 // PUT /api/brands/:id
 // ============================================================
 
-router.put('/:id', updateBrand);
+router.put('/:id', requireRole('ADMIN'), updateBrand);
+router.patch('/:id', requireRole('ADMIN'), updateBrand);
 
 
 // ============================================================
@@ -50,7 +52,7 @@ router.put('/:id', updateBrand);
 // DELETE /api/brands/:id
 // ============================================================
 
-router.delete('/:id', deleteBrand);
+router.delete('/:id', requireRole('ADMIN'), deleteBrand);
 
 
 module.exports = router;

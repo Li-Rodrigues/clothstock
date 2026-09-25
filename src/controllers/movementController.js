@@ -1,4 +1,5 @@
 const pool = require('../config/database');
+const { getPagination, paginationResponse } = require('../utils/pagination');
 
 const VALID_TYPES = ['INFLOW', 'OUTFLOW'];
 const VALID_REASONS = ['SALE', 'DAMAGE', 'ADJUSTMENT', 'RETURN', 'OTHER'];
@@ -29,8 +30,8 @@ function validateItems(items) {
   const used = new Set();
 
   for (const item of items) {
-    const productId = Number.parseInt(item.product_id, 10);
-    const quantity = Number.parseInt(item.quantity, 10);
+    const productId = Number(item.product_id);
+    const quantity = Number(item.quantity);
     const unitPrice = Number(item.unit_price);
 
     if (!Number.isInteger(productId) || productId <= 0) {
@@ -183,13 +184,29 @@ const getMovements = async (req, res, next) => {
       `;
     }
 
-    const { rows } = await pool.query(query, params);
+    const { page, limit, offset, hasPaging } = getPagination(req);
+    let countResult = { rows: [{ total: 0 }] };
+    if (hasPaging) {
+      countResult = await pool.query(
+        `SELECT COUNT(*)::int AS total FROM (${query}) AS paginated_movements`,
+        params
+      );
+    }
 
-    return res.json({
-      success: true,
-      count: rows.length,
-      data: rows
-    });
+    const pagingSql = hasPaging
+      ? ` LIMIT $${params.length + 1} OFFSET $${params.length + 2}`
+      : '';
+    const queryParams = hasPaging ? [...params, limit, offset] : params;
+    const { rows } = await pool.query(
+      hasPaging ? `SELECT * FROM (${query}) AS paginated_movements${pagingSql}` : query,
+      queryParams
+    );
+
+    const totalItems = hasPaging
+      ? countResult.rows[0].total
+      : rows.length;
+
+    return res.json(paginationResponse(page, limit, totalItems, rows));
   } catch (error) {
     return next(error);
   }
@@ -207,6 +224,7 @@ const createMovement = async (req, res, next) => {
       return res.status(400).json({ success: false, error: 'Informe um tipo de movimentação válido.' });
     }
 
+    items.sort((first, second) => Number(first.product_id) - Number(second.product_id));
     const itemError = validateItems(items);
     if (itemError) {
       return res.status(400).json({ success: false, error: itemError });
@@ -273,10 +291,10 @@ const createMovement = async (req, res, next) => {
       const invoiceNumber = String(req.body.invoice_number || '').trim() || null;
 
       header = await client.query(
-        `INSERT INTO inflows (supplier_id, invoice_number, description, total_amount)
-         VALUES ($1, $2, $3, $4)
+        `INSERT INTO inflows (supplier_id, user_id, invoice_number, description, total_amount)
+         VALUES ($1, $2, $3, $4, $5)
          RETURNING id, created_at`,
-        [Number.isInteger(supplierId) && supplierId > 0 ? supplierId : null, invoiceNumber, notes, totalAmount]
+        [Number.isInteger(supplierId) && supplierId > 0 ? supplierId : null, req.user.id, invoiceNumber, notes, totalAmount]
       );
 
       for (const item of processed) {
@@ -287,15 +305,16 @@ const createMovement = async (req, res, next) => {
         );
       }
     } else {
-      const reason = VALID_REASONS.includes(String(req.body.reason || '').toUpperCase())
-        ? String(req.body.reason).toUpperCase()
-        : 'SALE';
+      const reason = String(req.body.reason || '').toUpperCase();
+      if (!VALID_REASONS.includes(reason)) {
+        throw Object.assign(new Error('Informe um motivo válido para a saída.'), { status: 400 });
+      }
 
       header = await client.query(
-        `INSERT INTO outflows (reason, description, total_amount)
-         VALUES ($1, $2, $3)
+        `INSERT INTO outflows (user_id, reason, description, total_amount)
+         VALUES ($1, $2, $3, $4)
          RETURNING id, created_at`,
-        [reason, notes, totalAmount]
+        [req.user.id, reason, notes, totalAmount]
       );
 
       for (const item of processed) {

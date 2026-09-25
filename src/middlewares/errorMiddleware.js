@@ -1,15 +1,20 @@
 // src/middlewares/errorMiddleware.js
 
 const errorHandler = (err, req, res, next) => {
-    console.error(err.stack);
-    
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Erro interno do servidor';
+  console.error(err.stack || err);
 
-    res.status(statusCode).json({
-        success: false,
-        error: message
-    });
+  const statusCode = err.statusCode || err.status || 500;
+  const message = statusCode >= 500
+    ? 'Não foi possível concluir a operação.'
+    : (err.message || 'Não foi possível concluir a operação.');
+
+  return res.status(statusCode).json({
+    success: false,
+    error: {
+      code: err.code || 'INTERNAL_ERROR',
+      message
+    }
+  });
 };
 
-module.exports = errorHandler; // ou { errorHandler } dependendo de como foi importado no app.js
+module.exports = errorHandler;

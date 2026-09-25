@@ -1,6 +1,7 @@
 // src/routes/productRoutes.js
 
 const express = require('express');
+const { requireRole } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -31,21 +32,22 @@ router.get('/:id', getProductById);
 // Cria um produto
 // ============================================================
 
-router.post('/', createProduct);
+router.post('/', requireRole('ADMIN'), createProduct);
 
 // ============================================================
 // PUT /api/products/:id
 // Atualiza um produto
 // ============================================================
 
-router.put('/:id', updateProduct);
+router.put('/:id', requireRole('ADMIN'), updateProduct);
+router.patch('/:id', requireRole('ADMIN'), updateProduct);
 
 // ============================================================
 // DELETE /api/products/:id
 // Exclui um produto
 // ============================================================
 
-router.delete('/:id', deleteProduct);
+router.delete('/:id', requireRole('ADMIN'), deleteProduct);
 
 // ============================================================
 // EXPORTAÇÃO

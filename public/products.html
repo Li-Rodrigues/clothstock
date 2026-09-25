@@ -9,7 +9,9 @@
     <title>ClothStock - Gestão de Produtos</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
@@ -88,17 +90,13 @@
             min-width: 1200px;
         }
 
-        .table> :not(caption)>*>* {
+        .table > :not(caption) > * > * {
             background-color: transparent;
             color: var(--text-color);
             border-color: var(--border-color);
         }
 
-        body.dark-mode .table-light {
-            background-color: #334155 !important;
-            color: #f8fafc !important;
-        }
-
+        body.dark-mode .table-light,
         body.dark-mode .table-light th {
             background-color: #334155 !important;
             color: #f8fafc !important;
@@ -113,6 +111,10 @@
         body.dark-mode .modal-header,
         body.dark-mode .modal-footer {
             border-color: #334155;
+        }
+
+        body.dark-mode .btn-close {
+            filter: invert(1);
         }
 
         body.dark-mode .form-control,
@@ -130,6 +132,16 @@
             background-color: #334155;
             color: #f8fafc;
             border-color: #475569;
+        }
+
+        body.dark-mode .btn-light {
+            background-color: #334155;
+            color: #f8fafc;
+            border-color: #475569;
+        }
+
+        body.dark-mode .text-muted {
+            color: #94a3b8 !important;
         }
 
         .table-responsive {
@@ -205,7 +217,107 @@
             color: #4ade80 !important;
         }
 
+        /* ============================================================
+           FILTRO
+        ============================================================ */
+
+        .products-search {
+            position: relative;
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .products-search svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .products-search .form-control {
+            width: 100%;
+            padding-left: 34px;
+        }
+
+        /* ============================================================
+           PAGINAÇÃO
+        ============================================================ */
+
+        .products-pagination {
+            position: relative;
+            z-index: 10;
+            border-top: 1px solid var(--border-color);
+            padding: 12px 16px;
+            min-height: 58px;
+        }
+
+        .products-pagination-info {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        body.dark-mode .products-pagination-info {
+            color: #94a3b8;
+        }
+
+        .products-pagination .pagination {
+            margin-bottom: 0;
+        }
+
+        .products-pagination .page-item {
+            position: relative;
+            z-index: 11;
+        }
+
+        .products-pagination .page-link {
+            position: relative;
+            z-index: 12;
+            color: #0d6efd;
+            background-color: var(--bg-card);
+            border-color: var(--border-color);
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .products-pagination .page-link:not(:disabled):hover {
+            background-color: #e9ecef;
+        }
+
+        body.dark-mode .products-pagination .page-link {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border-color: #475569;
+        }
+
+        body.dark-mode .products-pagination .page-link:not(:disabled):hover {
+            background-color: #334155;
+        }
+
+        body.dark-mode .products-pagination .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: #fff;
+        }
+
+        body.dark-mode .products-pagination .page-item.disabled .page-link {
+            background-color: #1e293b;
+            color: #64748b;
+            border-color: #334155;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 992px) {
+            .products-search {
+                width: 220px;
+            }
+        }
+
         @media (max-width: 768px) {
+
             .nxl-navigation {
                 width: 210px;
             }
@@ -213,12 +325,29 @@
             .nxl-container {
                 padding: 15px;
             }
+
+            .card-header > .d-flex {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .products-search {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .products-pagination {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 10px;
+            }
         }
     </style>
 
     <link rel="stylesheet" href="/css/sidebar.css">
     <script src="/js/sidebar.js" defer></script>
 
+    <script src="/js/app-shell.js" defer></script>
 </head>
 
 <body>
@@ -230,6 +359,7 @@
     <nav class="nxl-navigation">
 
         <div class="m-header mb-4">
+
             <h4 class="text-white fw-bold mb-0">
                 ClothStock
             </h4>
@@ -237,19 +367,18 @@
             <small class="text-secondary">
                 Gestão de Estoque
             </small>
+
         </div>
 
         <ul class="nav flex-column gap-1">
 
-            <!-- DASHBOARD -->
             <li class="nav-item">
-                <a href="/index.html">
+                <a href="/dashboard.html">
                     <i data-feather="layout"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
 
-            <!-- FORNECEDORES -->
             <li class="nav-item">
                 <a href="/suppliers.html">
                     <i data-feather="truck"></i>
@@ -257,7 +386,6 @@
                 </a>
             </li>
 
-            <!-- CATEGORIAS -->
             <li class="nav-item">
                 <a href="/categories.html">
                     <i data-feather="folder"></i>
@@ -265,7 +393,6 @@
                 </a>
             </li>
 
-            <!-- MARCAS -->
             <li class="nav-item">
                 <a href="/brands.html">
                     <i data-feather="tag"></i>
@@ -273,7 +400,6 @@
                 </a>
             </li>
 
-            <!-- PRODUTOS -->
             <li class="nav-item">
                 <a href="/products.html" class="active">
                     <i data-feather="box"></i>
@@ -292,11 +418,11 @@
 
     <main class="nxl-container">
 
-        <!-- HEADER -->
-
-        <header class="nxl-header d-flex justify-content-between align-items-center shadow-sm p-3 mb-4 rounded">
+        <header
+            class="nxl-header d-flex justify-content-between align-items-center shadow-sm p-3 mb-4 rounded">
 
             <div>
+
                 <h5 class="mb-0 fw-bold">
                     Gestão de Produtos
                 </h5>
@@ -304,10 +430,14 @@
                 <small class="text-muted">
                     Controle de peças em estoque e catálogo
                 </small>
+
             </div>
 
-            <button id="theme-toggle" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
-                onclick="toggleDarkMode()">
+            <button
+                id="theme-toggle"
+                class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+                onclick="toggleDarkMode()"
+                type="button">
 
                 <i data-feather="moon" id="theme-icon"></i>
 
@@ -325,27 +455,70 @@
         <div id="alert-container"></div>
 
 
-        <!-- CARD PRODUTOS -->
+        <!-- ========================================================
+             CARD PRODUTOS
+        ========================================================= -->
 
         <div class="card shadow-sm border mb-4">
 
-            <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3">
+            <div class="card-header bg-transparent py-3">
 
-                <h5 class="card-title mb-0 fw-bold">
-                    Produtos Cadastrados
-                </h5>
+                <div
+                    class="d-flex align-items-center justify-content-between w-100">
 
-                <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2"
-                    data-bs-toggle="modal" data-bs-target="#modalCreateProduct">
+                    <div class="d-flex align-items-center gap-4">
 
-                    <i data-feather="plus"></i>
+                        <div>
 
-                    Novo Produto
+                            <h5 class="card-title mb-0 fw-bold">
+                                Produtos cadastrados
+                            </h5>
 
-                </button>
+                            <small class="text-muted">
+
+                                <span id="products-count">
+                                    0
+                                </span>
+
+                                produtos no catálogo
+
+                            </small>
+
+                        </div>
+
+                        <div class="products-search">
+
+                            <i data-feather="search"></i>
+
+                            <input
+                                id="products-search"
+                                class="form-control form-control-sm"
+                                type="search"
+                                placeholder="Filtrar lista..."
+                                autocomplete="off">
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-sm d-flex align-items-center gap-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalCreateProduct">
+
+                        <i data-feather="plus"></i>
+
+                        Novo Produto
+
+                    </button>
+
+                </div>
 
             </div>
 
+
+            <!-- TABELA -->
 
             <div class="card-body p-0">
 
@@ -357,43 +530,27 @@
 
                             <tr>
 
-                                <th style="width: 60px;">
-                                    ID
-                                </th>
+                                <th style="width: 60px;">ID</th>
 
-                                <th>
-                                    Produto
-                                </th>
+                                <th>Produto</th>
 
-                                <th>
-                                    SKU
-                                </th>
+                                <th>SKU</th>
 
-                                <th>
-                                    Tam. / Cor
-                                </th>
+                                <th>Tam. / Cor</th>
 
-                                <th>
-                                    Categoria
-                                </th>
+                                <th>Categoria</th>
 
-                                <th>
-                                    Marca
-                                </th>
+                                <th>Marca</th>
 
-                                <th>
-                                    Custo
-                                </th>
+                                <th>Custo</th>
 
-                                <th>
-                                    Venda
-                                </th>
+                                <th>Venda</th>
 
-                                <th>
-                                    Estoque
-                                </th>
+                                <th>Estoque</th>
 
-                                <th class="text-center" style="width: 190px;">
+                                <th
+                                    class="text-center"
+                                    style="width: 190px;">
                                     Ações
                                 </th>
 
@@ -401,13 +558,16 @@
 
                         </thead>
 
-
                         <tbody id="products-table-body">
 
                             <tr>
 
-                                <td colspan="10" class="text-center text-muted py-4">
+                                <td
+                                    colspan="10"
+                                    class="text-center text-muted py-4">
+
                                     Carregando produtos...
+
                                 </td>
 
                             </tr>
@@ -416,6 +576,14 @@
 
                     </table>
 
+                </div>
+
+
+                <!-- PAGINAÇÃO -->
+
+                <div
+                    id="products-pagination"
+                    class="products-pagination d-flex justify-content-between align-items-center">
                 </div>
 
             </div>
@@ -429,7 +597,10 @@
          MODAL CRIAR PRODUTO
     ============================================================ -->
 
-    <div class="modal fade" id="modalCreateProduct" tabindex="-1">
+    <div
+        class="modal fade"
+        id="modalCreateProduct"
+        tabindex="-1">
 
         <div class="modal-dialog modal-lg">
 
@@ -441,11 +612,13 @@
                         Novo Produto
                     </h5>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
                     </button>
 
                 </div>
-
 
                 <form id="form-create-product">
 
@@ -459,11 +632,14 @@
                                     Nome do Produto *
                                 </label>
 
-                                <input type="text" class="form-control" id="create-product-title"
-                                    placeholder="Ex: Camiseta Oversized Basic" required>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="create-product-title"
+                                    placeholder="Ex: Camiseta Oversized Basic"
+                                    required>
 
                             </div>
-
 
                             <div class="col-md-4 mb-3">
 
@@ -471,8 +647,12 @@
                                     SKU *
                                 </label>
 
-                                <input type="text" class="form-control" id="create-product-sku"
-                                    placeholder="Ex: CAM-001" required>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="create-product-sku"
+                                    placeholder="Ex: CAM-001"
+                                    required>
 
                             </div>
 
@@ -487,7 +667,9 @@
                                     Categoria
                                 </label>
 
-                                <select class="form-select" id="create-product-category">
+                                <select
+                                    class="form-select"
+                                    id="create-product-category">
 
                                     <option value="">
                                         Selecione uma categoria...
@@ -497,14 +679,15 @@
 
                             </div>
 
-
                             <div class="col-md-6 mb-3">
 
                                 <label class="form-label fw-semibold">
                                     Marca
                                 </label>
 
-                                <select class="form-select" id="create-product-brand">
+                                <select
+                                    class="form-select"
+                                    id="create-product-brand">
 
                                     <option value="">
                                         Selecione uma marca...
@@ -520,40 +703,87 @@
                         <div class="row">
 
                             <div class="col-md-6 mb-3">
-                                <label for="create-product-size" class="form-label fw-semibold">
+
+                                <label
+                                    for="create-product-size"
+                                    class="form-label fw-semibold">
+
                                     Tamanho
+
                                 </label>
-                                <select class="form-select" id="create-product-size" name="size" required>
-                                    <option value="" disabled selected>Selecione...</option>
+
+                                <select
+                                    class="form-select"
+                                    id="create-product-size"
+                                    name="size"
+                                    required>
+
+                                    <option
+                                        value=""
+                                        disabled
+                                        selected>
+                                        Selecione...
+                                    </option>
+
                                     <optgroup label="Tamanhos Padrão">
+
                                         <option value="PP">PP</option>
                                         <option value="P">P</option>
                                         <option value="M">M</option>
                                         <option value="G">G</option>
                                         <option value="GG">GG</option>
                                         <option value="XG">XG</option>
+
                                     </optgroup>
+
                                     <optgroup label="Numeração">
+
                                         <option value="36">36</option>
                                         <option value="38">38</option>
                                         <option value="40">40</option>
                                         <option value="42">42</option>
                                         <option value="44">44</option>
                                         <option value="46">46</option>
+
                                     </optgroup>
+
                                     <optgroup label="Outros">
-                                        <option value="Único">Único</option>
+
+                                        <option value="Único">
+                                            Único
+                                        </option>
+
                                     </optgroup>
+
                                 </select>
+
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="create-product-color" class="form-label fw-semibold">
+
+                                <label
+                                    for="create-product-color"
+                                    class="form-label fw-semibold">
+
                                     Cor / Estampa
+
                                 </label>
-                                <select class="form-select" id="create-product-color" name="color" required>
-                                    <option value="" disabled selected>Selecione...</option>
+
+                                <select
+                                    class="form-select"
+                                    id="create-product-color"
+                                    name="color"
+                                    required>
+
+                                    <option
+                                        value=""
+                                        disabled
+                                        selected>
+                                        Selecione...
+                                    </option>
+
                                     <optgroup label="Cores">
+
                                         <option value="Preto">Preto</option>
                                         <option value="Branco">Branco</option>
                                         <option value="Cinza">Cinza</option>
@@ -563,14 +793,31 @@
                                         <option value="Amarelo">Amarelo</option>
                                         <option value="Rosa">Rosa</option>
                                         <option value="Bege">Bege</option>
+
                                     </optgroup>
+
                                     <optgroup label="Estampas & Padronagens">
-                                        <option value="Estampado">Estampado</option>
-                                        <option value="Listrado">Listrado</option>
-                                        <option value="Florido">Florido</option>
-                                        <option value="Jeans">Jeans</option>
+
+                                        <option value="Estampado">
+                                            Estampado
+                                        </option>
+
+                                        <option value="Listrado">
+                                            Listrado
+                                        </option>
+
+                                        <option value="Florido">
+                                            Florido
+                                        </option>
+
+                                        <option value="Jeans">
+                                            Jeans
+                                        </option>
+
                                     </optgroup>
+
                                 </select>
+
                             </div>
 
                         </div>
@@ -590,13 +837,17 @@
                                         R$
                                     </span>
 
-                                    <input type="number" step="0.01" min="0" class="form-control"
-                                        id="create-product-cost-price" placeholder="0.00">
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        class="form-control"
+                                        id="create-product-cost-price"
+                                        placeholder="0.00">
 
                                 </div>
 
                             </div>
-
 
                             <div class="col-md-4 mb-3">
 
@@ -610,13 +861,18 @@
                                         R$
                                     </span>
 
-                                    <input type="number" step="0.01" min="0" class="form-control"
-                                        id="create-product-selling-price" placeholder="0.00" required>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        class="form-control"
+                                        id="create-product-selling-price"
+                                        placeholder="0.00"
+                                        required>
 
                                 </div>
 
                             </div>
-
 
                             <div class="col-md-4 mb-3">
 
@@ -624,8 +880,15 @@
                                     Estoque
                                 </label>
 
-                                <input type="number" min="0" step="1" class="form-control" id="create-product-stock"
-                                    placeholder="0" value="0" required>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    class="form-control"
+                                    id="create-product-stock"
+                                    placeholder="0"
+                                    value="0"
+                                    required>
 
                             </div>
 
@@ -638,7 +901,10 @@
                                 Descrição
                             </label>
 
-                            <textarea class="form-control" id="create-product-description" rows="3"
+                            <textarea
+                                class="form-control"
+                                id="create-product-description"
+                                rows="3"
                                 placeholder="Detalhes adicionais da peça..."></textarea>
 
                         </div>
@@ -648,13 +914,18 @@
 
                     <div class="modal-footer">
 
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal">
 
                             Cancelar
 
                         </button>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
 
                             <i data-feather="save"></i>
 
@@ -677,7 +948,10 @@
          MODAL EDITAR PRODUTO
     ============================================================ -->
 
-    <div class="modal fade" id="modalEditProduct" tabindex="-1">
+    <div
+        class="modal fade"
+        id="modalEditProduct"
+        tabindex="-1">
 
         <div class="modal-dialog modal-lg">
 
@@ -689,15 +963,19 @@
                         Editar Produto
                     </h5>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
                     </button>
 
                 </div>
 
-
                 <form id="form-edit-product">
 
-                    <input type="hidden" id="edit-product-id">
+                    <input
+                        type="hidden"
+                        id="edit-product-id">
 
                     <div class="modal-body">
 
@@ -709,10 +987,13 @@
                                     Nome do Produto *
                                 </label>
 
-                                <input type="text" class="form-control" id="edit-product-title" required>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="edit-product-title"
+                                    required>
 
                             </div>
-
 
                             <div class="col-md-4 mb-3">
 
@@ -720,7 +1001,11 @@
                                     SKU *
                                 </label>
 
-                                <input type="text" class="form-control" id="edit-product-sku" required>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="edit-product-sku"
+                                    required>
 
                             </div>
 
@@ -735,7 +1020,9 @@
                                     Categoria
                                 </label>
 
-                                <select class="form-select" id="edit-product-category">
+                                <select
+                                    class="form-select"
+                                    id="edit-product-category">
 
                                     <option value="">
                                         Selecione uma categoria...
@@ -745,14 +1032,15 @@
 
                             </div>
 
-
                             <div class="col-md-6 mb-3">
 
                                 <label class="form-label fw-semibold">
                                     Marca
                                 </label>
 
-                                <select class="form-select" id="edit-product-brand">
+                                <select
+                                    class="form-select"
+                                    id="edit-product-brand">
 
                                     <option value="">
                                         Selecione uma marca...
@@ -773,7 +1061,9 @@
                                     Tamanho
                                 </label>
 
-                                <select class="form-select" id="edit-product-size">
+                                <select
+                                    class="form-select"
+                                    id="edit-product-size">
 
                                     <option value="">
                                         Selecione...
@@ -785,17 +1075,13 @@
                                     <option value="G">G</option>
                                     <option value="GG">GG</option>
                                     <option value="XG">XG</option>
-
                                     <option value="36">36</option>
                                     <option value="38">38</option>
                                     <option value="40">40</option>
                                     <option value="42">42</option>
                                     <option value="44">44</option>
                                     <option value="46">46</option>
-
-                                    <option value="Único">
-                                        Único
-                                    </option>
+                                    <option value="Único">Único</option>
 
                                 </select>
 
@@ -808,7 +1094,9 @@
                                     Cor
                                 </label>
 
-                                <select class="form-select" id="edit-product-color">
+                                <select
+                                    class="form-select"
+                                    id="edit-product-color">
 
                                     <option value="">
                                         Selecione...
@@ -849,7 +1137,11 @@
                                         R$
                                     </span>
 
-                                    <input type="number" step="0.01" min="0" class="form-control"
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        class="form-control"
                                         id="edit-product-cost-price">
 
                                 </div>
@@ -869,8 +1161,13 @@
                                         R$
                                     </span>
 
-                                    <input type="number" step="0.01" min="0" class="form-control"
-                                        id="edit-product-selling-price" required>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        class="form-control"
+                                        id="edit-product-selling-price"
+                                        required>
 
                                 </div>
 
@@ -883,7 +1180,12 @@
                                     Estoque
                                 </label>
 
-                                <input type="number" min="0" step="1" class="form-control" id="edit-product-stock"
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    class="form-control"
+                                    id="edit-product-stock"
                                     required>
 
                             </div>
@@ -897,16 +1199,24 @@
                                 Descrição
                             </label>
 
-                            <textarea class="form-control" id="edit-product-description" rows="3"></textarea>
+                            <textarea
+                                class="form-control"
+                                id="edit-product-description"
+                                rows="3"></textarea>
 
                         </div>
 
 
                         <div class="form-check">
 
-                            <input class="form-check-input" type="checkbox" id="edit-product-active">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="edit-product-active">
 
-                            <label class="form-check-label" for="edit-product-active">
+                            <label
+                                class="form-check-label"
+                                for="edit-product-active">
 
                                 Produto ativo
 
@@ -919,13 +1229,18 @@
 
                     <div class="modal-footer">
 
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal">
 
                             Cancelar
 
                         </button>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
 
                             <i data-feather="save"></i>
 
@@ -948,7 +1263,10 @@
          MODAL DETALHES
     ============================================================ -->
 
-    <div class="modal fade" id="modalDetailProduct" tabindex="-1">
+    <div
+        class="modal fade"
+        id="modalDetailProduct"
+        tabindex="-1">
 
         <div class="modal-dialog modal-lg">
 
@@ -960,7 +1278,10 @@
                         Detalhes do Produto
                     </h5>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
                     </button>
 
                 </div>
@@ -968,9 +1289,13 @@
 
                 <div class="modal-body">
 
-                    <div id="product-detail-loading" class="text-center py-4">
+                    <div
+                        id="product-detail-loading"
+                        class="text-center py-4">
 
-                        <div class="spinner-border text-primary" role="status">
+                        <div
+                            class="spinner-border text-primary"
+                            role="status">
                         </div>
 
                         <div class="mt-2 text-muted">
@@ -980,7 +1305,9 @@
                     </div>
 
 
-                    <div id="product-detail-content" style="display: none;">
+                    <div
+                        id="product-detail-content"
+                        style="display: none;">
 
                         <div class="row g-4">
 
@@ -990,7 +1317,9 @@
                                     Produto
                                 </div>
 
-                                <div class="detail-value fs-4" id="detail-title">
+                                <div
+                                    class="detail-value fs-4"
+                                    id="detail-title">
                                 </div>
 
                             </div>
@@ -1002,7 +1331,9 @@
                                     ID
                                 </div>
 
-                                <div class="detail-value" id="detail-id">
+                                <div
+                                    class="detail-value"
+                                    id="detail-id">
                                 </div>
 
                             </div>
@@ -1014,7 +1345,9 @@
                                     SKU
                                 </div>
 
-                                <div class="detail-value sku" id="detail-sku">
+                                <div
+                                    class="detail-value sku"
+                                    id="detail-sku">
                                 </div>
 
                             </div>
@@ -1026,7 +1359,9 @@
                                     Categoria
                                 </div>
 
-                                <div class="detail-value" id="detail-category">
+                                <div
+                                    class="detail-value"
+                                    id="detail-category">
                                 </div>
 
                             </div>
@@ -1038,7 +1373,9 @@
                                     Marca
                                 </div>
 
-                                <div class="detail-value" id="detail-brand">
+                                <div
+                                    class="detail-value"
+                                    id="detail-brand">
                                 </div>
 
                             </div>
@@ -1050,7 +1387,9 @@
                                     Tamanho
                                 </div>
 
-                                <div class="detail-value" id="detail-size">
+                                <div
+                                    class="detail-value"
+                                    id="detail-size">
                                 </div>
 
                             </div>
@@ -1062,7 +1401,9 @@
                                     Cor
                                 </div>
 
-                                <div class="detail-value" id="detail-color">
+                                <div
+                                    class="detail-value"
+                                    id="detail-color">
                                 </div>
 
                             </div>
@@ -1074,7 +1415,9 @@
                                     Estoque
                                 </div>
 
-                                <div class="detail-value" id="detail-stock">
+                                <div
+                                    class="detail-value"
+                                    id="detail-stock">
                                 </div>
 
                             </div>
@@ -1086,7 +1429,9 @@
                                     Preço de Custo
                                 </div>
 
-                                <div class="detail-value price-cost" id="detail-cost">
+                                <div
+                                    class="detail-value price-cost"
+                                    id="detail-cost">
                                 </div>
 
                             </div>
@@ -1098,7 +1443,9 @@
                                     Preço de Venda
                                 </div>
 
-                                <div class="detail-value price-selling" id="detail-selling">
+                                <div
+                                    class="detail-value price-selling"
+                                    id="detail-selling">
                                 </div>
 
                             </div>
@@ -1110,7 +1457,9 @@
                                     Status
                                 </div>
 
-                                <div class="detail-value" id="detail-status">
+                                <div
+                                    class="detail-value"
+                                    id="detail-status">
                                 </div>
 
                             </div>
@@ -1122,7 +1471,9 @@
                                     Descrição
                                 </div>
 
-                                <div class="detail-value" id="detail-description">
+                                <div
+                                    class="detail-value"
+                                    id="detail-description">
                                 </div>
 
                             </div>
@@ -1132,7 +1483,10 @@
                     </div>
 
 
-                    <div id="product-detail-error" class="alert alert-danger" style="display: none;">
+                    <div
+                        id="product-detail-error"
+                        class="alert alert-danger"
+                        style="display: none;">
                     </div>
 
                 </div>
@@ -1140,7 +1494,10 @@
 
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
 
                         Fechar
 
@@ -1172,7 +1529,15 @@
         const CATEGORIES_API_URL = '/api/categories';
         const BRANDS_API_URL = '/api/brands';
 
+        const PRODUCTS_PER_PAGE = 10;
+
         let allProductsCache = [];
+        let filteredProducts = [];
+        let currentPage = 1;
+        let productPagination = {
+            totalItems: 0,
+            totalPages: 0
+        };
 
 
         // ============================================================
@@ -1210,6 +1575,11 @@
                 isDark ? 'sun' : 'moon'
             );
 
+            localStorage.setItem(
+                'clothstock-theme',
+                isDark ? 'dark' : 'light'
+            );
+
             refreshIcons();
 
         }
@@ -1227,15 +1597,16 @@
             container.innerHTML = `
                 <div
                     class="alert alert-${type} alert-dismissible fade show"
-                    role="alert"
-                >
-                    ${message}
+                    role="alert">
+
+                    ${escapeHtml(message)}
 
                     <button
                         type="button"
                         class="btn-close"
                         data-bs-dismiss="alert">
                     </button>
+
                 </div>
             `;
 
@@ -1264,7 +1635,10 @@
 
         function escapeHtml(value) {
 
-            if (value === null || value === undefined) {
+            if (
+                value === null ||
+                value === undefined
+            ) {
                 return '';
             }
 
@@ -1318,10 +1692,10 @@
                         options += `
                             <option value="${category.id}">
                                 ${escapeHtml(
-                            category.name ||
-                            category.nome ||
-                            ''
-                        )}
+                                    category.name ||
+                                    category.nome ||
+                                    ''
+                                )}
                             </option>
                         `;
 
@@ -1361,10 +1735,10 @@
                         options += `
                             <option value="${brand.id}">
                                 ${escapeHtml(
-                            brand.name ||
-                            brand.nome ||
-                            ''
-                        )}
+                                    brand.name ||
+                                    brand.nome ||
+                                    ''
+                                )}
                             </option>
                         `;
 
@@ -1401,7 +1775,10 @@
         // BUSCAR PRODUTOS
         // ============================================================
 
-        async function fetchProducts() {
+        async function fetchProducts(
+            page = currentPage,
+            search = ''
+        ) {
 
             const tbody =
                 document.getElementById(
@@ -1410,29 +1787,58 @@
 
             try {
 
+                const url = new URL(
+                    PRODUCTS_API_URL,
+                    window.location.origin
+                );
+
+                url.searchParams.set(
+                    'page',
+                    String(page)
+                );
+
+                url.searchParams.set(
+                    'limit',
+                    String(PRODUCTS_PER_PAGE)
+                );
+
+                if (search) {
+                    url.searchParams.set('search', search);
+                }
+
                 const response =
-                    await fetch(PRODUCTS_API_URL);
+                    await fetch(url.toString());
 
                 const result =
                     await response.json();
 
                 if (!response.ok) {
 
+                    const error = result.error || {};
                     throw new Error(
-                        result.error ||
+                        error.message ||
                         'Erro ao buscar produtos.'
                     );
 
                 }
 
+                currentPage = page;
                 allProductsCache =
-                    Array.isArray(result)
-                        ? result
-                        : (result.data || []);
+                    Array.isArray(result.data)
+                        ? result.data
+                        : [];
+                filteredProducts = allProductsCache;
+                productPagination = result.pagination || {
+                    totalItems: allProductsCache.length,
+                    totalPages: allProductsCache.length
+                        ? Math.ceil(
+                            allProductsCache.length /
+                            PRODUCTS_PER_PAGE
+                        )
+                        : 0
+                };
 
-                renderProductsTable(
-                    allProductsCache
-                );
+                renderProductsPage();
 
             } catch (error) {
 
@@ -1445,17 +1851,571 @@
                     <tr>
                         <td
                             colspan="10"
-                            class="text-center text-danger py-4"
-                        >
+                            class="text-center text-danger py-4">
+
                             Erro ao carregar produtos:
                             ${escapeHtml(error.message)}
+
                         </td>
                     </tr>
                 `;
 
+                renderPagination(0, 0, 0, 0);
+
             }
 
         }
+
+
+        // ============================================================
+        // FILTRAR PRODUTOS
+        // ============================================================
+
+        function applyProductFilter() {
+
+            const searchInput =
+                document.getElementById(
+                    'products-search'
+                );
+
+            const search =
+                searchInput
+                    ? searchInput.value.trim()
+                    : '';
+
+            // Sempre voltar para a primeira página ao filtrar.
+            currentPage = 1;
+            fetchProducts(currentPage, search);
+
+        }
+
+
+        // ============================================================
+        // CALCULAR TOTAL DE PÁGINAS
+        // ============================================================
+
+        function getTotalProductPages() {
+
+            return Math.max(
+                1,
+                productPagination.totalPages || 0
+            );
+
+        }
+
+
+        // ============================================================
+        // RENDERIZAR PÁGINA ATUAL
+        // ============================================================
+
+        function renderProductsPage() {
+
+            const totalPages =
+                getTotalProductPages();
+
+
+            if (currentPage < 1) {
+                currentPage = 1;
+            }
+
+
+            if (currentPage > totalPages) {
+                currentPage = totalPages;
+            }
+
+
+            const totalItems =
+                Number(productPagination.totalItems || 0);
+
+            const startIndex =
+                totalItems === 0
+                    ? 0
+                    : (currentPage - 1) *
+                        PRODUCTS_PER_PAGE;
+
+            const endIndex =
+                Math.min(
+                    startIndex +
+                    PRODUCTS_PER_PAGE,
+                    totalItems
+                );
+
+            /*
+             * A API já retorna somente a página atual.
+             * A proteção abaixo mantém o limite visual mesmo
+             * se uma resposta antiga ou inesperada vier maior.
+             */
+            const productsToRender =
+                filteredProducts.slice(
+                    0,
+                    PRODUCTS_PER_PAGE
+                );
+
+
+            renderProductsTable(
+                productsToRender
+            );
+
+
+            renderPagination(
+                totalItems,
+                startIndex,
+                endIndex,
+                totalPages
+            );
+
+
+            updateProductsCount();
+
+        }
+
+
+        // ============================================================
+        // CONTADOR DE PRODUTOS
+        // ============================================================
+
+        function updateProductsCount() {
+
+            const element =
+                document.getElementById(
+                    'products-count'
+                );
+
+            if (!element) {
+                return;
+            }
+
+
+            const searchInput =
+                document.getElementById(
+                    'products-search'
+                );
+
+
+            const hasSearch =
+                searchInput &&
+                searchInput.value.trim() !== '';
+
+
+            element.textContent =
+                hasSearch
+                    ? `${productPagination.totalItems || 0} encontrados`
+                    : (productPagination.totalItems || 0);
+
+        }
+
+
+        // ============================================================
+        // PAGINAÇÃO
+        // ============================================================
+
+        function renderPagination(
+            totalItems,
+            startIndex,
+            endIndex,
+            totalPages
+        ) {
+
+            const container =
+                document.getElementById(
+                    'products-pagination'
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (totalItems === 0) {
+
+                container.innerHTML = '';
+
+                return;
+
+            }
+
+
+            const firstItem =
+                startIndex + 1;
+
+
+            const lastItem =
+                endIndex;
+
+
+            let paginationHtml = `
+
+                <div class="products-pagination-info">
+
+                    Mostrando
+                    <strong>${firstItem}</strong>–<strong>${lastItem}</strong>
+                    de <strong>${totalItems}</strong> produtos
+
+                </div>
+
+                <nav aria-label="Paginação de produtos">
+
+                    <ul class="pagination pagination-sm mb-0">
+
+            `;
+
+
+            // ========================================================
+            // ANTERIOR
+            // ========================================================
+
+            paginationHtml += `
+
+                <li
+                    class="page-item ${
+                        currentPage === 1
+                            ? 'disabled'
+                            : ''
+                    }">
+
+                    <button
+                        type="button"
+                        class="page-link product-page-button"
+                        data-page="${currentPage - 1}"
+                        ${
+                            currentPage === 1
+                                ? 'disabled'
+                                : ''
+                        }>
+
+                        Anterior
+
+                    </button>
+
+                </li>
+
+            `;
+
+
+            // ========================================================
+            // NÚMEROS DAS PÁGINAS
+            // ========================================================
+
+            const maxVisiblePages = 5;
+
+
+            let startPage =
+                Math.max(
+                    1,
+                    currentPage - 2
+                );
+
+
+            let endPage =
+                Math.min(
+                    totalPages,
+                    startPage +
+                    maxVisiblePages -
+                    1
+                );
+
+
+            if (
+                endPage - startPage <
+                maxVisiblePages - 1
+            ) {
+
+                startPage =
+                    Math.max(
+                        1,
+                        endPage -
+                        maxVisiblePages +
+                        1
+                    );
+
+            }
+
+
+            // ========================================================
+            // PRIMEIRA PÁGINA
+            // ========================================================
+
+            if (startPage > 1) {
+
+                paginationHtml += `
+
+                    <li class="page-item">
+
+                        <button
+                            type="button"
+                            class="page-link product-page-button"
+                            data-page="1">
+
+                            1
+
+                        </button>
+
+                    </li>
+
+                `;
+
+
+                if (startPage > 2) {
+
+                    paginationHtml += `
+
+                        <li class="page-item disabled">
+
+                            <span class="page-link">
+                                ...
+                            </span>
+
+                        </li>
+
+                    `;
+
+                }
+
+            }
+
+
+            // ========================================================
+            // PÁGINAS
+            // ========================================================
+
+            for (
+                let page = startPage;
+                page <= endPage;
+                page++
+            ) {
+
+                paginationHtml += `
+
+                    <li
+                        class="page-item ${
+                            page === currentPage
+                                ? 'active'
+                                : ''
+                        }">
+
+                        <button
+                            type="button"
+                            class="page-link product-page-button"
+                            data-page="${page}"
+                            ${
+                                page === currentPage
+                                    ? 'aria-current="page"'
+                                    : ''
+                            }>
+
+                            ${page}
+
+                        </button>
+
+                    </li>
+
+                `;
+
+            }
+
+
+            // ========================================================
+            // ÚLTIMA PÁGINA
+            // ========================================================
+
+            if (endPage < totalPages) {
+
+                if (
+                    endPage <
+                    totalPages - 1
+                ) {
+
+                    paginationHtml += `
+
+                        <li class="page-item disabled">
+
+                            <span class="page-link">
+                                ...
+                            </span>
+
+                        </li>
+
+                    `;
+
+                }
+
+
+                paginationHtml += `
+
+                    <li class="page-item">
+
+                        <button
+                            type="button"
+                            class="page-link product-page-button"
+                            data-page="${totalPages}">
+
+                            ${totalPages}
+
+                        </button>
+
+                    </li>
+
+                `;
+
+            }
+
+
+            // ========================================================
+            // PRÓXIMA
+            // ========================================================
+
+            paginationHtml += `
+
+                <li
+                    class="page-item ${
+                        currentPage === totalPages
+                            ? 'disabled'
+                            : ''
+                    }">
+
+                    <button
+                        type="button"
+                        class="page-link product-page-button"
+                        data-page="${currentPage + 1}"
+                        ${
+                            currentPage === totalPages
+                                ? 'disabled'
+                                : ''
+                        }>
+
+                        Próxima
+
+                    </button>
+
+                </li>
+
+                    </ul>
+
+                </nav>
+
+            `;
+
+
+            container.innerHTML =
+                paginationHtml;
+
+
+            refreshIcons();
+
+        }
+
+
+        // ============================================================
+        // MUDAR PÁGINA
+        // ============================================================
+
+        function changeProductPage(page) {
+
+            const totalPages =
+                getTotalProductPages();
+
+
+            const requestedPage =
+                Number(page);
+
+
+            if (
+                !Number.isInteger(requestedPage) ||
+                requestedPage < 1 ||
+                requestedPage > totalPages
+            ) {
+                return;
+            }
+
+
+            if (requestedPage === currentPage) {
+                return;
+            }
+
+
+            const searchInput =
+                document.getElementById('products-search');
+
+            const search =
+                searchInput
+                    ? searchInput.value.trim()
+                    : '';
+
+            fetchProducts(
+                requestedPage,
+                search
+            );
+
+
+            /*
+             * Depois de trocar a página,
+             * leva a visualização de volta para o início
+             * da tabela.
+             */
+            const table =
+                document.querySelector(
+                    '.table-responsive'
+                );
+
+            if (table) {
+                table.scrollTop = 0;
+            }
+
+        }
+
+
+        // ============================================================
+        // EVENTO DA PAGINAÇÃO
+        // ============================================================
+
+        /*
+         * A paginação é criada dinamicamente dentro de
+         * renderPagination().
+         *
+         * Por isso usamos delegação de eventos no container.
+         *
+         * Não usamos mais:
+         *
+         * onclick="changeProductPage(...)"
+         *
+         * nos botões.
+         */
+
+        document.addEventListener(
+            'click',
+            function (event) {
+
+                const button =
+                    event.target.closest(
+                        '.product-page-button'
+                    );
+
+
+                if (!button) {
+                    return;
+                }
+
+
+                event.preventDefault();
+                event.stopPropagation();
+
+
+                if (button.disabled) {
+                    return;
+                }
+
+
+                const page =
+                    Number(
+                        button.dataset.page
+                    );
+
+
+                changeProductPage(page);
+
+            }
+        );
 
 
         // ============================================================
@@ -1470,28 +2430,67 @@
                 );
 
 
-            if (
-                !productsList ||
-                !Array.isArray(productsList) ||
-                productsList.length === 0
-            ) {
+            /*
+             * Proteção adicional:
+             * mesmo que alguma outra parte do código
+             * envie mais produtos, somente os 10 primeiros
+             * serão renderizados nesta página.
+             */
+            const safeProducts =
+                Array.isArray(productsList)
+                    ? productsList.slice(
+                        0,
+                        PRODUCTS_PER_PAGE
+                    )
+                    : [];
+
+
+            if (safeProducts.length === 0) {
+
+                const searchInput =
+                    document.getElementById(
+                        'products-search'
+                    );
+
+
+                const hasSearch =
+                    searchInput &&
+                    searchInput.value.trim() !== '';
+
 
                 tbody.innerHTML = `
+
                     <tr>
+
                         <td
                             colspan="10"
-                            class="text-center text-muted py-5"
-                        >
+                            class="text-center text-muted py-5">
 
-                            <i data-feather="package"></i>
+                            <i
+                                data-feather="${
+                                    hasSearch
+                                        ? 'search'
+                                        : 'package'
+                                }"
+                                style="width:32px;height:32px;">
+                            </i>
 
                             <div class="mt-2">
-                                Nenhum produto cadastrado.
+
+                                ${
+                                    hasSearch
+                                        ? 'Nenhum produto encontrado para o filtro informado.'
+                                        : 'Nenhum produto cadastrado.'
+                                }
+
                             </div>
 
                         </td>
+
                     </tr>
+
                 `;
+
 
                 refreshIcons();
 
@@ -1503,7 +2502,7 @@
             let rowsHtml = '';
 
 
-            productsList.forEach(product => {
+            safeProducts.forEach(product => {
 
                 if (!product) {
                     return;
@@ -1513,40 +2512,55 @@
                 const id =
                     product.id ?? '-';
 
+
                 const title =
-                    product.title || 'Sem título';
+                    product.title ||
+                    'Sem título';
+
 
                 const sku =
-                    product.sku || '-';
+                    product.sku ||
+                    '-';
+
 
                 const size =
-                    product.size || '-';
+                    product.size ||
+                    '-';
+
 
                 const color =
-                    product.color || '-';
+                    product.color ||
+                    '-';
+
 
                 const categoryName =
-                    product.category_name || '-';
+                    product.category_name ||
+                    '-';
+
 
                 const brandName =
-                    product.brand_name || '-';
+                    product.brand_name ||
+                    '-';
 
 
                 const stock =
                     Number(
-                        product.quantity_in_stock || 0
+                        product.quantity_in_stock ||
+                        0
                     );
 
 
                 const costPrice =
                     Number(
-                        product.cost_price || 0
+                        product.cost_price ||
+                        0
                     );
 
 
                 const sellingPrice =
                     Number(
-                        product.selling_price || 0
+                        product.selling_price ||
+                        0
                     );
 
 
@@ -1565,16 +2579,17 @@
                                 ${escapeHtml(title)}
                             </div>
 
-                            ${product.description
-                        ? `
+                            ${
+                                product.description
+                                    ? `
                                         <small class="text-muted">
                                             ${escapeHtml(
-                            product.description
-                        )}
+                                                product.description
+                                            )}
                                         </small>
                                     `
-                        : ''
-                    }
+                                    : ''
+                            }
 
                         </td>
 
@@ -1602,9 +2617,12 @@
                         <td>
 
                             <span
-                                class="badge bg-light text-dark border"
-                            >
-                                ${escapeHtml(categoryName)}
+                                class="badge bg-light text-dark border">
+
+                                ${escapeHtml(
+                                    categoryName
+                                )}
+
                             </span>
 
                         </td>
@@ -1620,24 +2638,34 @@
 
 
                         <td class="price-cost">
-                            ${formatCurrency(costPrice)}
+
+                            ${formatCurrency(
+                                costPrice
+                            )}
+
                         </td>
 
 
                         <td class="price-selling">
-                            ${formatCurrency(sellingPrice)}
+
+                            ${formatCurrency(
+                                sellingPrice
+                            )}
+
                         </td>
 
 
                         <td>
 
                             <span
-                                class="badge stock-badge ${stock > 0
-                        ? 'bg-success'
-                        : 'bg-danger'
-                    }"
-                            >
+                                class="badge stock-badge ${
+                                    stock > 0
+                                        ? 'bg-success'
+                                        : 'bg-danger'
+                                }">
+
                                 ${stock} un.
+
                             </span>
 
                         </td>
@@ -1651,8 +2679,7 @@
                                     type="button"
                                     class="btn btn-sm btn-outline-info"
                                     title="Ver detalhes"
-                                    onclick="viewProduct(${id})"
-                                >
+                                    onclick="viewProduct(${id})">
 
                                     <i data-feather="eye"></i>
 
@@ -1663,8 +2690,7 @@
                                     type="button"
                                     class="btn btn-sm btn-primary"
                                     title="Editar produto"
-                                    onclick="editProduct(${id})"
-                                >
+                                    onclick="editProduct(${id})">
 
                                     <i data-feather="edit-2"></i>
 
@@ -1675,8 +2701,7 @@
                                     type="button"
                                     class="btn btn-sm btn-danger"
                                     title="Excluir produto"
-                                    onclick="deleteProduct(${id})"
-                                >
+                                    onclick="deleteProduct(${id})">
 
                                     <i data-feather="trash-2"></i>
 
@@ -1693,7 +2718,9 @@
             });
 
 
-            tbody.innerHTML = rowsHtml;
+            tbody.innerHTML =
+                rowsHtml;
+
 
             refreshIcons();
 
@@ -1791,7 +2818,9 @@
                                     },
 
                                     body:
-                                        JSON.stringify(payload)
+                                        JSON.stringify(
+                                            payload
+                                        )
                                 }
                             );
 
@@ -1977,6 +3006,7 @@
 
                 modal.show();
 
+
                 refreshIcons();
 
 
@@ -2096,7 +3126,9 @@
                                     },
 
                                     body:
-                                        JSON.stringify(payload)
+                                        JSON.stringify(
+                                            payload
+                                        )
 
                                 }
                             );
@@ -2422,11 +3454,85 @@
             'DOMContentLoaded',
             async function () {
 
+                // ====================================================
+                // RESTAURAR TEMA
+                // ====================================================
+
+                if (
+                    localStorage.getItem(
+                        'clothstock-theme'
+                    ) === 'dark'
+                ) {
+
+                    document.body.classList.add(
+                        'dark-mode'
+                    );
+
+
+                    document.getElementById(
+                        'theme-text'
+                    ).innerText =
+                        'Modo Claro';
+
+
+                    document.getElementById(
+                        'theme-icon'
+                    ).setAttribute(
+                        'data-feather',
+                        'sun'
+                    );
+
+                }
+
+
+                // ====================================================
+                // INICIALIZAR ÍCONES
+                // ====================================================
+
                 refreshIcons();
+
+
+                // ====================================================
+                // FILTRO
+                // ====================================================
+
+                const productsSearch =
+                    document.getElementById(
+                        'products-search'
+                    );
+
+
+                if (productsSearch) {
+
+                    productsSearch.addEventListener(
+                        'input',
+                        function () {
+
+                            applyProductFilter();
+
+                        }
+                    );
+
+                }
+
+
+                // ====================================================
+                // CARREGAR CATEGORIAS E MARCAS
+                // ====================================================
 
                 await loadDropdowns();
 
+
+                // ====================================================
+                // CARREGAR PRODUTOS
+                // ====================================================
+
                 await fetchProducts();
+
+
+                // ====================================================
+                // ATUALIZAR ÍCONES
+                // ====================================================
 
                 refreshIcons();
 

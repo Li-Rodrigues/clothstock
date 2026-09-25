@@ -1,4 +1,5 @@
 const pool = require('../config/database');
+const { getPagination, paginationResponse } = require('../utils/pagination');
 
 // ============================================================
 // LISTAR TODOS OS FORNECEDORES
@@ -6,18 +7,30 @@ const pool = require('../config/database');
 
 const getAllSuppliers = async (req, res, next) => {
     try {
-        const query = `
-            SELECT *
-            FROM suppliers
-            ORDER BY id DESC;
-        `;
+        const { page, limit, offset, hasPaging } = getPagination(req);
+        const search = String(req.query.search || '').trim();
+        const values = search ? [`%${search}%`] : [];
+        const where = search
+            ? `WHERE name ILIKE $1
+                OR COALESCE(trade_name, '') ILIKE $1
+                OR cnpj_cpf ILIKE $1
+                OR COALESCE(city, '') ILIKE $1
+                OR COALESCE(state, '') ILIKE $1`
+            : '';
+        const countResult = await pool.query(
+            `SELECT COUNT(*)::int AS total FROM suppliers ${where}`,
+            values
+        );
+        const pagingSql = hasPaging
+            ? ` LIMIT $${values.length + 1} OFFSET $${values.length + 2}`
+            : '';
+        const queryValues = hasPaging ? [...values, limit, offset] : values;
+        const { rows } = await pool.query(
+            `SELECT * FROM suppliers ${where} ORDER BY id DESC${pagingSql}`,
+            queryValues
+        );
 
-        const { rows } = await pool.query(query);
-
-        res.status(200).json({
-            success: true,
-            data: rows
-        });
+        res.status(200).json(paginationResponse(page, limit, countResult.rows[0].total, rows));
 
     } catch (error) {
         next(error);

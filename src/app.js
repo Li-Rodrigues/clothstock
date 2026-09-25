@@ -28,7 +28,10 @@ const app = express();
 // MIDDLEWARES GLOBAIS
 // ============================================================
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_ORIGIN || (process.env.NODE_ENV === 'production' ? false : true),
+  credentials: true
+}));
 
 app.use(express.json());
 
@@ -50,17 +53,19 @@ app.use(
 
 app.use('/api/auth', authRoutes);
 
-app.use('/api/brands', brandRoutes);
+const { authenticate, requireRole } = require('./middlewares/authMiddleware');
 
-app.use('/api/categories', categoryRoutes);
+app.use('/api/brands', authenticate, requireRole('ADMIN', 'OPERATOR'), brandRoutes);
 
-app.use('/api/products', productRoutes);
+app.use('/api/categories', authenticate, requireRole('ADMIN', 'OPERATOR'), categoryRoutes);
 
-app.use('/api/suppliers', supplierRoutes);
+app.use('/api/products', authenticate, requireRole('ADMIN', 'OPERATOR'), productRoutes);
 
-app.use('/api/movements', movementRoutes);
+app.use('/api/suppliers', authenticate, requireRole('ADMIN', 'OPERATOR'), supplierRoutes);
 
-app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/movements', authenticate, requireRole('ADMIN', 'OPERATOR'), movementRoutes);
+
+app.use('/api/dashboard', authenticate, requireRole('ADMIN', 'OPERATOR'), dashboardRoutes);
 
 // ============================================================
 // ROTA PRINCIPAL
@@ -68,7 +73,7 @@ app.use('/api/dashboard', dashboardRoutes);
 
 app.get('/', (req, res) => {
     res.sendFile(
-        path.join(__dirname, '../public/index.html')
+        path.join(__dirname, '../public/dashboard.html')
     );
 });
 
@@ -85,7 +90,10 @@ app.get('*', (req, res, next) => {
 
         return res.status(404).json({
             success: false,
-            error: 'Rota de API não encontrada.'
+            error: {
+                code: 'NOT_FOUND',
+                message: 'Rota de API não encontrada.'
+            }
         });
     }
 

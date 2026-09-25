@@ -1,6 +1,7 @@
 // src/routes/categoryRoutes.js
 
 const express = require('express');
+const { requireRole } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -31,20 +32,21 @@ router.get('/:id', getCategoryById);
 // Criar categoria
 // ============================================================
 
-router.post('/', createCategory);
+router.post('/', requireRole('ADMIN'), createCategory);
 
 // ============================================================
 // PUT /api/categories/:id
 // Atualizar categoria
 // ============================================================
 
-router.put('/:id', updateCategory);
+router.put('/:id', requireRole('ADMIN'), updateCategory);
+router.patch('/:id', requireRole('ADMIN'), updateCategory);
 
 // ============================================================
 // DELETE /api/categories/:id
 // Excluir categoria
 // ============================================================
 
-router.delete('/:id', deleteCategory);
+router.delete('/:id', requireRole('ADMIN'), deleteCategory);
 
 module.exports = router;

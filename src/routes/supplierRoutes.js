@@ -1,4 +1,5 @@
 const express = require('express');
+const { requireRole } = require('../middlewares/authMiddleware');
 
 const {
     getAllSuppliers,
@@ -17,12 +18,13 @@ router.get('/', getAllSuppliers);
 router.get('/:id', getSupplierById);
 
 // POST /api/suppliers
-router.post('/', createSupplier);
+router.post('/', requireRole('ADMIN'), createSupplier);
 
 // PUT /api/suppliers/:id
-router.put('/:id', updateSupplier);
+router.put('/:id', requireRole('ADMIN'), updateSupplier);
+router.patch('/:id', requireRole('ADMIN'), updateSupplier);
 
 // DELETE /api/suppliers/:id
-router.delete('/:id', deleteSupplier);
+router.delete('/:id', requireRole('ADMIN'), deleteSupplier);
 
 module.exports = router;

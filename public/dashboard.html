@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - ClothStock</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <!-- Feather Icons JS Script Import -->
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
@@ -122,13 +123,81 @@
       color: var(--text-muted) !important;
     }
 
-    /* Cards internos coloridos */
+    /* ESTILOS MODERNOS PARA OS CARDS DE MÉTRICA */
+    .metric-card {
+      border: none !important;
+      border-radius: 12px !important;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+    }
+
     .metric-card-title {
-      font-size: 0.75rem;
+      font-size: 0.725rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+      letter-spacing: 0.08em;
+      opacity: 0.85;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.75rem;
+    }
+
+    /* GRADIENTES DA SEÇÃO DE ESTOQUE */
+    .grad-blue {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+      color: #ffffff !important;
+    }
+
+    .grad-rose {
+      background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%) !important;
+      color: #ffffff !important;
+    }
+
+    .grad-emerald {
+      background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important;
+      color: #ffffff !important;
+    }
+
+    .grad-amber {
+      background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%) !important;
+      color: #ffffff !important;
+    }
+
+    /* GRADIENTES DA SEÇÃO DE VENDAS */
+    .grad-indigo {
+      background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%) !important;
+      color: #ffffff !important;
+    }
+
+    .grad-purple {
+      background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%) !important;
+      color: #ffffff !important;
+    }
+
+    .grad-teal {
+      background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%) !important;
+      color: #ffffff !important;
+    }
+
+    .grad-orange {
+      background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%) !important;
+      color: #ffffff !important;
     }
 
     @media (max-width:768px) {
@@ -158,6 +227,7 @@
       }
     }
   </style>
+  <script src="/js/app-shell.js" defer></script>
 </head>
 
 <body class="movement-page">
@@ -250,33 +320,45 @@
 
     <!-- SEÇÃO 1: MÉTRICAS DE ESTOQUE -->
     <h5 class="fw-bold text-secondary mb-3">Métricas de Estoque</h5>
-    <div class="card card-container mb-4 shadow-sm border-0">
-      <div class="card-body">
+    <div class="card card-container mb-4 shadow-sm border-0 rounded-3">
+      <div class="card-body p-4">
         <div class="row g-4">
           <div class="col-md-3">
-            <div class="card bg-primary text-white h-100 border-0 p-3 text-center">
-              <div class="metric-card-title text-white-50">Quantidade de produtos</div>
+            <div class="card metric-card grad-blue h-100 p-3 text-center shadow-sm">
+              <div class="metric-icon-box">
+                <i data-feather="box"></i>
+              </div>
+              <div class="metric-card-title">Quantidade de produtos</div>
               <p id="metric-total-quantity" class="fs-3 fw-bold mb-0">0</p>
             </div>
           </div>
 
           <div class="col-md-3">
-            <div class="card bg-danger text-white h-100 border-0 p-3 text-center">
-              <div class="metric-card-title text-white-50">Custo de estoque</div>
+            <div class="card metric-card grad-rose h-100 p-3 text-center shadow-sm">
+              <div class="metric-icon-box">
+                <i data-feather="dollar-sign"></i>
+              </div>
+              <div class="metric-card-title">Custo de estoque</div>
               <p id="metric-total-cost" class="fs-3 fw-bold mb-0">R$ 0,00</p>
             </div>
           </div>
 
           <div class="col-md-3">
-            <div class="card bg-success text-white h-100 border-0 p-3 text-center">
-              <div class="metric-card-title text-white-50">Valor do estoque</div>
+            <div class="card metric-card grad-emerald h-100 p-3 text-center shadow-sm">
+              <div class="metric-icon-box">
+                <i data-feather="pie-chart"></i>
+              </div>
+              <div class="metric-card-title">Valor do estoque</div>
               <p id="metric-total-selling" class="fs-3 fw-bold mb-0">R$ 0,00</p>
             </div>
           </div>
 
           <div class="col-md-3">
-            <div class="card bg-warning text-dark h-100 border-0 p-3 text-center">
-              <div class="metric-card-title text-black-50">Lucro de estoque</div>
+            <div class="card metric-card grad-amber h-100 p-3 text-center shadow-sm">
+              <div class="metric-icon-box">
+                <i data-feather="trending-up"></i>
+              </div>
+              <div class="metric-card-title">Lucro de estoque</div>
               <p id="metric-total-profit" class="fs-3 fw-bold mb-0">R$ 0,00</p>
             </div>
           </div>
@@ -286,33 +368,45 @@
 
     <!-- SEÇÃO 2: MÉTRICAS DE VENDAS -->
     <h5 class="fw-bold text-secondary mb-3">Métricas de Vendas</h5>
-    <div class="card card-container mb-4 shadow-sm border-0">
-      <div class="card-body">
+    <div class="card card-container mb-4 shadow-sm border-0 rounded-3">
+      <div class="card-body p-4">
         <div class="row g-4">
           <div class="col-md-3">
-            <div class="card bg-primary text-white h-100 border-0 p-3 text-center">
-              <div class="metric-card-title text-white-50">Quantidade de vendas</div>
+            <div class="card metric-card grad-indigo h-100 p-3 text-center shadow-sm">
+              <div class="metric-icon-box">
+                <i data-feather="shopping-bag"></i>
+              </div>
+              <div class="metric-card-title">Quantidade de vendas</div>
               <p id="metric-sales-count" class="fs-3 fw-bold mb-0">0</p>
             </div>
           </div>
 
           <div class="col-md-3">
-            <div class="card bg-danger text-white h-100 border-0 p-3 text-center">
-              <div class="metric-card-title text-white-50">Produtos vendidos</div>
+            <div class="card metric-card grad-purple h-100 p-3 text-center shadow-sm">
+              <div class="metric-icon-box">
+                <i data-feather="archive"></i>
+              </div>
+              <div class="metric-card-title">Produtos vendidos</div>
               <p id="metric-products-sold" class="fs-3 fw-bold mb-0">0</p>
             </div>
           </div>
 
           <div class="col-md-3">
-            <div class="card bg-success text-white h-100 border-0 p-3 text-center">
-              <div class="metric-card-title text-white-50">Valor das vendas</div>
+            <div class="card metric-card grad-teal h-100 p-3 text-center shadow-sm">
+              <div class="metric-icon-box">
+                <i data-feather="credit-card"></i>
+              </div>
+              <div class="metric-card-title">Valor das vendas</div>
               <p id="metric-sales-value" class="fs-3 fw-bold mb-0">R$ 0,00</p>
             </div>
           </div>
 
           <div class="col-md-3">
-            <div class="card bg-warning text-dark h-100 border-0 p-3 text-center">
-              <div class="metric-card-title text-black-50">Lucro de vendas</div>
+            <div class="card metric-card grad-orange h-100 p-3 text-center shadow-sm">
+              <div class="metric-icon-box">
+                <i data-feather="award"></i>
+              </div>
+              <div class="metric-card-title">Lucro de vendas</div>
               <p id="metric-sales-profit" class="fs-3 fw-bold mb-0">R$ 0,00</p>
             </div>
           </div>
@@ -331,15 +425,15 @@
         if (!response.ok) throw new Error('Erro ao buscar dados do servidor');
 
         const data = await response.json();
-        console.log('Dados recebidos da API:', data); // Verifique no F12 -> Console para confirmar os nomes das chaves
+        console.log('Dados recebidos da API:', data);
 
-        // Extrai métricas de Estoque buscando na raiz ou em productMetrics
+        // Extrai métricas de Estoque
         const totalQty = data.productMetrics?.totalQuantity ?? data.totalQuantity ?? data.total_quantity ?? 0;
         const totalCost = data.productMetrics?.totalCostPrice ?? data.totalCostPrice ?? data.total_cost_price ?? 0;
         const totalSelling = data.productMetrics?.totalSellingPrice ?? data.totalSellingPrice ?? data.total_selling_price ?? 0;
         const stockProfit = data.stockProfit ?? data.productMetrics?.stockProfit ?? (Number(totalSelling) - Number(totalCost));
 
-        // Extrai métricas de Vendas buscando na raiz ou em salesMetrics
+        // Extrai métricas de Vendas
         const salesCount = data.salesMetrics?.totalSalesCount ?? data.totalSalesCount ?? data.total_sales_count ?? 0;
         const productsSold = data.salesMetrics?.totalProductsSold ?? data.totalProductsSold ?? data.total_products_sold ?? 0;
         const salesValue = data.outflows ?? data.salesMetrics?.totalSalesValue ?? data.totalSalesValue ?? data.total_sales_value ?? 0;
@@ -380,7 +474,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Inicia com a escolha salva no localStorage
       const isDark = localStorage.getItem('theme') === 'dark';
       if (isDark) {
         document.body.classList.add('dark-mode');

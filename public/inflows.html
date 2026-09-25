@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Entradas | ClothStock</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="css/sidebar.css">
@@ -19,16 +20,29 @@
     }
   </style>
 
+  <script src="/js/app-shell.js" defer></script>
 </head>
 
 <body class="movement-page" data-movement-type="INFLOW">
+
   <main class="nxl-container">
+
+    <!-- ============================================================
+         CABEÇALHO
+    ============================================================ -->
+
     <header class="nxl-header d-flex justify-content-between align-items-center shadow-sm p-3 mb-4 rounded">
       <div>
         <h5 class="mb-0 fw-bold">Entradas de estoque</h5>
-        <small class="text-muted">Registro e controle das entradas de produtos.</small>
+        <small class="text-muted">
+          Registro e controle das entradas de produtos.
+        </small>
       </div>
-      <button id="theme-toggle" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2" type="button">
+
+      <button
+        id="theme-toggle"
+        class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+        type="button">
         <i id="theme-icon" data-feather="moon"></i>
         <span id="theme-text">Modo Escuro</span>
       </button>
@@ -36,32 +50,104 @@
 
     <div id="alert-container"></div>
 
+
+    <!-- ============================================================
+         CARD DE ENTRADAS
+    ============================================================ -->
+
     <section class="card shadow-sm border mb-4">
-      <div class="card-header bg-transparent d-flex flex-wrap justify-content-between align-items-center gap-3 py-3">
-        <div class="d-flex flex-wrap align-items-center gap-3">
-          <div>
-            <h5 class="card-title mb-0 fw-bold">Entradas cadastradas</h5>
-            <small class="text-muted">
-              <span id="movements-count">0</span> movimentações ·
-              <span id="products-count">0</span> produtos no catálogo
-            </small>
+
+      <!-- ==========================================================
+           CABEÇALHO DO CARD
+      =========================================================== -->
+
+      <div class="card-header bg-transparent py-3">
+
+        <div class="d-flex align-items-center justify-content-between w-100">
+
+          <!-- Título + Busca -->
+          <div class="d-flex align-items-center gap-4">
+
+            <!-- Título -->
+            <div>
+              <h5 class="card-title mb-0 fw-bold">
+                Entradas cadastradas
+              </h5>
+
+              <small class="text-muted">
+                <span id="movements-count">0</span> movimentações ·
+                <span id="products-count">0</span> produtos no catálogo
+              </small>
+            </div>
+
+
+            <!-- ======================================================
+                 CAMPO DE BUSCA
+            ======================================================= -->
+
+            <div style="position: relative; width: 240px; flex-shrink: 0;">
+
+              <i
+                data-feather="search"
+                style="
+                  position: absolute;
+                  left: 10px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  width: 16px;
+                  height: 16px;
+                  pointer-events: none;
+                  z-index: 5;
+                ">
+              </i>
+
+              <input
+                id="history-search"
+                class="form-control form-control-sm"
+                type="search"
+                placeholder="Filtrar lista..."
+                style="
+                  width: 100%;
+                  padding-left: 34px;
+                ">
+
+            </div>
+
           </div>
-          <div class="search-box" style="min-width: 220px;">
-            <input id="history-search" class="form-control form-control-sm" type="search"
-            placeholder="Filtrar lista ..." style="min-width:240px">
-          </div>
-        </div>
-        <div>
-          <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-bs-toggle="modal"
-            data-bs-target="#movement-modal">
-            <i data-feather="plus"></i>Nova Entrada
+
+
+          <!-- ======================================================
+               BOTÃO NOVA ENTRADA
+          ======================================================= -->
+
+          <button
+            class="btn btn-primary btn-sm d-flex align-items-center gap-2"
+            data-bs-toggle="modal"
+            data-bs-target="#movement-modal"
+            type="button">
+
+            <i data-feather="plus"></i>
+            Nova Entrada
+
           </button>
+
         </div>
+
       </div>
+
+
+      <!-- ==========================================================
+           TABELA
+      =========================================================== -->
+
       <div class="card-body p-0">
+
         <div class="table-responsive">
+
           <table class="table table-hover align-middle mb-0">
+
             <thead class="table-light">
+
               <tr>
                 <th>ID</th>
                 <th>Data/Hora</th>
@@ -69,105 +155,328 @@
                 <th>Quantidade</th>
                 <th>Valor total</th>
                 <th>NF / Observação</th>
-                <th class="text-center" style="width:90px">Ações</th>
+                <th class="text-center" style="width:90px">
+                  Ações
+                </th>
               </tr>
+
             </thead>
+
             <tbody id="movements-body">
+
               <tr>
-                <td colspan="7" class="text-center text-muted py-4">Carregando entradas...</td>
+                <td colspan="7" class="text-center text-muted py-4">
+                  Carregando entradas...
+                </td>
               </tr>
+
             </tbody>
+
           </table>
+
         </div>
+
       </div>
+
     </section>
+
   </main>
 
+
+  <!-- ==============================================================
+       MODAL - NOVA ENTRADA
+  ============================================================== -->
+
   <div class="modal fade" id="movement-modal" tabindex="-1">
+
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
       <div class="modal-content">
+
         <div class="modal-header">
-          <h5 class="modal-title fw-bold">Nova Entrada</h5>
-          <button class="btn-close" data-bs-dismiss="modal"></button>
+
+          <h5 class="modal-title fw-bold">
+            Nova Entrada
+          </h5>
+
+          <button
+            class="btn-close"
+            data-bs-dismiss="modal">
+          </button>
+
         </div>
+
+
         <form id="movement-form">
+
           <div class="modal-body">
+
+
+            <!-- ====================================================
+                 FORNECEDOR E NOTA FISCAL
+            ===================================================== -->
+
             <div class="row g-3 mb-3">
+
               <div class="col-md-6">
-                <label class="form-label" for="movement-supplier">Fornecedor</label>
-                <select class="form-select" id="movement-supplier">
-                  <option value="">Selecione um fornecedor...</option>
+
+                <label
+                  class="form-label"
+                  for="movement-supplier">
+                  Fornecedor
+                </label>
+
+                <select
+                  class="form-select"
+                  id="movement-supplier"
+                  name="supplier_id">
+
+                  <option value="">
+                    Selecione um fornecedor...
+                  </option>
+
                 </select>
+
               </div>
+
+
               <div class="col-md-6">
-                <label class="form-label" for="invoice-number">Nota fiscal</label>
-                <input class="form-control" id="invoice-number" type="text" placeholder="Número da NF">
+
+                <label
+                  class="form-label"
+                  for="invoice-number">
+                  Nota fiscal
+                </label>
+
+                <input
+                  class="form-control"
+                  id="invoice-number"
+                   name="invoice_number"
+                  type="text"
+                  placeholder="Número da NF">
+
               </div>
+
             </div>
+
+
+            <!-- ====================================================
+                 PRODUTOS
+            ===================================================== -->
 
             <div class="d-flex justify-content-between align-items-center w-100 mb-2">
-              <label class="form-label" for="movement-supplier">Produto</label>
-              <button type="button" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+
+              <label
+                class="form-label"
+                for="movement-supplier">
+                Produto
+              </label>
+
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
                 id="add-movement-item">
-                <i data-feather="plus"></i>Adicionar produto
+
+                <i data-feather="plus"></i>
+                Adicionar produto
+
               </button>
+
             </div>
 
-            <div id="empty-products" class="text-muted border rounded p-3 mb-3">
-              Nenhum produto adicionado. Clique em “Adicionar produto”.
+
+            <div
+              id="empty-products"
+              class="text-muted border rounded p-3 mb-3">
+
+              Nenhum produto adicionado.
+              Clique em “Adicionar produto”.
+
             </div>
+
+
             <div id="movement-products-container"></div>
 
+
+            <!-- ====================================================
+                 RESUMO
+            ===================================================== -->
+
             <div class="row g-3 mb-3 p-3 bg-body-tertiary rounded border">
+
               <div class="col-md-4">
-                <div class="small text-muted">Itens</div>
-                <div id="summary-items" class="fw-bold fs-5 text-body">0</div>
+
+                <div class="small text-muted">
+                  Itens
+                </div>
+
+                <div
+                  id="summary-items"
+                  class="fw-bold fs-5 text-body">
+                  0
+                </div>
+
               </div>
+
+
               <div class="col-md-4">
-                <div class="small text-muted">Quantidade</div>
-                <div id="summary-quantity" class="fw-bold fs-5 text-body">0 un.</div>
+
+                <div class="small text-muted">
+                  Quantidade
+                </div>
+
+                <div
+                  id="summary-quantity"
+                  class="fw-bold fs-5 text-body">
+                  0 un.
+                </div>
+
               </div>
+
+
               <div class="col-md-4">
-                <div class="small text-muted">Total</div>
-                <div id="summary-total" class="fw-bold fs-5 text-primary-emphasis" style="color: #0b5ed7 !important;">R$
-                  0,00</div>
+
+                <div class="small text-muted">
+                  Total
+                </div>
+
+                <div
+                  id="summary-total"
+                  class="fw-bold fs-5 text-primary-emphasis"
+                  style="color: #0b5ed7 !important;">
+                  R$ 0,00
+                </div>
+
               </div>
+
             </div>
+
+
+            <!-- ====================================================
+                 OBSERVAÇÃO
+            ===================================================== -->
 
             <div class="mb-0">
-              <label class="form-label" for="notes">Observação</label>
-              <textarea class="form-control" id="notes" rows="3" placeholder="Ex.: lote, conferência..."></textarea>
+
+              <label
+                class="form-label"
+                for="notes">
+                Observação
+              </label>
+
+              <textarea
+                class="form-control"
+                id="notes"
+                name="notes"
+                rows="3"
+                placeholder="Ex.: lote, conferência...">
+              </textarea>
+
             </div>
+
           </div>
+
+
+          <!-- ======================================================
+               RODAPÉ DO MODAL
+          ======================================================= -->
+
           <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-            <button id="save-movement-btn" class="btn btn-primary d-flex align-items-center gap-2" type="submit">
-              <i data-feather="save"></i>Salvar Entrada
+
+            <button
+              type="button"
+              class="btn btn-light"
+              data-bs-dismiss="modal">
+              Cancelar
             </button>
+
+            <button
+              id="save-movement-btn"
+              class="btn btn-primary d-flex align-items-center gap-2"
+              type="submit">
+
+              <i data-feather="save"></i>
+              Salvar Entrada
+
+            </button>
+
           </div>
+
         </form>
+
       </div>
+
     </div>
+
   </div>
 
-  <div class="modal fade" id="movement-detail-modal" tabindex="-1">
+
+  <!-- ==============================================================
+       MODAL - DETALHES
+  ============================================================== -->
+
+  <div
+    class="modal fade"
+    id="movement-detail-modal"
+    tabindex="-1">
+
     <div class="modal-dialog modal-lg">
+
       <div class="modal-content">
+
         <div class="modal-header">
-          <h5 class="modal-title fw-bold" id="movement-detail-title">Detalhes</h5>
-          <button class="btn-close" data-bs-dismiss="modal"></button>
+
+          <h5
+            class="modal-title fw-bold"
+            id="movement-detail-title">
+            Detalhes
+          </h5>
+
+          <button
+            class="btn-close"
+            data-bs-dismiss="modal">
+          </button>
+
         </div>
-        <div class="modal-body" id="movement-detail-content"></div>
+
+
+        <div
+          class="modal-body"
+          id="movement-detail-content">
+        </div>
+
+
         <div class="modal-footer">
-          <button class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+
+          <button
+            class="btn btn-light"
+            data-bs-dismiss="modal">
+            Fechar
+          </button>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
+
+  <!-- ==============================================================
+       SCRIPTS
+  ============================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <script src="js/sidebar.js"></script>
+
   <script src="js/movement-page.js"></script>
+
+  <script>
+    feather.replace();
+  </script>
+
 </body>
 
 </html>
