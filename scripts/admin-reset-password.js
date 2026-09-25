@@ -1,96 +1,26 @@
+// scripts/admin-reset-password.js
+// Redefine a senha de um usuário ADMIN já existente.
+//
+// Uso: npm run admin:reset-password
+
 const bcrypt = require('bcryptjs');
-const readline = require('node:readline/promises');
-const { stdin, stdout } = process;
 const pool = require('../src/config/database');
 
+const { askText, askHidden, requireInteractiveTerminal } = require('./lib/prompt');
+const { assertValidEmail, assertStrongPassword, assertPasswordsMatch } = require('./lib/validators');
+
 const BCRYPT_ROUNDS = 12;
-const MIN_PASSWORD_LENGTH = 12;
-const MAX_PASSWORD_LENGTH = 128;
-
-function isValidEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
-function askEmail() {
-  const rl = readline.createInterface({ input: stdin, output: stdout });
-  return rl
-    .question('E-mail do administrador: ')
-    .then(value => value.trim().toLowerCase())
-    .finally(() => rl.close());
-}
-
-function askHidden(question) {
-  if (!stdin.isTTY || !stdin.setRawMode) {
-    throw new Error('Terminal seguro não disponível.');
-  }
-
-  return new Promise((resolve, reject) => {
-    let value = '';
-    let finished = false;
-
-    stdout.write(question);
-    stdin.setRawMode(true);
-    stdin.resume();
-    stdin.setEncoding('utf8');
-
-    function finish(error, result) {
-      if (finished) return;
-      finished = true;
-      stdin.removeListener('data', onData);
-      stdin.setRawMode(false);
-      stdin.pause();
-      stdout.write('\n');
-      if (error) reject(error);
-      else resolve(result);
-    }
-
-    function onData(chunk) {
-      for (const character of String(chunk)) {
-        if (character === '\u0003') {
-          finish(new Error('Operação cancelada.'));
-          return;
-        }
-
-        if (character === '\r' || character === '\n') {
-          finish(null, value);
-          return;
-        }
-
-        if (character === '\u007F' || character === '\b') {
-          value = value.slice(0, -1);
-          continue;
-        }
-
-        if (!/[\u0000-\u001F\u007F]/.test(character)) {
-          value += character;
-        }
-      }
-    }
-
-    stdin.on('data', onData);
-  });
-}
-
-function validatePassword(password, confirmation) {
-  if (
-    password.length < MIN_PASSWORD_LENGTH ||
-    password.length > MAX_PASSWORD_LENGTH ||
-    password !== confirmation
-  ) {
-    throw new Error('Senha inválida.');
-  }
-}
 
 async function resetAdminPassword() {
-  const email = await askEmail();
+  requireInteractiveTerminal();
 
-  if (!isValidEmail(email)) {
-    throw new Error('E-mail inválido.');
-  }
+  const email = (await askText('E-mail do administrador: ')).toLowerCase();
+  assertValidEmail(email);
 
   const password = await askHidden('Nova senha: ');
   const confirmation = await askHidden('Confirme a nova senha: ');
-  validatePassword(password, confirmation);
+  assertPasswordsMatch(password, confirmation);
+  assertStrongPassword(password);
 
   const userResult = await pool.query(
     `SELECT id
@@ -128,6 +58,7 @@ resetAdminPassword()
     process.exit(0);
   })
   .catch(() => {
+    // Nunca imprime stack/payload: podem conter dados sensíveis vindos do driver.
     process.stderr.write('Não foi possível concluir a redefinição com segurança.\n');
     process.exit(1);
   });

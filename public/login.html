@@ -22,6 +22,11 @@
     body.dark-mode .login-card .text-muted { color: #94a3b8 !important; }
     .login-footer { margin-top: 18px; color: #64748b; font-size: .8rem; text-align: center; }
     body.dark-mode .login-footer { color: #94a3b8; }
+    .auth-alt { margin: 1.25rem 0 0; text-align: center; font-size: .9rem; color: #64748b; }
+    body.dark-mode .auth-alt { color: #94a3b8; }
+    .auth-alt a { color: #0d6efd; font-weight: 600; text-decoration: none; }
+    .auth-alt a:hover, .auth-alt a:focus-visible { text-decoration: underline; }
+    body.dark-mode .auth-alt a { color: #7db3ff; }
   </style>
 </head>
 <body>
@@ -54,6 +59,10 @@
             <span>Entrar</span>
           </button>
         </form>
+
+        <p class="auth-alt">
+          Ainda não possui uma conta? <a href="/register.html">Cadastre-se</a>
+        </p>
       </div>
     </section>
 

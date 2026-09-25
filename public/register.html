@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criar conta | ClothStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <style>
+    :root { --login-bg: #f8f9fa; --login-card: #fff; --login-text: #212529; --login-border: #e2e8f0; }
+    body.dark-mode { --login-bg: #0f172a; --login-card: #1e293b; --login-text: #f8fafc; --login-border: #334155; }
+    body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 24px; background: var(--login-bg); color: var(--login-text); transition: background-color .3s, color .3s; }
+    .login-shell { width: min(100%, 420px); }
+    .login-brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 24px; color: var(--login-text); text-decoration: none; }
+    .login-brand i { width: 30px; height: 30px; color: #0d6efd; }
+    .login-brand strong { font-size: 1.45rem; }
+    .login-card { background: var(--login-card); color: var(--login-text); border: 1px solid var(--login-border); border-radius: 12px; box-shadow: 0 12px 30px rgba(15, 23, 42, .12); }
+    .login-card .form-control { background: var(--login-card); color: var(--login-text); border-color: var(--login-border); }
+    .login-card .form-control:focus { background: var(--login-card); color: var(--login-text); }
+    .login-card .text-muted { color: #64748b !important; }
+    body.dark-mode .login-card .text-muted { color: #94a3b8 !important; }
+    .login-footer { margin-top: 18px; color: #64748b; font-size: .8rem; text-align: center; }
+    body.dark-mode .login-footer { color: #94a3b8; }
+    .auth-alt { margin: 1.25rem 0 0; text-align: center; font-size: .9rem; color: #64748b; }
+    body.dark-mode .auth-alt { color: #94a3b8; }
+    .auth-alt a { color: #0d6efd; font-weight: 600; text-decoration: none; }
+    .auth-alt a:hover, .auth-alt a:focus-visible { text-decoration: underline; }
+    body.dark-mode .auth-alt a { color: #7db3ff; }
+    .password-rules { margin: .4rem 0 0; padding-left: 1.15rem; font-size: .8rem; line-height: 1.45; }
+    @media (max-height: 640px) { body { align-items: start; } }
+  </style>
+</head>
+<body>
+  <main class="login-shell">
+    <a class="login-brand" href="/login.html" aria-label="ClothStock, página de acesso">
+      <i data-feather="package" aria-hidden="true"></i>
+      <strong>ClothStock</strong>
+    </a>
+
+    <section class="card login-card" aria-labelledby="register-title">
+      <div class="card-body p-4 p-md-5">
+        <div class="text-center mb-4">
+          <h1 id="register-title" class="h4 fw-bold mb-2">Crie sua conta</h1>
+          <p class="text-muted mb-0">Gestão de estoque para a sua loja</p>
+        </div>
+
+        <div id="register-alert" class="alert alert-danger d-none" role="alert" aria-live="assertive"></div>
+        <div id="register-success" class="alert alert-success d-none" role="status" aria-live="polite"></div>
+
+        <form id="register-form" novalidate>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="register-name">Nome</label>
+            <input class="form-control" id="register-name" name="name" type="text" autocomplete="name" maxlength="100" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="register-email">E-mail</label>
+            <input class="form-control" id="register-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="register-password">Senha</label>
+            <input class="form-control" id="register-password" name="password" type="password" autocomplete="new-password" required>
+            <ul class="password-rules text-muted">
+              <li>Ao menos 12 caracteres</li>
+              <li>Uma letra maiúscula e uma minúscula</li>
+              <li>Um dígito</li>
+              <li>Um caractere especial</li>
+            </ul>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold" for="register-password-confirm">Confirmar senha</label>
+            <input class="form-control" id="register-password-confirm" name="passwordConfirmation" type="password" autocomplete="new-password" required>
+          </div>
+          <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2" id="register-submit" type="submit">
+            <i data-feather="user-plus" aria-hidden="true"></i>
+            <span>Criar conta</span>
+          </button>
+        </form>
+
+        <p class="auth-alt">
+          Já possui uma conta? <a href="/login.html">Entrar</a>
+        </p>
+      </div>
+    </section>
+
+    <p class="login-footer">© 2026 ClothStock -- Gestão de Estoque. Todos os direitos reservados.</p>
+  </main>
+
+  <script>
+    const registerForm = document.getElementById('register-form');
+    const registerAlert = document.getElementById('register-alert');
+    const registerSuccess = document.getElementById('register-success');
+    const registerSubmit = document.getElementById('register-submit');
+    const registerSubmitLabel = registerSubmit.querySelector('span');
+
+    // Espelha src/utils/passwordPolicy.js, que é a fonte única da regra no servidor.
+    // O frontend apenas antecipa o erro para melhorar a experiência; quem valida de
+    // fato é o backend, no POST /api/auth/register.
+    const NAME_MIN_LENGTH = 2;
+    const NAME_MAX_LENGTH = 100;
+    const PASSWORD_MIN_LENGTH = 12;
+    const PASSWORD_MAX_BYTES = 72; // bcrypt considera no máximo 72 bytes
+    const PASSWORD_RULES = [
+      { test: value => value.length >= PASSWORD_MIN_LENGTH, message: `ter ao menos ${PASSWORD_MIN_LENGTH} caracteres` },
+      { test: value => /[a-z]/.test(value), message: 'conter ao menos uma letra minúscula' },
+      { test: value => /[A-Z]/.test(value), message: 'conter ao menos uma letra maiúscula' },
+      { test: value => /[0-9]/.test(value), message: 'conter ao menos um dígito' },
+      { test: value => /[^A-Za-z0-9]/.test(value), message: 'conter ao menos um caractere especial' }
+    ];
+    const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const REDIRECT_DELAY_MS = 1500;
+
+    function describePasswordRequirements(password) {
+      if (new TextEncoder().encode(password).length > PASSWORD_MAX_BYTES) {
+        return `usar no máximo ${PASSWORD_MAX_BYTES} bytes para não ser truncada pelo bcrypt`;
+      }
+      return PASSWORD_RULES.filter(rule => !rule.test(password)).map(rule => rule.message).join(', ');
+    }
+
+    function clearRegisterMessages() {
+      registerAlert.classList.add('d-none');
+      registerSuccess.classList.add('d-none');
+    }
+
+    function showRegisterError(message) {
+      clearRegisterMessages();
+      registerAlert.textContent = message;
+      registerAlert.classList.remove('d-none');
+    }
+
+    registerForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      clearRegisterMessages();
+
+      const name = document.getElementById('register-name').value.trim();
+      const email = document.getElementById('register-email').value.trim();
+      const password = document.getElementById('register-password').value;
+      const passwordConfirmation = document.getElementById('register-password-confirm').value;
+
+      if (!name || !email || !password || !passwordConfirmation) {
+        showRegisterError('Preencha todos os campos para continuar.');
+        return;
+      }
+      if (name.length < NAME_MIN_LENGTH || name.length > NAME_MAX_LENGTH) {
+        showRegisterError('Informe um nome válido.');
+        return;
+      }
+      if (!EMAIL_PATTERN.test(email)) {
+        showRegisterError('Informe um e-mail válido.');
+        return;
+      }
+      if (password !== passwordConfirmation) {
+        showRegisterError('As senhas informadas não conferem.');
+        return;
+      }
+      const passwordRequirements = describePasswordRequirements(password);
+      if (passwordRequirements) {
+        showRegisterError(`A senha deve ${passwordRequirements}.`);
+        return;
+      }
+
+      registerSubmit.disabled = true;
+      registerSubmitLabel.textContent = 'Criando conta...';
+      try {
+        // O corpo envia apenas nome, e-mail e senha: o perfil é definido exclusivamente pelo servidor.
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ name, email, password })
+        });
+        const result = (await response.json().catch(() => ({}))) || {};
+        if (!response.ok) {
+          const error = result.error || {};
+          throw new Error(error.message || 'Não foi possível criar a conta.');
+        }
+
+        registerSuccess.textContent = 'Conta criada com sucesso. Redirecionando para o login...';
+        registerSuccess.classList.remove('d-none');
+        registerSubmitLabel.textContent = 'Conta criada';
+        window.setTimeout(() => window.location.replace('/login.html'), REDIRECT_DELAY_MS);
+      } catch (error) {
+        showRegisterError(error.message || 'Não foi possível criar a conta. Tente novamente.');
+        registerSubmit.disabled = false;
+        registerSubmitLabel.textContent = 'Criar conta';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.feather) window.feather.replace();
+    });
+  </script>
+</body>
+</html>

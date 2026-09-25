@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node api/server.js",
     "dev": "nodemon api/server.js",
+    "admin:create": "node scripts/admin-create.js",
     "admin:reset-password": "node scripts/admin-reset-password.js"
   },
   "dependencies": {

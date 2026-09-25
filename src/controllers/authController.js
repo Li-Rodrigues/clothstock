@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
+const { describePasswordRequirements, isStrongPassword } = require('../utils/passwordPolicy');
 const { JWT_SECRET, setAuthCookie, clearAuthCookie } = require('../middlewares/authMiddleware');
 
 function publicUser(user) {
@@ -27,8 +28,8 @@ async function register(req, res, next) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({ success: false, error: { code: 'VALIDATION_ERROR', message: 'Informe um e-mail válido.' } });
     }
-    if (password.length < 6) {
-      return res.status(400).json({ success: false, error: { code: 'VALIDATION_ERROR', message: 'A senha deve ter pelo menos 6 caracteres.' } });
+    if (!isStrongPassword(password)) {
+      return res.status(400).json({ success: false, error: { code: 'VALIDATION_ERROR', message: `A senha deve ${describePasswordRequirements(password)}.` } });
     }
     if (String(req.body.role || '').toUpperCase() === 'ADMIN') {
       return res.status(403).json({ success: false, error: { code: 'FORBIDDEN', message: 'O perfil ADMIN não pode ser escolhido no cadastro público.' } });
