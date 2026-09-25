@@ -35,6 +35,14 @@
   async function checkSession() {
     if (isLoginPage()) return true;
 
+    // A sessão e a role vêm do módulo compartilhado /js/rbac.js, que já
+    // chamou GET /api/auth/me uma única vez e redireciona para /login.html
+    // quando não há usuário autenticado. Nenhuma chamada duplicada aqui.
+    if (window.ClothstockRbac) {
+      return Boolean(await window.ClothstockRbac.whenReady());
+    }
+
+    // Fallback: só ocorre se /js/rbac.js não estiver disponível na página.
     try {
       const response = await fetch('/api/auth/me', {
         credentials: 'include',
@@ -43,10 +51,6 @@
       if (!response.ok) {
         window.location.replace('/login.html');
         return false;
-      }
-      const result = await response.json();
-      if (result.data && result.data.user) {
-        document.body.dataset.role = result.data.user.role;
       }
       return true;
     } catch (error) {

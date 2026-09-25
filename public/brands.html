@@ -368,7 +368,10 @@
     </style>
 
 <link rel="stylesheet" href="/css/sidebar.css">
+<link rel="stylesheet" href="/css/rbac.css">
 <script src="/js/sidebar.js" defer></script>
+
+    <script src="/js/rbac.js" defer></script>
 
     <script src="/js/app-shell.js" defer></script>
 </head>
@@ -536,6 +539,7 @@
                 <button
                     type="button"
                     class="btn btn-primary btn-sm d-flex align-items-center gap-2"
+                    data-admin-only
                     data-bs-toggle="modal"
                     data-bs-target="#modalCreateBrand"
                 >
@@ -616,6 +620,7 @@
     <div
         class="modal fade"
         id="modalCreateBrand"
+        data-admin-only
         tabindex="-1"
     >
 
@@ -728,6 +733,7 @@
     <div
         class="modal fade"
         id="modalEditBrand"
+        data-admin-only
         tabindex="-1"
     >
 
@@ -1454,6 +1460,7 @@
                                         type="button"
                                         class="btn btn-sm btn-primary"
                                         title="Editar marca"
+                                        data-admin-only
                                         onclick="editBrand(${Number(id)})"
                                     >
 
@@ -1470,6 +1477,7 @@
                                         type="button"
                                         class="btn btn-sm btn-danger"
                                         title="Excluir marca"
+                                        data-admin-only
                                         onclick="deleteBrand(${Number(id)})"
                                     >
 

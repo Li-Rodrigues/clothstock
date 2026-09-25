@@ -345,7 +345,10 @@
     </style>
 
     <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/rbac.css">
     <script src="/js/sidebar.js" defer></script>
+
+    <script src="/js/rbac.js" defer></script>
 
     <script src="/js/app-shell.js" defer></script>
 </head>
@@ -504,6 +507,7 @@
                     <button
                         type="button"
                         class="btn btn-primary btn-sm d-flex align-items-center gap-2"
+                        data-admin-only
                         data-bs-toggle="modal"
                         data-bs-target="#modalCreateProduct">
 
@@ -600,6 +604,7 @@
     <div
         class="modal fade"
         id="modalCreateProduct"
+        data-admin-only
         tabindex="-1">
 
         <div class="modal-dialog modal-lg">
@@ -951,6 +956,7 @@
     <div
         class="modal fade"
         id="modalEditProduct"
+        data-admin-only
         tabindex="-1">
 
         <div class="modal-dialog modal-lg">
@@ -2690,6 +2696,7 @@
                                     type="button"
                                     class="btn btn-sm btn-primary"
                                     title="Editar produto"
+                                    data-admin-only
                                     onclick="editProduct(${id})">
 
                                     <i data-feather="edit-2"></i>
@@ -2701,6 +2708,7 @@
                                     type="button"
                                     class="btn btn-sm btn-danger"
                                     title="Excluir produto"
+                                    data-admin-only
                                     onclick="deleteProduct(${id})">
 
                                     <i data-feather="trash-2"></i>

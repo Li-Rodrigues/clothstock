@@ -1,0 +1,23 @@
+/* ============================================================
+   CLOTHSTOCK -- RBAC (controle visual por perfil)
+   ============================================================
+
+   Elementos marcados com [data-admin-only] existem apenas para o
+   perfil ADMIN (ações protegidas por requireRole('ADMIN')).
+
+   Enquanto a role não estiver confirmada em <body data-role="ADMIN">,
+   esses elementos ficam ocultos. Isso evita qualquer "flash" de
+   conteúdo administrativo para o perfil OPERATOR durante o
+   carregamento da página.
+
+   Quando o usuário é ADMIN, o módulo /js/rbac.js remove o atributo
+   data-admin-only dos elementos e o CSS deixa de se aplicar, fazendo
+   o elemento aparecer com o estilo original do design system.
+
+   IMPORTANTE: esta é apenas uma melhoria de UX. A autorização real
+   continua sendo validada no backend (authenticate + requireRole).
+   ============================================================ */
+
+body:not([data-role="ADMIN"]) [data-admin-only] {
+    display: none !important;
+}
