@@ -24,6 +24,76 @@ const errorMiddleware = require('./middlewares/errorMiddleware');
 
 const app = express();
 
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET, getToken } = require('./middlewares/authMiddleware');
+
+const PUBLIC_DIR = path.join(__dirname, '../public');
+
+// Páginas que podem ser acessadas sem sessão.
+const PUBLIC_PAGES = new Set(['login.html', 'register.html']);
+
+/* ============================================================
+   PORTÃO DE SESSÃO NO SERVIDOR
+   ============================================================ */
+
+ /*
+  * Verifica a assinatura/expiração do JWT do cookie em memória, sem
+  * consultar o banco. É o mesmo token que o /api/auth/me valida depois,
+  * então a decisão tomada aqui coincide com a do cliente.
+  */
+function hasValidSession(req) {
+    const token = getToken(req);
+
+    if (!token) return false;
+
+    try {
+        jwt.verify(token, JWT_SECRET);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+function sendPage(res, page) {
+    return res.sendFile(
+        path.join(PUBLIC_DIR, page)
+    );
+}
+
+/*
+ * A entrada da aplicação é resolvida no servidor: o usuário autenticado
+ * recebe o dashboard e quem não tem sessão recebe o login na mesma
+ * resposta. Isso elimina o flash do dashboard e o atraso do round-trip
+ * de /api/auth/me que existia antes do redirect feito por JavaScript.
+ */
+function entryPoint(req, res) {
+    return sendPage(
+        res,
+        hasValidSession(req)
+            ? 'dashboard.html'
+            : 'login.html'
+    );
+}
+
+/*
+ * Páginas internas só são entregues com sessão válida. O redirecionamento
+ * acontece antes de qualquer byte do HTML, então o conteúdo protegido
+ * nunca chega ao navegador de quem não está autenticado.
+ */
+function gateProtectedPages(req, res, next) {
+    const page = req.path.split('/').pop() || '';
+
+    if (!page.endsWith('.html')) return next();
+
+    if (PUBLIC_PAGES.has(page)) return next();
+
+    if (!hasValidSession(req)) {
+        return res.redirect(302, '/login.html');
+    }
+
+    return next();
+}
+
 // ============================================================
 // MIDDLEWARES GLOBAIS
 // ============================================================
@@ -38,12 +108,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ============================================================
+// ENTRADA DA APLICAÇÃO E PORTÃO DE SESSÃO
+// ============================================================
+//
+// Registrados antes do express.static para que a página correta seja
+// escolhida no servidor. Sem isso, / entregava o dashboard e só o
+// JavaScript (/js/rbac.js -> /api/auth/me) redirecionava para o login,
+// o que causava o atraso e o flash do dashboard na abertura do app.
+
+app.get(['/', '/index.html'], entryPoint);
+
+app.use(gateProtectedPages);
+
+// ============================================================
 // ARQUIVOS ESTÁTICOS
 // ============================================================
 
 app.use(
     express.static(
-        path.join(__dirname, '../public')
+        PUBLIC_DIR,
+        { index: false }
     )
 );
 
@@ -68,16 +152,6 @@ app.use('/api/movements', authenticate, requireRole('ADMIN', 'OPERATOR'), moveme
 app.use('/api/dashboard', authenticate, requireRole('ADMIN', 'OPERATOR'), dashboardRoutes);
 
 // ============================================================
-// ROTA PRINCIPAL
-// ============================================================
-
-app.get('/', (req, res) => {
-    res.sendFile(
-        path.join(__dirname, '../public/dashboard.html')
-    );
-});
-
-// ============================================================
 // FALLBACK PARA FRONTEND
 // ============================================================
 
@@ -97,12 +171,11 @@ app.get('*', (req, res, next) => {
         });
     }
 
-    // Para páginas do frontend,
-    // retorna o index.html.
+    // Para qualquer outra rota do frontend,
+    // volta para a entrada da aplicação,
+    // que já decidiu entre login e dashboard.
 
-    res.sendFile(
-        path.join(__dirname, '../public/index.html')
-    );
+    res.redirect(302, '/');
 });
 
 // ============================================================

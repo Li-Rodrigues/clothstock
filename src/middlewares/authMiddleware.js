@@ -82,6 +82,7 @@ function clearAuthCookie(res) {
 module.exports = {
   COOKIE_NAME,
   JWT_SECRET,
+  getToken,
   authenticate,
   requireRole,
   setAuthCookie,
