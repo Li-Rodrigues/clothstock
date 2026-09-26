@@ -133,6 +133,41 @@
             color: #f8fafc !important;
         }
 
+        /* Sem esta regra o .text-muted do Bootstrap (#6c757d) fica ilegível
+           sobre o cartão escuro (#1e293b) e some da lista. */
+        body.dark-mode .text-muted {
+            color: #94a3b8 !important;
+        }
+
+        /* ============================================================
+           CONTATO (E-MAIL E TELEFONE)
+           ============================================================ */
+
+        .contact-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .contact-line + .contact-line {
+            margin-top: 2px;
+        }
+
+        .contact-line svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            color: #64748b;
+        }
+
+        body.dark-mode .contact-line svg {
+            color: #94a3b8;
+        }
+
+        .contact-line small {
+            overflow-wrap: anywhere;
+        }
+
         .table-responsive {
             overflow-x: auto;
         }
@@ -595,7 +630,7 @@
                                 <label
                                     class="form-label fw-semibold"
                                 >
-                                    Telefone
+                                    Telefone *
                                 </label>
 
                                 <input
@@ -603,6 +638,7 @@
                                     class="form-control"
                                     id="create-supplier-phone"
                                     placeholder="(11) 99999-9999"
+                                    required
                                 >
 
                             </div>
@@ -869,13 +905,15 @@
                                 <label
                                     class="form-label fw-semibold"
                                 >
-                                    Telefone
+                                    Telefone *
                                 </label>
 
                                 <input
                                     type="text"
                                     class="form-control"
                                     id="edit-supplier-phone"
+                                    placeholder="(11) 99999-9999"
+                                    required
                                 >
 
                             </div>
@@ -1414,6 +1452,51 @@
 
 
         // ============================================================
+        // FORMATAR TELEFONE
+        // ============================================================
+
+        /*
+         * Normaliza apenas a exibição. Os telefones salvos no banco
+         * vieram em formatos diferentes ("(11)92331-5543" e
+         * "(11) 98765-4321") e a lista ficava irregular. Valores com
+         * letras ou já formatados de outra maneira são exibidos como
+         * foram digitados.
+         */
+
+        function formatPhone(value) {
+
+            if (!value) {
+                return '';
+            }
+
+            const raw =
+                String(value).trim();
+
+            const digits =
+                raw.replace(/\D/g, '');
+
+            if (
+                digits.length < 10 ||
+                digits.length > 11 ||
+                /\D/.test(raw.replace(/[\s()+-.]/g, ''))
+            ) {
+                return raw;
+            }
+
+            const area =
+                digits.slice(0, 2);
+
+            const rest =
+                digits.slice(2);
+
+            return rest.length === 9
+                ? `(${area}) ${rest.slice(0, 5)}-${rest.slice(5)}`
+                : `(${area}) ${rest.slice(0, 4)}-${rest.slice(4)}`;
+
+        }
+
+
+        // ============================================================
         // FORMATAR DATA
         // ============================================================
 
@@ -1675,39 +1758,27 @@
 
                             <td>
 
-                                ${
-                                    email
-                                        ? `
-                                            <div>
-                                                <small>
-                                                    ${escapeHtml(email)}
-                                                </small>
-                                            </div>
-                                        `
-                                        : ''
-                                }
+                                <div class="contact-line">
+                                    <i data-feather="mail"></i>
+                                    <small
+                                        class="${email ? '' : 'text-muted'}"
+                                    >
+                                        ${escapeHtml(email || 'E-mail não informado')}
+                                    </small>
+                                </div>
 
-                                ${
-                                    phone
-                                        ? `
-                                            <div>
-                                                <small class="text-muted">
-                                                    ${escapeHtml(phone)}
-                                                </small>
-                                            </div>
-                                        `
-                                        : ''
-                                }
-
-                                ${
-                                    !email && !phone
-                                        ? `
-                                            <small class="text-muted">
-                                                Sem contato
-                                            </small>
-                                        `
-                                        : ''
-                                }
+                                <div class="contact-line">
+                                    <i data-feather="phone"></i>
+                                    <small
+                                        class="${phone ? '' : 'text-muted'}"
+                                    >
+                                        ${escapeHtml(
+                                            phone
+                                                ? formatPhone(phone)
+                                                : 'Telefone não informado'
+                                        )}
+                                    </small>
+                                </div>
 
                             </td>
 
@@ -1984,6 +2055,17 @@
                     }
 
 
+                    if (!payload.phone) {
+
+                        showAlert(
+                            'O telefone do fornecedor é obrigatório.',
+                            'warning'
+                        );
+
+                        return;
+                    }
+
+
                     try {
 
                         const response =
@@ -2193,6 +2275,17 @@
 
                         showAlert(
                             'O CNPJ/CPF do fornecedor é obrigatório.',
+                            'warning'
+                        );
+
+                        return;
+                    }
+
+
+                    if (!payload.phone) {
+
+                        showAlert(
+                            'O telefone do fornecedor é obrigatório.',
                             'warning'
                         );
 
