@@ -170,6 +170,7 @@
     let currentPage = 1;
     let renderingPage = false;
     let ignoreMutation = false;
+    let rowsCaptured = false;
 
     function snapshotRows() {
       const rows = Array.from(tbody.querySelectorAll(':scope > tr'));
@@ -184,6 +185,7 @@
       if (renderingPage) return;
       allRows = rows.map(row => row.outerHTML);
       filteredRows = allRows.slice();
+      rowsCaptured = true;
       currentPage = 1;
       render();
     }
@@ -232,7 +234,23 @@
       window.setTimeout(snapshotRows, 0);
     });
     observer.observe(tbody, { childList: true });
-    window.setTimeout(snapshotRows, 50);
+
+    /*
+     * Captura inicial: cobre o caso em que a página terminou de renderizar
+     * as linhas ANTES de este módulo ser inicializado, situação em que o
+     * MutationObserver não tem nada para observar.
+     *
+     * Só pode rodar se nada foi capturado ainda. O <tbody> é reescrito por
+     * render() com apenas a página corrente, portanto repetir a captura
+     * depois disso sobrescreveria a lista completa pelo recorte exibido:
+     * o total de páginas cairia para 1, "Anterior"/"Próxima" ficariam
+     * desabilitados e os registros fora da primeira página sumiriam.
+     */
+    window.setTimeout(() => {
+      if (!rowsCaptured) {
+        snapshotRows();
+      }
+    }, 50);
   }
 
   document.addEventListener('DOMContentLoaded', async () => {
