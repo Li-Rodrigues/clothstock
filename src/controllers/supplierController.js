@@ -1,5 +1,6 @@
 const pool = require('../config/database');
 const { getPagination, paginationResponse } = require('../utils/pagination');
+const { forbidUnless, ACTIONS } = require('../config/permissions');
 
 // ============================================================
 // LISTAR TODOS OS FORNECEDORES
@@ -75,6 +76,13 @@ const getSupplierById = async (req, res, next) => {
 // ============================================================
 
 const createSupplier = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.SUPPLIERS_CREATE)) return;
     try {
         const {
             name,
@@ -200,6 +208,13 @@ const createSupplier = async (req, res, next) => {
 // ============================================================
 
 const updateSupplier = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.SUPPLIERS_UPDATE)) return;
     try {
         const { id } = req.params;
 
@@ -334,6 +349,13 @@ const updateSupplier = async (req, res, next) => {
 // ============================================================
 
 const deleteSupplier = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.SUPPLIERS_DELETE)) return;
     try {
         const { id } = req.params;
 

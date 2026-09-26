@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
 const { describePasswordRequirements, isStrongPassword } = require('../utils/passwordPolicy');
+const { listActions } = require('../config/permissions');
 const { JWT_SECRET, setAuthCookie, clearAuthCookie } = require('../middlewares/authMiddleware');
 
 function publicUser(user) {
@@ -16,8 +17,43 @@ function createToken(user) {
   );
 }
 
+/*
+ * Cadastro público: desligado em produção.
+ *
+ * A aplicação é publicada e acessível a avaliadores e participantes
+ * externos. Sem esta trava, qualquer visitante criaria uma conta
+ * OPERATOR pela própria rota POST /api/auth/register, e a criação de
+ * contas passaria a depender de qualquer visitante da internet. Em
+ * produção o cadastro é recusado e as contas passam a ser provisionadas
+ * por ADMIN ou por script.
+ *
+ * Desenvolvimento: o cadastro continua aberto (e sempre cria OPERATOR),
+ * para que o fluxo de registro continue testável.
+ *
+ * O override ALLOW_PUBLIC_REGISTRATION=true reabre o cadastro mesmo em
+ * produção, caso um ambiente específico realmente precise dele.
+ */
+function isProduction() {
+  return process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL);
+}
+
+function isPublicRegistrationEnabled() {
+  if (String(process.env.ALLOW_PUBLIC_REGISTRATION || '').toLowerCase() === 'true') return true;
+  return !isProduction();
+}
+
 async function register(req, res, next) {
   try {
+    if (!isPublicRegistrationEnabled()) {
+      return res.status(403).json({
+        success: false,
+        error: {
+          code: 'REGISTRATION_DISABLED',
+          message: 'O cadastro público está desativado neste ambiente. Fale com o administrador para obter uma conta.'
+        }
+      });
+    }
+
     const name = String(req.body.name || '').trim();
     const email = String(req.body.email || '').trim().toLowerCase();
     const password = String(req.body.password || '');
@@ -31,8 +67,11 @@ async function register(req, res, next) {
     if (!isStrongPassword(password)) {
       return res.status(400).json({ success: false, error: { code: 'VALIDATION_ERROR', message: `A senha deve ${describePasswordRequirements(password)}.` } });
     }
-    if (String(req.body.role || '').toUpperCase() === 'ADMIN') {
-      return res.status(403).json({ success: false, error: { code: 'FORBIDDEN', message: 'O perfil ADMIN não pode ser escolhido no cadastro público.' } });
+    // O INSERT abaixo fixa 'OPERATOR'. Negar aqui é uma falha rápida
+    // e explícita para quem tentar escolher um perfil pela API.
+    const perfilSolicitado = String(req.body.role || '').toUpperCase();
+    if (perfilSolicitado === 'ADMIN' || perfilSolicitado === 'VIEWER') {
+      return res.status(403).json({ success: false, error: { code: 'FORBIDDEN', message: 'O perfil ' + perfilSolicitado + ' não pode ser escolhido no cadastro público.' } });
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
@@ -98,4 +137,38 @@ async function me(req, res, next) {
   }
 }
 
-module.exports = { register, login, logout, me };
+/*
+ * Intenção das ações que o servidor autoriza para o usuário atual.
+ *
+ * A lista é derivada da MESMA matriz que o gate da API aplica
+ * (src/config/permissions.js), então ela descreve a decisão real do
+ * servidor e não uma cópia mantida à mão no frontend. O navegador pode
+ * usá-la para esconder controles; de qualquer forma, cada requisição é
+ * conferida de novo pelo servidor.
+ */
+function permissions(req, res) {
+  const actions = listActions(req.user.role);
+
+  return res.status(200).json({
+    success: true,
+    data: { role: req.user.role, actions }
+  });
+}
+
+/*
+ * Sinaliza se o cadastro público está disponível. Usado pela tela de
+ * login para esconder o link "Cadastre-se" quando o cadastro está
+ * desligado, evitando levar o usuário a uma página que só pode falhar.
+ * É UX: a decisão real já está em register(), acima.
+ */
+function health(req, res) {
+  return res.status(200).json({
+    success: true,
+    data: {
+      message: 'Rota de autenticação funcionando!',
+      registrationEnabled: isPublicRegistrationEnabled()
+    }
+  });
+}
+
+module.exports = { register, login, logout, me, permissions, health, isPublicRegistrationEnabled };

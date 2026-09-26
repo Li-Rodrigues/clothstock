@@ -114,6 +114,21 @@ O frontend é servido pelo Express e utiliza Bootstrap 5 e Feather Icons. O back
 - Logout e consulta do usuário autenticado.
 - Redirecionamento de páginas sem sessão para a tela de login.
 - Controle de acesso no backend por perfil.
+- Três perfis: **ADMIN** (completo), **OPERATOR** (operação de estoque,
+  sem mexer em cadastros) e **VIEWER** (somente leitura, para
+  avaliadores).
+- Matriz de permissões declarativa e **negar por padrão** em
+  `src/config/permissions.js`, aplicada por um gate registrado antes de
+  qualquer rota.
+- A role é relida do banco a cada requisição, então rebaixar um usuário
+  corta o acesso imediatamente e um token forjado com `role=ADMIN` não
+  concede nada.
+- **Cadastro público desligado em produção**: `POST /api/auth/register`
+  responde `403 REGISTRATION_DISABLED` quando `NODE_ENV=production` ou
+  há `VERCEL`. Em desenvolvimento ele continua aberto e sempre cria
+  `OPERATOR`.
+- Usuário de demonstração `VIEWER` e scripts para verificar as
+  permissões pela API. Ver [PERMISSOES.md](PERMISSOES.md).
 
 ### Dashboard
 
@@ -496,6 +511,31 @@ psql -U <usuario> -d <banco> -f database/seeds.sql
 
 > O `seeds.sql` é um recurso de desenvolvimento. Não use seeds com credenciais administrativas como estratégia de inicialização em produção.
 
+#### Banco que já existe: migração do perfil VIEWER
+
+A tabela `users` já instalada tem `CHECK (role IN ('ADMIN', 'OPERATOR'))`.
+Como o `CREATE TABLE` do `schema.sql` usa `IF NOT EXISTS`, reexecutar o
+`schema.sql` **não** atualiza a tabela existente, e a criação da conta
+VIEWER seria recusada pelo banco. Rode a migração:
+
+```bash
+psql "$DATABASE_URL" -f database/migrations/001-viewer-role.sql
+```
+
+Ela é não destrutiva e idempotente: não cria nem altera tabela alguma, não
+apaga nem recria linha alguma, e apenas amplia o `CHECK` para aceitar
+`VIEWER`.
+
+Depois, crie a conta de demonstração dos avaliadores:
+
+```bash
+npm run viewer:create:generate   # senha aleatória, exibida uma vez
+```
+
+> A senha da conta VIEWER **não** existe em nenhum arquivo versionado.
+> Escolha-a no momento da criação. Detalhes em
+> [PERMISSOES.md](PERMISSOES.md).
+
 ### 5. Iniciar em desenvolvimento
 
 ```bash
@@ -540,6 +580,16 @@ Ctrl + C
 | `npm run dev` | Inicia o servidor com `nodemon` |
 | `npm run admin:create` | Cria o primeiro usuário ADMIN (somente se nenhum existir) |
 | `npm run admin:reset-password` | Redefine a senha de um ADMIN existente |
+| `npm run test-user:create` | Cria/redefine o OPERATOR de teste com acesso restrito |
+| `npm run test-user:remove` | Remove o OPERATOR de teste |
+| `npm run viewer:create` | Cria a conta de demonstração VIEWER (senha por env var ou digitada) |
+| `npm run viewer:create:generate` | Cria a conta VIEWER com senha aleatória, exibida uma vez |
+| `npm run viewer:remove` | Remove a conta de demonstração VIEWER |
+| `npm run verify:matrix` | Confere se a matriz cobre todas as rotas e se o VIEWER é somente leitura |
+| `npm run verify:permissions` | Prova as permissões via HTTP, sem passar pela interface |
+
+> O perfil VIEWER, as migrações e o cadastro público estão detalhados em
+> [PERMISSOES.md](PERMISSOES.md).
 
 ### Criar o primeiro usuário ADMIN
 
@@ -601,6 +651,7 @@ As rotas de negócio exigem autenticação.
 | `POST` | `/api/auth/login` | Autenticação |
 | `POST` | `/api/auth/logout` | Encerramento de sessão |
 | `GET` | `/api/auth/me` | Dados do usuário autenticado |
+| `GET` | `/api/auth/permissions` | Ações que o servidor autoriza para o usuário atual |
 | `GET` | `/api/auth/health` | Verificação da rota de autenticação |
 
 ### Produtos

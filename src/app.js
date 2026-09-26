@@ -22,6 +22,11 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const errorMiddleware = require('./middlewares/errorMiddleware');
 
+// Imports do gate de autorização. Declarados no topo para que o gate
+// possa ser registrado antes de qualquer rota (ver a nota do gate).
+const { authenticate, requireRole } = require('./middlewares/authMiddleware');
+const { authorizeByMatrix, isUnguardedPath } = require('./config/permissions');
+
 const app = express();
 
 const jwt = require('jsonwebtoken');
@@ -108,6 +113,52 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ============================================================
+// GATE DE AUTORIZAÇÃO DA API (negar por padrão)
+// ============================================================
+//
+// Registrado AQUI, antes de qualquer rota, e não junto da seção de
+// rotas da API. A ordem importa: o Express resolve middlewares na
+// sequência em que foram registrados, então um gate montado mais
+// abaixo só protegeria as rotas declaradas depois dele. Uma rota nova
+// acrescentada acima do gate passaria sem nenhuma verificação de
+// permissão. Montando o gate antes de tudo, não existe posição no
+// arquivo onde uma rota de /api possa ser registrada sem ser
+// barrada pela matriz.
+//
+// Uma requisição só chega ao controller se:
+//   - estiver autenticada (authenticate);
+//   - o método + caminho casar com uma regra da matriz; e
+//   - a role do usuário tiver a ação daquela regra.
+//
+// A role vem do BANCO, recarregada por authenticate a cada requisição
+// (e não de uma claim do JWT), então rebaixar um usuário no banco corta
+// o acesso imediatamente, sem esperar o token expirar. Um token forjado
+// com role=ADMIN continua barrado, porque a claim é ignorada.
+//
+// Os requireRole() nos routers, mais abaixo, permanecem como segunda
+// barreira: a decisão final exige passar pelo gate E pelo middleware
+// da rota.
+
+function apiAuthorizationGate(req, res, next) {
+  const path = req.path;
+
+  // Fora de /api: é a aplicação web, não a API.
+  if (!path.startsWith('/api/') && path !== '/api') return next();
+
+  // /api/auth tem regras próprias: login e cadastro são públicos, e
+  // logout/me/permissions exigem apenas autenticação (tratada dentro do
+  // próprio router).
+  if (isUnguardedPath(path)) return next();
+
+  return authenticate(req, res, error => {
+    if (error) return next(error);
+    return authorizeByMatrix(req, res, next);
+  });
+}
+
+app.use(apiAuthorizationGate);
+
+// ============================================================
 // ENTRADA DA APLICAÇÃO E PORTÃO DE SESSÃO
 // ============================================================
 //
@@ -135,21 +186,35 @@ app.use(
 // ROTAS DA API
 // ============================================================
 
+// /api/auth é montada primeiro e não passa pelo gate de autorização:
+// login e cadastro são públicos por definição, e logout/me/permissions
+// exigem apenas autenticação (tratada dentro do próprio router).
 app.use('/api/auth', authRoutes);
 
-const { authenticate, requireRole } = require('./middlewares/authMiddleware');
+// ESTES requireRole() SÃO A MONTAGEM DO RECURSO, NÃO A MATRIZ.
+//
+// Eles decidem apenas "quem pode ENTRAR neste recurso" — incluindo as
+// leituras. A decisão sobre "o que pode FAZER dentro dele" é do gate
+// apiAuthorizationGate, que consulta src/config/permissions.js.
+//
+// Por isso o VIEWER precisa aparecer aqui: ele não tem nenhuma ação de
+// escrita, mas precisa conseguir ler produtos, categorias, marcas,
+// fornecedores, dashboard e movimentações. Sem esta linha, um VIEWER
+// receberia 403 até em um GET, porque o requireRole de montagem não o
+// conheceria. As escritas continuam barradas na matriz e nos controllers.
+const READER_ROLES = ['ADMIN', 'OPERATOR', 'VIEWER'];
 
-app.use('/api/brands', authenticate, requireRole('ADMIN', 'OPERATOR'), brandRoutes);
+app.use('/api/brands', authenticate, requireRole(...READER_ROLES), brandRoutes);
 
-app.use('/api/categories', authenticate, requireRole('ADMIN', 'OPERATOR'), categoryRoutes);
+app.use('/api/categories', authenticate, requireRole(...READER_ROLES), categoryRoutes);
 
-app.use('/api/products', authenticate, requireRole('ADMIN', 'OPERATOR'), productRoutes);
+app.use('/api/products', authenticate, requireRole(...READER_ROLES), productRoutes);
 
-app.use('/api/suppliers', authenticate, requireRole('ADMIN', 'OPERATOR'), supplierRoutes);
+app.use('/api/suppliers', authenticate, requireRole(...READER_ROLES), supplierRoutes);
 
-app.use('/api/movements', authenticate, requireRole('ADMIN', 'OPERATOR'), movementRoutes);
+app.use('/api/movements', authenticate, requireRole(...READER_ROLES), movementRoutes);
 
-app.use('/api/dashboard', authenticate, requireRole('ADMIN', 'OPERATOR'), dashboardRoutes);
+app.use('/api/dashboard', authenticate, requireRole(...READER_ROLES), dashboardRoutes);
 
 // ============================================================
 // FALLBACK PARA FRONTEND

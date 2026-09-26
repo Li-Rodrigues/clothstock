@@ -1,5 +1,6 @@
 const pool = require('../config/database');
 const { getPagination, paginationResponse } = require('../utils/pagination');
+const { forbidUnless, ACTIONS } = require('../config/permissions');
 
 // Listar todas as marcas
 const getAllBrands = async (req, res, next) => {
@@ -49,6 +50,13 @@ const getBrandById = async (req, res, next) => {
 
 // Criar uma nova marca
 const createBrand = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.BRANDS_CREATE)) return;
     try {
         const { name, description } = req.body;
 
@@ -84,6 +92,13 @@ const createBrand = async (req, res, next) => {
 
 // Atualizar marca existente
 const updateBrand = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.BRANDS_UPDATE)) return;
     try {
         const { id } = req.params;
         const { name, description } = req.body;
@@ -125,6 +140,13 @@ const updateBrand = async (req, res, next) => {
 
 // Deletar marca
 const deleteBrand = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.BRANDS_DELETE)) return;
     try {
         const { id } = req.params;
         const query = 'DELETE FROM brands WHERE id = $1;';

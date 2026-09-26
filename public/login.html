@@ -60,7 +60,7 @@
           </button>
         </form>
 
-        <p class="auth-alt">
+        <p class="auth-alt" id="register-hint">
           Ainda não possui uma conta? <a href="/register.html">Cadastre-se</a>
         </p>
       </div>
@@ -113,7 +113,34 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       if (window.feather) window.feather.replace();
+      hideRegisterLinkWhenDisabled();
     });
+
+    /*
+     * O cadastro público é desligado em produção (ver register() em
+     * src/controllers/authController.js). Quando isso acontece, o link
+     * "Cadastre-se" é removido para não levar o visitante a uma página
+     * que só pode recusar o pedido. A página /register.html continua
+     * acessível e explica o motivo caso alguém digite a URL direto.
+     *
+     * Isto é apenas UX: quem bloqueia o cadastro é o backend, e não este
+     * JavaScript.
+     */
+    function hideRegisterLinkWhenDisabled() {
+      const hint = document.getElementById('register-hint');
+      if (!hint) return;
+
+      fetch('/api/auth/health', { headers: { Accept: 'application/json' } })
+        .then(response => response.json())
+        .then(result => {
+          if (result && result.data && result.data.registrationEnabled === false) {
+            hint.textContent = 'O cadastro público está desativado. Fale com o administrador para obter uma conta.';
+          }
+        })
+        .catch(() => {
+          // Falha de rede: mantém o link como está e deixa o backend decidir.
+        });
+    }
   </script>
 </body>
 </html>

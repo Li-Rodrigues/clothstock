@@ -2,6 +2,7 @@
 
 const pool = require('../config/database');
 const { getPagination, paginationResponse } = require('../utils/pagination');
+const { forbidUnless, ACTIONS } = require('../config/permissions');
 
 // ============================================================
 // FUNÇÃO AUXILIAR
@@ -204,6 +205,13 @@ const getProductById = async (req, res, next) => {
 
 const createProduct = async (req, res, next) => {
 
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.PRODUCTS_CREATE)) return;
+
     try {
 
         const {
@@ -405,6 +413,13 @@ const createProduct = async (req, res, next) => {
 // ============================================================
 
 const updateProduct = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.PRODUCTS_UPDATE)) return;
 
     try {
 
@@ -615,6 +630,13 @@ const updateProduct = async (req, res, next) => {
 // ============================================================
 
 const deleteProduct = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.PRODUCTS_DELETE)) return;
 
     try {
 

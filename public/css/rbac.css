@@ -5,6 +5,10 @@
    Elementos marcados com [data-admin-only] existem apenas para o
    perfil ADMIN (ações protegidas por requireRole('ADMIN')).
 
+   Elementos marcados com [data-write-only] gravam dados e são permitidos
+   ao ADMIN e ao OPERATOR (registro de entrada e saída de estoque), mas
+   não ao VIEWER. Ver a regra correspondente no fim deste arquivo.
+
    Enquanto a role não estiver confirmada em <body data-role="ADMIN">,
    esses elementos ficam ocultos. Isso evita qualquer "flash" de
    conteúdo administrativo para o perfil OPERATOR durante o
@@ -19,5 +23,34 @@
    ============================================================ */
 
 body:not([data-role="ADMIN"]) [data-admin-only] {
+    display: none !important;
+}
+
+/* ============================================================
+   CONTROLES DE ESCRITA (data-write-only)
+   ============================================================
+
+   Marca controles que GRAVAM dados e que são permitidos tanto ao ADMIN
+   quanto ao OPERATOR — no ClothStock, apenas o registro de entrada e de
+   saída de estoque (movements.create). Eles não podem usar
+   [data-admin-only], porque o OPERATOR precisa vê-los.
+
+   O perfil VIEWER não tem movements.create, então nunca os enxerga.
+
+   Enquanto a role não estiver confirmada em <body data-role="...">, o
+   controle também fica oculto: assim não há "flash" de botão de escrita
+   para o VIEWER durante o carregamento. Quando a sessão é resolvida,
+   /js/rbac.js define data-role no <body> e o controle aparece para quem
+   tem permissão.
+
+   O VIEWER consegue navegar por estas páginas e consultar todo o
+   histórico; apenas a escrita some.
+
+   IMPORTANTE: assim como [data-admin-only], isto é UX. Quem garante a
+   restrição é o backend (matriz em src/config/permissions.js). Um
+   VIEWER que chamar POST /api/movements/inflows direto recebe 403.
+   ============================================================ */
+
+body:not([data-role="ADMIN"]):not([data-role="OPERATOR"]) [data-write-only] {
     display: none !important;
 }

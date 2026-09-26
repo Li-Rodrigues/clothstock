@@ -7,7 +7,14 @@
     "start": "node api/server.js",
     "dev": "nodemon api/server.js",
     "admin:create": "node scripts/admin-create.js",
-    "admin:reset-password": "node scripts/admin-reset-password.js"
+    "admin:reset-password": "node scripts/admin-reset-password.js",
+    "test-user:create": "node scripts/seed-test-user.js",
+    "test-user:remove": "node scripts/seed-test-user.js --remove",
+    "viewer:create": "node scripts/seed-viewer-account.js",
+    "viewer:create:generate": "node scripts/seed-viewer-account.js --generate",
+    "viewer:remove": "node scripts/seed-viewer-account.js --remove",
+    "verify:matrix": "node scripts/audit-permissions.js",
+    "verify:permissions": "node scripts/verify-permissions.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

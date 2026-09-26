@@ -2,6 +2,7 @@
 
 const pool = require('../config/database');
 const { getPagination, paginationResponse } = require('../utils/pagination');
+const { forbidUnless, ACTIONS } = require('../config/permissions');
 
 // ============================================================
 // LISTAR TODAS AS CATEGORIAS
@@ -71,6 +72,13 @@ const getCategoryById = async (req, res, next) => {
 // ============================================================
 
 const createCategory = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.CATEGORIES_CREATE)) return;
     try {
         const { name, description } = req.body;
 
@@ -134,6 +142,13 @@ const createCategory = async (req, res, next) => {
 // ============================================================
 
 const updateCategory = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.CATEGORIES_UPDATE)) return;
     try {
         const { id } = req.params;
         const { name, description } = req.body;
@@ -210,6 +225,13 @@ const updateCategory = async (req, res, next) => {
 // ============================================================
 
 const deleteCategory = async (req, res, next) => {
+
+    /*
+     * Autorização conferida dentro do próprio controller, além do
+     * middleware da rota: uma escrita destrutiva não deve depender
+     * apenas da montagem da rota para ser bloqueada.
+     */
+    if (forbidUnless(res, req, ACTIONS.CATEGORIES_DELETE)) return;
     try {
         const { id } = req.params;
 
