@@ -68,7 +68,7 @@ For complete setup instructions, API documentation, deployment guidance, and sec
 - **Repositório GitHub:** [github.com/Li-Rodrigues/clothstock](https://github.com/Li-Rodrigues/clothstock)
 - **Aplicação local:** [http://localhost:3000/login.html](http://localhost:3000/login.html)
 - **Documentação funcional:** [PRD.md](./PRD.md)
-- **Produção:** [clothstockconnecthub.vercel.app/login.html](https://clothstockconnecthub.vercel.app/login.html)
+- **Produção:** [Acessar ClothStock](https://clothstockconnecthub.vercel.app/)
 
 > **Indexação em mecanismos de busca:** o repositório e o endereço de produção são públicos, e a aplicação **não** bloqueia rastreamento hoje — não existe `robots.txt`, e o Express responde `200` com `index.html` para caminhos inexistentes (`app.get('*')` em `src/app.js`). Nenhum conteúdo de negócio é exposto: todas as telas operacionais exigem sessão e todos os endpoints da API respondem `401` sem cookie válido. Para que a aplicação deixe de ser indexada, adicione `public/robots.txt` com `User-agent: *` e `Disallow: /`, além da meta tag `noindex` nas páginas.
 
